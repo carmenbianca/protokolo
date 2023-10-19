@@ -43,7 +43,7 @@ class Section:
         """Get the title from attrs."""
         if not (result := self.attrs.get("title")):
             result = "TODO: No section title defined"
-        return result
+        return result.format(**self.attrs)
 
     def compile(self) -> str:
         """Compile the entire section recursively, first printing the entries in

@@ -12,8 +12,9 @@ from abc import ABC, abstractmethod
 class MarkupLanguage(ABC):
     """A simple formatter class."""
 
+    @classmethod
     @abstractmethod
-    def format_section(self, title: str, level: int) -> str:
+    def format_section(cls, title: str, level: int) -> str:
         """Format a title as a section header. For instance, a level-2 Markdown
         section might look like this::
 

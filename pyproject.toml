@@ -1,0 +1,73 @@
+# SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[tool.poetry]
+name = "protokolo"
+version = "0.1.0"
+description = "Protokolo is a change log generator."
+authors = [
+    "Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
+]
+maintainers = [
+    "Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
+]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+
+packages = [
+    { include = "protokolo", from = "src" }
+]
+include = [
+    { path = "tests", format = "sdist" },
+    { path = "README.md", format = "sdist" },
+    { path = "CHANGELOG.md", format = "sdist" },
+    { path = "LICENSES", format = "sdist" },
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=6.0.0"
+pytest-cov = ">=2.10.0"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=20"
+isort = "^5.0.0"
+pre-commit = "^2.9.0"
+bump2version = "^1.0.0"
+pylint = "^2.12.2"
+mypy = "^1.0"
+
+[build-system]
+requires = ["poetry-core>=1.1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 80
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 80
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+
+[tool.mypy]
+files = [
+    "src/protokolo/**.py",
+    "tests/**.py",
+]
+
+[[tool.mypy.overrides]]
+module = "protokolo.*"
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true

@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[MASTER]
+jobs=0
+
+
+[MESSAGES CONTROL]
+
+disable=duplicate-code,
+         logging-fstring-interpolation,
+         implicit-str-concat
+enable=useless-suppression
+
+[REPORTS]
+
+output-format=text
+reports=no
+
+
+[FORMAT]
+
+expected-line-ending-format=LF
+
+ignore-long-lines=^\s*(# )?<?https?://\S+>?$|^# SPDX-.*$
+indent-after-paren=4
+indent-string='    '
+max-line-length=80
+single-line-if-stmt=no

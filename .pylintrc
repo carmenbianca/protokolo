@@ -28,3 +28,7 @@ indent-after-paren=4
 indent-string='    '
 max-line-length=80
 single-line-if-stmt=no
+
+[MISCELLANEOUS]
+
+notes=FIXME

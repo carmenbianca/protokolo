@@ -38,6 +38,14 @@ class Section:
         self.source: str | None = source
         self.entries: list[Entry] = []
         self.subsections: list[Section] = []
+        # TODO: order
+
+    @classmethod
+    def from_directory(cls, directory: str) -> "Section":
+        """Factory method to recursively create a Section from a directory."""
+        # TODO
+        print(directory)
+        return cls()
 
     @property
     def title(self) -> str:

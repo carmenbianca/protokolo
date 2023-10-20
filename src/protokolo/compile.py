@@ -5,6 +5,10 @@
 """Code to combine the files in protokolo/ into a single text block."""
 
 from abc import ABC, abstractmethod
+from io import StringIO
+from pathlib import Path
+
+from ._util import StrPath
 
 # pylint: disable=too-few-public-methods
 
@@ -22,23 +26,40 @@ class MarkupLanguage(ABC):
         """
 
 
+class SectionAttributes:
+    """A data container to hold some metadata for a Section."""
+
+    def __init__(
+        self,
+        title: str | None = None,
+        level: int = 1,
+        order: int | None = None,
+        **kwargs: str,
+    ):
+        if title is None:
+            title = "TODO: No section title defined"
+        self.title: str = title
+        self.level: int = level
+        self.order: int | None = order
+        self.other: dict[str, str] = kwargs
+
+
 class Section:
     """A section, analogous to a directory."""
 
     def __init__(
         self,
-        level: int = 1,
-        attrs: dict[str, str] | None = None,
-        source: str | None = None,
+        attrs: SectionAttributes | None = None,
+        source: StrPath | None = None,
     ):
-        self.level = level
         if attrs is None:
-            attrs = {}
-        self.attrs: dict[str, str] = attrs
-        self.source: str | None = source
-        self.entries: list[Entry] = []
-        self.subsections: list[Section] = []
-        # TODO: order
+            attrs = SectionAttributes()
+        self.attrs: SectionAttributes = attrs
+        if source is not None:
+            source = Path(source)
+        self.source: Path | None = source
+        self.entries: set[Entry] = set()
+        self.subsections: set[Section] = set()
 
     @classmethod
     def from_directory(cls, directory: str) -> "Section":
@@ -47,23 +68,45 @@ class Section:
         print(directory)
         return cls()
 
-    @property
-    def title(self) -> str:
-        """Get the title from attrs."""
-        if not (result := self.attrs.get("title")):
-            result = "TODO: No section title defined"
-        return result.format(**self.attrs)
-
     def compile(self) -> str:
         """Compile the entire section recursively, first printing the entries in
         order, then the subsections.
         """
-        return "TODO"
+        buffer = self.write_to_buffer()
+        return buffer.getvalue()
+
+    def write_to_buffer(self, buffer: StringIO | None = None) -> StringIO:
+        """Like compile, but writing to a StringIO buffer."""
+        if buffer is None:
+            buffer = StringIO()
+
+        # TODO: Make this nicer obviously.
+        buffer.write(self.attrs.level * "#")
+        buffer.write(" ")
+        buffer.write(self.attrs.title)
+
+        for entry in self.entries:
+            buffer.write("\n\n")
+            buffer.write(entry.compile())
+
+        for subsection in self.subsections:
+            buffer.write("\n\n")
+            subsection.write_to_buffer(buffer=buffer)
+
+        return buffer
 
 
 class Entry:
     """An entry, analogous to a file."""
 
-    def __init__(self, text: str, source: str | None = None):
+    def __init__(self, text: str, source: StrPath | None = None):
         self.text: str = text
-        self.source: str | None = source
+        if source is not None:
+            source = Path(source)
+        self.source: Path | None = source
+
+    def compile(self) -> str:
+        """Compile the entry. For the time being, this just means stripping the
+        newline characters around the text.
+        """
+        return self.text.strip("\n")

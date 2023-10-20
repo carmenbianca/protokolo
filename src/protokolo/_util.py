@@ -2,11 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-"""Test Protokolo."""
+"""Some internal plumbing code."""
 
-import protokolo
+from os import PathLike
 
-
-def test_nothing():
-    """Test nothing."""
-    assert protokolo
+StrPath = str | PathLike

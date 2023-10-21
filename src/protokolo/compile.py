@@ -6,7 +6,10 @@
 
 from abc import ABC, abstractmethod
 from io import StringIO
+from itertools import chain
+from operator import attrgetter
 from pathlib import Path
+from typing import Iterator
 
 from ._util import StrPath
 
@@ -89,11 +92,30 @@ class Section:
             buffer.write("\n\n")
             buffer.write(entry.compile())
 
-        for subsection in self.subsections:
+        for subsection in self.sorted_subsections():
             buffer.write("\n\n")
             subsection.write_to_buffer(buffer=buffer)
 
         return buffer
+
+    def sorted_subsections(self) -> Iterator["Section"]:
+        """Yield the subsections, first ordered by their order value, then the
+        remainder sorted alphabetically.
+        """
+        with_order = {
+            section
+            for section in self.subsections
+            if section.attrs.order is not None
+        }
+        ordered_sorted = sorted(
+            with_order,
+            key=attrgetter("attrs.order", "attrs.title"),
+        )
+        alphabetical_sorted = sorted(
+            self.subsections - with_order,
+            key=attrgetter("attrs.title"),
+        )
+        return chain(ordered_sorted, alphabetical_sorted)
 
 
 class Entry:

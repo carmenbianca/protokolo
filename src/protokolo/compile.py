@@ -4,29 +4,16 @@
 
 """Code to combine the files in protokolo/ into a single text block."""
 
-from abc import ABC, abstractmethod
 from io import StringIO
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
 from typing import Iterator
 
+from ._formatter import MarkdownFormatter
 from ._util import StrPath
 
 # pylint: disable=too-few-public-methods
-
-
-class MarkupLanguage(ABC):
-    """A simple formatter class."""
-
-    @classmethod
-    @abstractmethod
-    def format_section(cls, title: str, level: int) -> str:
-        """Format a title as a section header. For instance, a level-2 Markdown
-        section might look like this::
-
-            ## Hello, world
-        """
 
 
 class SectionAttributes:
@@ -84,9 +71,9 @@ class Section:
             buffer = StringIO()
 
         # TODO: Make this nicer obviously.
-        buffer.write(self.attrs.level * "#")
-        buffer.write(" ")
-        buffer.write(self.attrs.title)
+        buffer.write(
+            MarkdownFormatter.format_section(self.attrs.title, self.attrs.level)
+        )
 
         for entry in self.entries:
             buffer.write("\n\n")

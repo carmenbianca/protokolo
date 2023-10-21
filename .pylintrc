@@ -10,7 +10,8 @@ jobs=0
 
 disable=duplicate-code,
          logging-fstring-interpolation,
-         implicit-str-concat
+         implicit-str-concat,
+         redefined-outer-name
 enable=useless-suppression
 
 [REPORTS]

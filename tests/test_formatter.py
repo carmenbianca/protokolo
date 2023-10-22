@@ -4,26 +4,9 @@
 
 """Test the formatting code."""
 
-from inspect import isclass
-
 import pytest
 
-from protokolo import _formatter
-from protokolo._formatter import MarkdownFormatter, MarkupFormatter
-
-formatter_classes = [
-    cls
-    for cls in _formatter.__dict__.values()
-    if isclass(cls)
-    and issubclass(cls, MarkupFormatter)
-    and cls is not MarkupFormatter
-]
-
-
-@pytest.fixture(scope="session", params=formatter_classes)
-def formatter(request):
-    """Return a formatter class."""
-    yield request.param
+from protokolo._formatter import MarkdownFormatter
 
 
 class TestMarkupFormatter:

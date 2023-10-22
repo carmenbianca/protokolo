@@ -4,11 +4,12 @@
 
 """Code to combine the files in protokolo/ into a single text block."""
 
+import tomllib
 from io import StringIO
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
-from typing import Iterator
+from typing import IO, Any, Iterator
 
 from ._formatter import MarkdownFormatter
 from ._util import StrPath
@@ -29,9 +30,84 @@ class SectionAttributes:
         if title is None:
             title = "TODO: No section title defined"
         self.title: str = title
+        if level <= 0:
+            raise ValueError("level must be a positive integer")
         self.level: int = level
+        if order is not None and order <= 0:
+            raise ValueError("order must be None or a positive integer")
         self.order: int | None = order
         self.other: dict[str, str] = kwargs
+
+    @classmethod
+    def from_dict(cls, values: dict[str, Any]) -> "SectionAttributes":
+        """Generate SectionAttributes from a dictionary containing the keys and
+        values.
+
+        Raises:
+            ValueError: value types are wrong.
+        """
+        values = values.copy()
+        # We do some type validation here, assuming that the dictionary contains
+        # user input.
+        title = values.pop("title", None)
+        if title is not None:
+            cls._validate_str(title, "title")
+        level = values.pop("level", 1)
+        if level is not None:
+            cls._validate_int(level, "level")
+        if level is None:
+            # Sneaky.
+            level = 1
+        order = values.pop("order", None)
+        if order is not None:
+            cls._validate_int(order, "order")
+        for name, value in values.items():
+            cls._validate_str(value, name)
+        return cls(
+            title=title,
+            level=level,
+            order=order,
+            **values,
+        )
+
+    @classmethod
+    def from_toml(cls, toml: str | IO[bytes]) -> "SectionAttributes":
+        """Parse a TOML string orfile into a SectionAttributes object.
+
+        Raises:
+            ValueError: [protokolo.section] is missing or value types are wrong.
+            tomllib.TOMLDecodeError: not valid TOML.
+        """
+        values = cls._parse_toml(toml)
+        try:
+            subdict = values["protokolo"]["section"]
+        except KeyError as error:
+            raise ValueError(
+                "Table [protokolo.section] does not exist in TOML"
+            ) from error
+        return cls.from_dict(subdict)
+
+    @staticmethod
+    def _parse_toml(toml: str | IO[bytes]) -> dict[str, Any]:
+        if isinstance(toml, str):
+            return tomllib.loads(toml)
+        return tomllib.load(toml)
+
+    @staticmethod
+    def _validate_int(value: Any, name: str) -> None:
+        """Raises:
+        ValueError: value isn't an int.
+        """
+        if not isinstance(value, int) or isinstance(value, bool):
+            raise ValueError(f"{name} must be an integer, but is {type(value)}")
+
+    @staticmethod
+    def _validate_str(value: Any, name: str) -> None:
+        """Raises:
+        ValueError: value isn't a str.
+        """
+        if not isinstance(value, str):
+            raise ValueError(f"{name} must be a string, but is {type(value)}")
 
 
 class Section:
@@ -52,7 +128,7 @@ class Section:
         self.subsections: set[Section] = set()
 
     @classmethod
-    def from_directory(cls, directory: str) -> "Section":
+    def from_directory(cls, directory: StrPath) -> "Section":
         """Factory method to recursively create a Section from a directory."""
         # TODO
         print(directory)

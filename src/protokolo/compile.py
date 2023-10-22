@@ -9,7 +9,7 @@ from io import StringIO
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
-from typing import IO, Any, Iterator
+from typing import IO, Any, Iterator, cast
 
 from ._formatter import MarkdownFormatter
 from ._util import StrPath
@@ -144,9 +144,7 @@ class Section:
         self.subsections: set[Section] = set()
 
     @classmethod
-    def from_directory(
-        cls, directory: StrPath, level: int | None = None
-    ) -> "Section":
+    def from_directory(cls, directory: StrPath, level: int = 1) -> "Section":
         """Factory method to recursively create a Section from a directory.
 
         The *level* keyword argument is overridden by the level value in
@@ -157,15 +155,13 @@ class Section:
         if protokolo_toml.exists() and protokolo_toml.is_file():
             with protokolo_toml.open("rb") as fp:
                 values = SectionAttributes.parse_toml(fp)
-            # The level of the current section is determined first by the value
-            # in the toml, second by the level value if it exists, or third
-            # defaults to 1.
-            level = values.get("level") or level or 1
             attrs = SectionAttributes.from_dict(values)
+            # The level of the current section is determined first by the value
+            # in the toml, second by the level value.
+            level = values.get("level") or level
             attrs.level = level
         else:
             # TODO: Log warning, probably.
-            level = level or 1
             attrs = SectionAttributes(level=level)
 
         subsections = set()
@@ -202,7 +198,7 @@ class Section:
             MarkdownFormatter.format_section(self.attrs.title, self.attrs.level)
         )
 
-        for entry in self.entries:
+        for entry in self.sorted_entries():
             buffer.write("\n\n")
             buffer.write(entry.compile())
 
@@ -211,6 +207,21 @@ class Section:
             subsection.write_to_buffer(buffer=buffer)
 
         return buffer
+
+    def sorted_entries(self) -> Iterator["Entry"]:
+        """Yield the entries, ordered by their source. Entries that do not have
+        a source are sorted afterwards by their text.
+        """
+        with_source = {
+            entry for entry in self.entries if entry.source is not None
+        }
+        source_sorted = sorted(
+            with_source, key=lambda entry: cast(Path, entry.source).name
+        )
+        alphabetical_sorted = sorted(
+            self.entries - with_source, key=attrgetter("text")
+        )
+        return chain(source_sorted, alphabetical_sorted)
 
     def sorted_subsections(self) -> Iterator["Section"]:
         """Yield the subsections, first ordered by their order value, then the

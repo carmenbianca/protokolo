@@ -63,6 +63,7 @@ files = [
     "src/protokolo/**.py",
     "tests/**.py",
 ]
+check_untyped_defs = true
 
 [[tool.mypy.overrides]]
 module = "protokolo.*"

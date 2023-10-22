@@ -4,6 +4,7 @@
 
 """Test the compilation of change log sections and entries."""
 
+import random
 import tomllib
 from inspect import cleandoc
 from io import BytesIO
@@ -150,6 +151,12 @@ class TestSectionAttributes:
         with BytesIO(yaml.encode("utf-8")) as fp:
             with pytest.raises(tomllib.TOMLDecodeError):
                 SectionAttributes.parse_toml(fp)
+
+    def test_parse_toml_wrong_type(self):
+        """Passing the wrong type results in an error."""
+        values = {"title": "Section"}
+        with pytest.raises(ValueError):
+            SectionAttributes.parse_toml(values)  # type: ignore
 
     def test_from_toml_str_simple(self):
         """Provide all values in a toml string."""
@@ -330,6 +337,52 @@ class TestSection:
             ## Subsection Bar
 
             ## Subsection Foo
+            """
+        )
+        assert section.compile() == expected
+
+    def test_compile_entries_sorted_by_source(self):
+        """Compiled entries are sorted by their source."""
+        section = Section(attrs=SectionAttributes(title="Section"))
+        entries = {
+            f"{source_nr}.md": str(random.randint(1, 10_000))
+            for source_nr in range(10)
+        }
+        for source, text in entries.items():
+            section.entries.add(Entry(text, source=source))
+
+        expected = "# Section\n\n" + "\n\n".join(
+            item[1] for item in sorted(entries.items())
+        )
+        assert section.compile() == expected
+
+    def test_compile_entries_sorted_by_text(self):
+        """Compiled entries are sorted alphabetically by their text if they have
+        no source.
+        """
+        section = Section(attrs=SectionAttributes(title="Section"))
+        entries = {str(random.randint(1, 10_000)) for _ in range(10)}
+        for text in entries:
+            section.entries.add(Entry(text))
+
+        expected = "# Section\n\n" + "\n\n".join(sorted(entries))
+        assert section.compile() == expected
+
+    def test_compile_entries_sorted_mixed(self):
+        """Compiled entries that have a source are sorted before ones that
+        don't.
+        """
+        section = Section(attrs=SectionAttributes(title="Section"))
+        section.entries.add(Entry("Foo", source="foo.md"))
+        section.entries.add(Entry("Bar"))
+
+        expected = cleandoc(
+            """
+            # Section
+
+            Foo
+
+            Bar
             """
         )
         assert section.compile() == expected

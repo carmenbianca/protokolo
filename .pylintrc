@@ -30,6 +30,10 @@ indent-string='    '
 max-line-length=80
 single-line-if-stmt=no
 
+[BASIC]
+
+good-names=i,j,k,_,fp
+
 [MISCELLANEOUS]
 
 notes=FIXME

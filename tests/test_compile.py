@@ -4,6 +4,7 @@
 
 """Test the compilation of change log sections and entries."""
 
+import tomllib
 from inspect import cleandoc
 from io import BytesIO
 
@@ -98,6 +99,57 @@ class TestSectionAttributes:
         for value in wrong_values:
             with pytest.raises(ValueError):
                 SectionAttributes.from_dict({"foo": value})
+
+    def test_parse_toml_simple(self):
+        """Provide all values in a toml string."""
+        toml = cleandoc(
+            """
+            [protokolo.section]
+            title = "Title"
+            level = 2
+            order = 3
+            foo = "bar"
+            """
+        )
+        values = SectionAttributes.parse_toml(toml)
+        assert values["title"] == "Title"
+        assert values["level"] == 2
+        assert values["order"] == 3
+        assert values["foo"] == "bar"
+
+    def test_parse_toml_no_values(self):
+        """If there are no values, return an empty dictionary."""
+        toml = cleandoc(
+            """
+            [protokolo.section]
+            """
+        )
+        values = SectionAttributes.parse_toml(toml)
+        assert not values
+
+    def test_parse_toml_no_table(self):
+        """If there is no [protokolo.section] table, expect a ValueError"""
+        toml = cleandoc(
+            """
+            title = "Title"
+            """
+        )
+        with pytest.raises(ValueError):
+            SectionAttributes.parse_toml(toml)
+
+    def test_parse_toml_decode_error(self):
+        """Raise TOMLDecodeError when TOML can't be parsed."""
+        yaml = cleandoc(
+            """
+            hello:
+              - world
+            """
+        )
+        with pytest.raises(tomllib.TOMLDecodeError):
+            SectionAttributes.parse_toml(yaml)
+        with BytesIO(yaml.encode("utf-8")) as fp:
+            with pytest.raises(tomllib.TOMLDecodeError):
+                SectionAttributes.parse_toml(fp)
 
     def test_from_toml_str_simple(self):
         """Provide all values in a toml string."""
@@ -283,7 +335,7 @@ class TestSection:
         assert section.compile() == expected
 
     def test_from_directory(self, project_dir):
-        """TODO"""
+        """A very simple case of generating a Section from a directory."""
         (project_dir / "changelog.d/announcement.md").write_text(
             "Hello, world!"
         )

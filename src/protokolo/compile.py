@@ -72,39 +72,55 @@ class SectionAttributes:
 
     @classmethod
     def from_toml(cls, toml: str | IO[bytes]) -> "SectionAttributes":
-        """Parse a TOML string orfile into a SectionAttributes object.
+        """Parse a TOML string or file into a SectionAttributes object.
 
         Raises:
-            ValueError: [protokolo.section] is missing or value types are wrong.
+            ValueError: [protokolo.section] is missing, value types are wrong,
+                or *toml* is not a valid type.
             tomllib.TOMLDecodeError: not valid TOML.
         """
-        values = cls._parse_toml(toml)
+        values = cls.parse_toml(toml)
+        return cls.from_dict(values)
+
+    @staticmethod
+    def parse_toml(toml: str | IO[bytes]) -> dict[str, Any]:
+        """
+        Raises:
+            ValueError: [protokolo.section] is missing, value types are wrong,
+                or *toml* is not a valid type.
+            tomllib.TOMLDecodeError: not valid TOML.
+        """
+        if isinstance(toml, str):
+            values = tomllib.loads(toml)
+        else:
+            try:
+                values = tomllib.load(toml)
+            except tomllib.TOMLDecodeError:
+                raise
+            except Exception as error:
+                raise ValueError("toml must be a str or IO[bytes]") from error
         try:
             subdict = values["protokolo"]["section"]
         except KeyError as error:
             raise ValueError(
                 "Table [protokolo.section] does not exist in TOML"
             ) from error
-        return cls.from_dict(subdict)
-
-    @staticmethod
-    def _parse_toml(toml: str | IO[bytes]) -> dict[str, Any]:
-        if isinstance(toml, str):
-            return tomllib.loads(toml)
-        return tomllib.load(toml)
+        return subdict
 
     @staticmethod
     def _validate_int(value: Any, name: str) -> None:
-        """Raises:
-        ValueError: value isn't an int.
+        """
+        Raises:
+            ValueError: value isn't an int.
         """
         if not isinstance(value, int) or isinstance(value, bool):
             raise ValueError(f"{name} must be an integer, but is {type(value)}")
 
     @staticmethod
     def _validate_str(value: Any, name: str) -> None:
-        """Raises:
-        ValueError: value isn't a str.
+        """
+        Raises:
+            ValueError: value isn't a str.
         """
         if not isinstance(value, str):
             raise ValueError(f"{name} must be a string, but is {type(value)}")
@@ -128,11 +144,46 @@ class Section:
         self.subsections: set[Section] = set()
 
     @classmethod
-    def from_directory(cls, directory: StrPath) -> "Section":
-        """Factory method to recursively create a Section from a directory."""
-        # TODO
-        print(directory)
-        return cls()
+    def from_directory(
+        cls, directory: StrPath, level: int | None = None
+    ) -> "Section":
+        """Factory method to recursively create a Section from a directory.
+
+        The *level* keyword argument is overridden by the level value in
+        .protokolo.toml.
+        """
+        directory = Path(directory)
+        protokolo_toml = directory / ".protokolo.toml"
+        if protokolo_toml.exists() and protokolo_toml.is_file():
+            with protokolo_toml.open("rb") as fp:
+                values = SectionAttributes.parse_toml(fp)
+            # The level of the current section is determined first by the value
+            # in the toml, second by the level value if it exists, or third
+            # defaults to 1.
+            level = values.get("level") or level or 1
+            attrs = SectionAttributes.from_dict(values)
+            attrs.level = level
+        else:
+            # TODO: Log warning, probably.
+            level = level or 1
+            attrs = SectionAttributes(level=level)
+
+        subsections = set()
+        entries = set()
+        for path in directory.iterdir():
+            if path.is_dir():
+                subsections.add(cls.from_directory(path, level=level + 1))
+            # TODO: Handle more suffixes
+            elif path.is_file() and path.suffix == ".md":
+                with path.open("r", encoding="utf-8") as fp:
+                    content = fp.read()
+                    entries.add(Entry(text=content, source=path))
+
+        section = cls(attrs=attrs, source=directory)
+        section.subsections = subsections
+        section.entries = entries
+
+        return section
 
     def compile(self) -> str:
         """Compile the entire section recursively, first printing the entries in

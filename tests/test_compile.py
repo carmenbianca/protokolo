@@ -248,6 +248,32 @@ class TestSection:
         section.subsections.add(subsection)
         assert section.compile() == ""
 
+    def test_compile_one_empty_subsection(self):
+        """If one subsection is empty, and the other is not, the empty
+        subsection should not be compiled.
+        """
+        subsection_1 = Section(
+            attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
+        )
+        subsection_1.entries.add(Entry("Foo"))
+        subsection_2 = Section(
+            attrs=SectionAttributes(title="Subsection Bar", level=2, order=2)
+        )
+        section = Section(attrs=SectionAttributes(title="Section", level=1))
+        section.subsections.add(subsection_1)
+        section.subsections.add(subsection_2)
+
+        expected = cleandoc(
+            """
+            # Section
+
+            ## Subsection Foo
+
+            Foo
+            """
+        )
+        assert section.compile() == expected
+
     def test_compile_order_specified(self):
         """Respect the order specified on the subsection."""
         subsection_1 = Section(

@@ -208,7 +208,8 @@ class Section:
             buffer.write(entry.compile())
 
         for subsection in self.sorted_subsections():
-            buffer.write("\n\n")
+            if not subsection.is_empty():
+                buffer.write("\n\n")
             subsection.write_to_buffer(buffer=buffer)
 
         return buffer

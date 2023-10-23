@@ -26,8 +26,12 @@ include = [
 ]
 
 
+[tool.poetry.scripts]
+protokolo = 'protokolo.main:cli'
+
 [tool.poetry.dependencies]
 python = "^3.11"
+click = ">=8.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = ">=6.0.0"

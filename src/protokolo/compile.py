@@ -184,6 +184,8 @@ class Section:
     def compile(self) -> str:
         """Compile the entire section recursively, first printing the entries in
         order, then the subsections.
+
+        Empty sections are not compiled.
         """
         buffer = self.write_to_buffer()
         return buffer.getvalue()
@@ -192,6 +194,9 @@ class Section:
         """Like compile, but writing to a StringIO buffer."""
         if buffer is None:
             buffer = StringIO()
+
+        if self.is_empty():
+            return buffer
 
         # TODO: Make this nicer obviously.
         buffer.write(
@@ -207,6 +212,20 @@ class Section:
             subsection.write_to_buffer(buffer=buffer)
 
         return buffer
+
+    def is_empty(self) -> bool:
+        """A Section is empty if it contains neither entries nor subsections. If
+        it contains no entries, and its subsections are empty, then it is also
+        considered empty.
+        """
+        if self.entries:
+            return False
+        if not self.subsections:
+            return True
+        for subsection in self.subsections:
+            if not subsection.is_empty():
+                return False
+        return True
 
     def sorted_entries(self) -> Iterator["Entry"]:
         """Yield the entries, ordered by their source. Entries that do not have

@@ -233,18 +233,31 @@ class TestSection:
         assert section.compile() == expected
 
     def test_compile_empty(self):
-        """Compile an empty section."""
+        """A section that contains neither entries nor subsections doesn't
+        compile to anything.
+        """
         section = Section()
-        assert section.compile() == "# TODO: No section title defined"
+        assert section.compile() == ""
+
+    def test_compile_empty_subsections(self):
+        """A section that only contains empty subsections doesn't compile to
+        anything.
+        """
+        subsection = Section()
+        section = Section()
+        section.subsections.add(subsection)
+        assert section.compile() == ""
 
     def test_compile_order_specified(self):
         """Respect the order specified on the subsection."""
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
         )
+        subsection_1.entries.add(Entry("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2, order=2)
         )
+        subsection_2.entries.add(Entry("Bar"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
@@ -255,7 +268,11 @@ class TestSection:
 
             ## Subsection Foo
 
+            Foo
+
             ## Subsection Bar
+
+            Bar
             """
         )
         assert section.compile() == expected
@@ -265,9 +282,11 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2)
         )
+        subsection_1.entries.add(Entry("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2)
         )
+        subsection_2.entries.add(Entry("Bar"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
@@ -278,7 +297,11 @@ class TestSection:
 
             ## Subsection Bar
 
+            Bar
+
             ## Subsection Foo
+
+            Foo
             """
         )
         assert section.compile() == expected
@@ -290,15 +313,19 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
         )
+        subsection_1.entries.add(Entry("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2, order=2)
         )
+        subsection_2.entries.add(Entry("Bar"))
         subsection_3 = Section(
             attrs=SectionAttributes(title="Subsection Baz", level=2)
         )
+        subsection_3.entries.add(Entry("Baz"))
         subsection_4 = Section(
             attrs=SectionAttributes(title="Subsection Quz", level=2)
         )
+        subsection_4.entries.add(Entry("Quz"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.update(
             {subsection_1, subsection_2, subsection_3, subsection_4}
@@ -309,11 +336,19 @@ class TestSection:
 
             ## Subsection Foo
 
+            Foo
+
             ## Subsection Bar
+
+            Bar
 
             ## Subsection Baz
 
+            Baz
+
             ## Subsection Quz
+
+            Quz
             """
         )
         assert section.compile() == expected
@@ -323,9 +358,11 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
         )
+        subsection_1.entries.add(Entry("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2, order=1)
         )
+        subsection_2.entries.add(Entry("Bar"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
@@ -336,7 +373,11 @@ class TestSection:
 
             ## Subsection Bar
 
+            Bar
+
             ## Subsection Foo
+
+            Foo
             """
         )
         assert section.compile() == expected
@@ -386,6 +427,34 @@ class TestSection:
             """
         )
         assert section.compile() == expected
+
+    def test_is_empty_simple(self):
+        """A section with neither entries nor subsections is empty."""
+        section = Section()
+        assert section.is_empty()
+
+    def test_is_empty_contains_entries(self):
+        """A section with entries is not empty."""
+        section = Section()
+        section.entries.add(Entry("Foo"))
+        assert not section.is_empty()
+
+    def test_is_empty_with_empty_subsections(self):
+        """A section with empty subsections is empty."""
+        subsection = Section()
+        section = Section()
+        section.subsections.add(subsection)
+        assert subsection.is_empty()
+        assert section.is_empty()
+
+    def test_is_empty_with_nonempty_subsections(self):
+        """A section with non-empty subsections is not empty."""
+        subsection = Section()
+        subsection.entries.add(Entry("Hello"))
+        section = Section()
+        section.subsections.add(subsection)
+        assert not subsection.is_empty()
+        assert not section.is_empty()
 
     def test_from_directory(self, project_dir):
         """A very simple case of generating a Section from a directory."""

@@ -12,6 +12,7 @@ from io import BytesIO
 import pytest
 
 from protokolo.compile import Entry, Section, SectionAttributes
+from protokolo.exceptions import DictTypeError
 
 
 class TestSectionAttributes:
@@ -65,8 +66,12 @@ class TestSectionAttributes:
         # Errors
         wrong_values = {"1", 1.1, "1.1", "Foo", True}
         for value in wrong_values:
-            with pytest.raises(ValueError):
+            with pytest.raises(DictTypeError) as exc_info:
                 SectionAttributes.from_dict({"level": value})
+            error = exc_info.value
+            assert error.key == "level"
+            assert error.expected_type == int
+            assert error.got == value
 
     def test_from_dict_wrong_type_order(self):
         """If the order is not an int, expect an error."""
@@ -76,8 +81,12 @@ class TestSectionAttributes:
         # Errors
         wrong_values = {"1", 1.1, "1.1", "Foo", True}
         for value in wrong_values:
-            with pytest.raises(ValueError):
+            with pytest.raises(DictTypeError) as exc_info:
                 SectionAttributes.from_dict({"order": value})
+            error = exc_info.value
+            assert error.key == "order"
+            assert error.expected_type == int
+            assert error.got == value
 
     def test_from_dict_wrong_type_title(self):
         """If the title is not a str, expect an error."""
@@ -87,8 +96,12 @@ class TestSectionAttributes:
         # Errors
         wrong_values = {1, 1.1, False}
         for value in wrong_values:
-            with pytest.raises(ValueError):
+            with pytest.raises(DictTypeError) as exc_info:
                 SectionAttributes.from_dict({"title": value})
+            error = exc_info.value
+            assert error.key == "title"
+            assert error.expected_type == str
+            assert error.got == value
 
     def test_from_dict_wrong_type_other(self):
         """If another value is not a str, expect an error."""
@@ -98,8 +111,12 @@ class TestSectionAttributes:
         # Errors
         wrong_values = {1, 1.1, False}
         for value in wrong_values:
-            with pytest.raises(ValueError):
+            with pytest.raises(DictTypeError) as exc_info:
                 SectionAttributes.from_dict({"foo": value})
+            error = exc_info.value
+            assert error.key == "foo"
+            assert error.expected_type == str
+            assert error.got == value
 
     def test_parse_toml_simple(self):
         """Provide all values in a toml string."""
@@ -129,14 +146,13 @@ class TestSectionAttributes:
         assert not values
 
     def test_parse_toml_no_table(self):
-        """If there is no [protokolo.section] table, expect a ValueError"""
+        """If there is no [protokolo.section] table, return an empty dict."""
         toml = cleandoc(
             """
             title = "Title"
             """
         )
-        with pytest.raises(ValueError):
-            SectionAttributes.parse_toml(toml)
+        assert SectionAttributes.parse_toml(toml) == {}
 
     def test_parse_toml_decode_error(self):
         """Raise TOMLDecodeError when TOML can't be parsed."""
@@ -155,7 +171,7 @@ class TestSectionAttributes:
     def test_parse_toml_wrong_type(self):
         """Passing the wrong type results in an error."""
         values = {"title": "Section"}
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             SectionAttributes.parse_toml(values)  # type: ignore
 
     def test_from_toml_str_simple(self):
@@ -194,14 +210,16 @@ class TestSectionAttributes:
         assert attrs.other["foo"] == "bar"
 
     def test_from_toml_missing_table(self):
-        """If the [protokolo.section] table is missing, expect a ValueError."""
+        """If the [protokolo.section] table is missing, return an empty
+        SectionAttributes.
+        """
         toml = cleandoc(
             """
             title = "Title"
             """
         )
-        with pytest.raises(ValueError):
-            SectionAttributes.from_toml(toml)
+        result = SectionAttributes.from_toml(toml)
+        assert result.title == "TODO: No section title defined"
 
 
 class TestSection:

@@ -13,6 +13,7 @@ from typing import IO, Any, Iterator, cast
 
 from ._formatter import MarkdownFormatter
 from ._util import StrPath
+from .exceptions import DictTypeError
 
 # pylint: disable=too-few-public-methods
 
@@ -44,7 +45,7 @@ class SectionAttributes:
         values.
 
         Raises:
-            ValueError: value types are wrong.
+            DictTypeError: value types are wrong.
         """
         values = values.copy()
         # We do some type validation here, assuming that the dictionary contains
@@ -75,8 +76,8 @@ class SectionAttributes:
         """Parse a TOML string or file into a SectionAttributes object.
 
         Raises:
-            ValueError: [protokolo.section] is missing, value types are wrong,
-                or *toml* is not a valid type.
+            ValueError: value types are wrong.
+            TypeError: *toml* is not a valid type.
             tomllib.TOMLDecodeError: not valid TOML.
         """
         values = cls.parse_toml(toml)
@@ -86,8 +87,7 @@ class SectionAttributes:
     def parse_toml(toml: str | IO[bytes]) -> dict[str, Any]:
         """
         Raises:
-            ValueError: [protokolo.section] is missing, value types are wrong,
-                or *toml* is not a valid type.
+            TypeError: *toml* is not a valid type.
             tomllib.TOMLDecodeError: not valid TOML.
         """
         if isinstance(toml, str):
@@ -98,23 +98,20 @@ class SectionAttributes:
             except tomllib.TOMLDecodeError:
                 raise
             except Exception as error:
-                raise ValueError("toml must be a str or IO[bytes]") from error
+                raise TypeError("toml must be a str or IO[bytes]") from error
         try:
-            subdict = values["protokolo"]["section"]
-        except KeyError as error:
-            raise ValueError(
-                "Table [protokolo.section] does not exist in TOML"
-            ) from error
-        return subdict
+            return values["protokolo"]["section"]
+        except KeyError:
+            return {}
 
     @staticmethod
     def _validate_int(value: Any, name: str) -> None:
         """
         Raises:
-            ValueError: value isn't an int.
+            TypeError: value isn't an int.
         """
         if not isinstance(value, int) or isinstance(value, bool):
-            raise ValueError(f"{name} must be an integer, but is {type(value)}")
+            raise DictTypeError(name, int, value)
 
     @staticmethod
     def _validate_str(value: Any, name: str) -> None:
@@ -123,7 +120,7 @@ class SectionAttributes:
             ValueError: value isn't a str.
         """
         if not isinstance(value, str):
-            raise ValueError(f"{name} must be a string, but is {type(value)}")
+            raise DictTypeError(name, str, value)
 
 
 class Section:
@@ -149,13 +146,29 @@ class Section:
 
         The *level* keyword argument is overridden by the level value in
         .protokolo.toml.
+
+        Raises:
+            OSError: input/output error.
+            TOMLDecodeError: .protokolo.toml couldn't be parsed.
+            DictTypeError: .protokolo.toml fields have the wrong type.
         """
         directory = Path(directory)
         protokolo_toml = directory / ".protokolo.toml"
+        # TODO: Raise error if file doesn't exist or isn't a file.
         if protokolo_toml.exists() and protokolo_toml.is_file():
             with protokolo_toml.open("rb") as fp:
-                values = SectionAttributes.parse_toml(fp)
-            attrs = SectionAttributes.from_dict(values)
+                try:
+                    values = SectionAttributes.parse_toml(fp)
+                except tomllib.TOMLDecodeError as error:
+                    raise tomllib.TOMLDecodeError(
+                        f"Could not decode '{fp.name}': {error}"
+                    ) from error
+            try:
+                attrs = SectionAttributes.from_dict(values)
+            except DictTypeError as error:
+                raise DictTypeError(
+                    error.key, error.expected_type, error.got, fp.name
+                ) from error
             # The level of the current section is determined first by the value
             # in the toml, second by the level value.
             level = values.get("level") or level
@@ -171,8 +184,8 @@ class Section:
                 subsections.add(cls.from_directory(path, level=level + 1))
             # TODO: Handle more suffixes
             elif path.is_file() and path.suffix == ".md":
-                with path.open("r", encoding="utf-8") as fp:
-                    content = fp.read()
+                with path.open("r", encoding="utf-8") as fp_:
+                    content = fp_.read()
                     entries.add(Entry(text=content, source=path))
 
         section = cls(attrs=attrs, source=directory)

@@ -13,7 +13,7 @@ from typing import IO, Any, Iterator, cast
 
 from ._formatter import MarkdownFormatter
 from ._util import StrPath
-from .exceptions import DictTypeError
+from .exceptions import AttributeNotPositiveError, DictTypeError
 
 # pylint: disable=too-few-public-methods
 
@@ -31,11 +31,18 @@ class SectionAttributes:
         if title is None:
             title = "TODO: No section title defined"
         self.title: str = title
+        # This shouldn't happen, but let's deal with it anyway.
+        if level is None:
+            level = 1
         if level <= 0:
-            raise ValueError("level must be a positive integer")
+            raise AttributeNotPositiveError(
+                f"level must be a positive integer, got {repr(level)}"
+            )
         self.level: int = level
         if order is not None and order <= 0:
-            raise ValueError("order must be None or a positive integer")
+            raise AttributeNotPositiveError(
+                f"order must be None or a positive integer, got {repr(order)}"
+            )
         self.order: int | None = order
         self.other: dict[str, str] = kwargs
 
@@ -45,7 +52,8 @@ class SectionAttributes:
         values.
 
         Raises:
-            ValueError: TODO.
+            AttributeNotPositiveError: one of the values should have been
+                positive.
             DictTypeError: value types are wrong.
         """
         values = values.copy()
@@ -77,8 +85,9 @@ class SectionAttributes:
         """Parse a TOML string or file into a SectionAttributes object.
 
         Raises:
-            ValueError: TODO
-            DictTypeError: TODO
+            AttributeNotPositiveError: one of the values should have been
+                positive.
+            DictTypeError: a provided value has the wrong type.
             TypeError: *toml* is not a valid type.
             tomllib.TOMLDecodeError: not valid TOML.
         """
@@ -153,6 +162,8 @@ class Section:
             OSError: input/output error.
             TOMLDecodeError: .protokolo.toml couldn't be parsed.
             DictTypeError: .protokolo.toml fields have the wrong type.
+            AttributeNotPositiveError: value in .protokolo.toml should be a
+                positive integer.
         """
         directory = Path(directory)
         protokolo_toml = directory / ".protokolo.toml"
@@ -170,6 +181,10 @@ class Section:
             except DictTypeError as error:
                 raise DictTypeError(
                     error.key, error.expected_type, error.got, fp.name
+                ) from error
+            except AttributeNotPositiveError as error:
+                raise AttributeNotPositiveError(
+                    f"Wrong value in '{fp.name}': {error}"
                 ) from error
             # The level of the current section is determined first by the value
             # in the toml, second by the level value.

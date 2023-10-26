@@ -12,7 +12,7 @@ from io import BytesIO
 import pytest
 
 from protokolo.compile import Entry, Section, SectionAttributes
-from protokolo.exceptions import DictTypeError
+from protokolo.exceptions import AttributeNotPositiveError, DictTypeError
 
 
 class TestSectionAttributes:
@@ -21,18 +21,21 @@ class TestSectionAttributes:
     def test_level_positive(self):
         """level must be a positive integer."""
         SectionAttributes(level=1)
-        with pytest.raises(ValueError):
+        # Automagically fix unexpected type
+        attrs = SectionAttributes(level=None)  # type: ignore
+        assert attrs.level == 1
+        with pytest.raises(AttributeNotPositiveError):
             SectionAttributes(level=0)
-        with pytest.raises(ValueError):
+        with pytest.raises(AttributeNotPositiveError):
             SectionAttributes(level=-1)
 
     def test_order_positive(self):
         """order must be a positive integer."""
         SectionAttributes(order=1)
         SectionAttributes(order=None)
-        with pytest.raises(ValueError):
+        with pytest.raises(AttributeNotPositiveError):
             SectionAttributes(order=0)
-        with pytest.raises(ValueError):
+        with pytest.raises(AttributeNotPositiveError):
             SectionAttributes(order=-1)
 
     def test_from_dict_simple(self):
@@ -557,6 +560,25 @@ class TestSection:
             Section.from_directory(project_dir / "changelog.d")
         error = exc_info.value
         assert error.source == str(project_dir / "changelog.d/.protokolo.toml")
+
+    def test_from_directory_attribute_not_positive_error(self, project_dir):
+        """If a value in .protokolo.toml must be positive but isn't, raise
+        AttributeNotPositiveError.
+        """
+        (project_dir / "changelog.d/.protokolo.toml").write_text(
+            cleandoc(
+                """
+                [protokolo.section]
+                level = 0
+                """
+            )
+        )
+        with pytest.raises(AttributeNotPositiveError) as exc_info:
+            Section.from_directory(project_dir / "changelog.d")
+        error = exc_info.value
+        assert (
+            f"Wrong value in '{project_dir / 'changelog.d/.protokolo.toml'}'"
+        ) in str(error)
 
 
 class TestEntry:

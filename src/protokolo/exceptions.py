@@ -50,3 +50,7 @@ class DictTypeError(TypeError, ProtokoloError):
             return args[index]
         except IndexError:
             return default
+
+
+class AttributeNotPositiveError(ValueError, ProtokoloError):
+    """A value in AttributeSections is expected to be a positive integer."""

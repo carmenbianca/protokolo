@@ -7,7 +7,11 @@
 from typing import Any
 
 
-class DictTypeError(Exception):
+class ProtokoloError(Exception):
+    """Common exception class for all custom errors raised by protokolo."""
+
+
+class DictTypeError(TypeError, ProtokoloError):
     """Expected a value of a different type for a given key."""
 
     def __init__(self, *args: Any):

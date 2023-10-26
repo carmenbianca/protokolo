@@ -528,6 +528,36 @@ class TestSection:
             feature.source == project_dir / "changelog.d/feature/feature_1.md"
         )
 
+    def test_from_directory_decode_error(self, project_dir):
+        """Raise TOMLDecodeError if there is invalid TOML."""
+        (project_dir / "changelog.d/.protokolo.toml").write_text(
+            "{'hello': 'world'}"
+        )
+        with pytest.raises(tomllib.TOMLDecodeError) as exc_info:
+            Section.from_directory(project_dir / "changelog.d")
+        error = exc_info.value
+        assert (
+            f"Invalid TOML in '{project_dir / 'changelog.d/.protokolo.toml'}'"
+            in str(error)
+        )
+
+    def test_from_directory_dict_type_error(self, project_dir):
+        """If there is a type inconsistency is found in the toml file, raise a
+        DictTypeError.
+        """
+        (project_dir / "changelog.d/.protokolo.toml").write_text(
+            cleandoc(
+                """
+                [protokolo.section]
+                level = "foo"
+                """
+            )
+        )
+        with pytest.raises(DictTypeError) as exc_info:
+            Section.from_directory(project_dir / "changelog.d")
+        error = exc_info.value
+        assert error.source == str(project_dir / "changelog.d/.protokolo.toml")
+
 
 class TestEntry:
     """Collect all tests for Entry."""

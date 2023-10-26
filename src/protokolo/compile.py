@@ -45,6 +45,7 @@ class SectionAttributes:
         values.
 
         Raises:
+            ValueError: TODO.
             DictTypeError: value types are wrong.
         """
         values = values.copy()
@@ -76,7 +77,8 @@ class SectionAttributes:
         """Parse a TOML string or file into a SectionAttributes object.
 
         Raises:
-            ValueError: value types are wrong.
+            ValueError: TODO
+            DictTypeError: TODO
             TypeError: *toml* is not a valid type.
             tomllib.TOMLDecodeError: not valid TOML.
         """
@@ -108,7 +110,7 @@ class SectionAttributes:
     def _validate_int(value: Any, name: str) -> None:
         """
         Raises:
-            TypeError: value isn't an int.
+            DictTypeError: value isn't an int.
         """
         if not isinstance(value, int) or isinstance(value, bool):
             raise DictTypeError(name, int, value)
@@ -117,7 +119,7 @@ class SectionAttributes:
     def _validate_str(value: Any, name: str) -> None:
         """
         Raises:
-            ValueError: value isn't a str.
+            DictTypeError: value isn't a str.
         """
         if not isinstance(value, str):
             raise DictTypeError(name, str, value)
@@ -161,7 +163,7 @@ class Section:
                     values = SectionAttributes.parse_toml(fp)
                 except tomllib.TOMLDecodeError as error:
                     raise tomllib.TOMLDecodeError(
-                        f"Could not decode '{fp.name}': {error}"
+                        f"Invalid TOML in '{fp.name}': {error}"
                     ) from error
             try:
                 attrs = SectionAttributes.from_dict(values)

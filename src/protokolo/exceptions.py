@@ -52,5 +52,17 @@ class DictTypeError(TypeError, ProtokoloError):
             return default
 
 
-class AttributeNotPositiveError(ValueError, ProtokoloError):
+class ProtokoloTOMLError(ProtokoloError):
+    """An exception that pertains to .protokolo.toml."""
+
+
+class AttributeNotPositiveError(ValueError, ProtokoloTOMLError):
     """A value in AttributeSections is expected to be a positive integer."""
+
+
+class ProtokoloTOMLNotFoundError(FileNotFoundError, ProtokoloTOMLError):
+    """Couldn't find a .protokolo.toml file."""
+
+
+class ProtokoloTOMLIsADirectoryError(IsADirectoryError, ProtokoloTOMLError):
+    """.protokolo.toml is not a file."""

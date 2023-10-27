@@ -4,16 +4,23 @@
 
 """Code to combine the files in protokolo/ into a single text block."""
 
+import errno
 import tomllib
 from io import StringIO
 from itertools import chain
 from operator import attrgetter
+from os import strerror
 from pathlib import Path
 from typing import IO, Any, Iterator, cast
 
 from ._formatter import MarkdownFormatter
 from ._util import StrPath
-from .exceptions import AttributeNotPositiveError, DictTypeError
+from .exceptions import (
+    AttributeNotPositiveError,
+    DictTypeError,
+    ProtokoloTOMLIsADirectoryError,
+    ProtokoloTOMLNotFoundError,
+)
 
 # pylint: disable=too-few-public-methods
 
@@ -160,6 +167,8 @@ class Section:
 
         Raises:
             OSError: input/output error.
+            ProtokoloTOMLNotFoundError: .protokolo.toml doesn't exist.
+            ProtokoloTOMLIsADirectoryError: .protokolo.toml is not a file.
             TOMLDecodeError: .protokolo.toml couldn't be parsed.
             DictTypeError: .protokolo.toml fields have the wrong type.
             AttributeNotPositiveError: value in .protokolo.toml should be a
@@ -167,32 +176,35 @@ class Section:
         """
         directory = Path(directory)
         protokolo_toml = directory / ".protokolo.toml"
-        # TODO: Raise error if file doesn't exist or isn't a file.
-        if protokolo_toml.exists() and protokolo_toml.is_file():
-            with protokolo_toml.open("rb") as fp:
-                try:
-                    values = SectionAttributes.parse_toml(fp)
-                except tomllib.TOMLDecodeError as error:
-                    raise tomllib.TOMLDecodeError(
-                        f"Invalid TOML in '{fp.name}': {error}"
-                    ) from error
+        if not protokolo_toml.exists():
+            raise ProtokoloTOMLNotFoundError(
+                errno.ENOENT, strerror(errno.ENOENT), str(protokolo_toml)
+            )
+        if not protokolo_toml.is_file():
+            raise ProtokoloTOMLIsADirectoryError(
+                errno.EISDIR, strerror(errno.EISDIR), str(protokolo_toml)
+            )
+        with protokolo_toml.open("rb") as fp:
             try:
-                attrs = SectionAttributes.from_dict(values)
-            except DictTypeError as error:
-                raise DictTypeError(
-                    error.key, error.expected_type, error.got, fp.name
+                values = SectionAttributes.parse_toml(fp)
+            except tomllib.TOMLDecodeError as error:
+                raise tomllib.TOMLDecodeError(
+                    f"Invalid TOML in '{fp.name}': {error}"
                 ) from error
-            except AttributeNotPositiveError as error:
-                raise AttributeNotPositiveError(
-                    f"Wrong value in '{fp.name}': {error}"
-                ) from error
-            # The level of the current section is determined first by the value
-            # in the toml, second by the level value.
-            level = values.get("level") or level
-            attrs.level = level
-        else:
-            # TODO: Log warning, probably.
-            attrs = SectionAttributes(level=level)
+        try:
+            attrs = SectionAttributes.from_dict(values)
+        except DictTypeError as error:
+            raise DictTypeError(
+                error.key, error.expected_type, error.got, fp.name
+            ) from error
+        except AttributeNotPositiveError as error:
+            raise AttributeNotPositiveError(
+                f"Wrong value in '{fp.name}': {error}"
+            ) from error
+        # The level of the current section is determined first by the value
+        # in the toml, second by the level value.
+        level = values.get("level") or level
+        attrs.level = level
 
         subsections = set()
         entries = set()

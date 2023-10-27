@@ -12,7 +12,14 @@ from io import BytesIO
 import pytest
 
 from protokolo.compile import Entry, Section, SectionAttributes
-from protokolo.exceptions import AttributeNotPositiveError, DictTypeError
+from protokolo.exceptions import (
+    AttributeNotPositiveError,
+    DictTypeError,
+    ProtokoloTOMLIsADirectoryError,
+    ProtokoloTOMLNotFoundError,
+)
+
+# pylint: disable=too-many-public-methods
 
 
 class TestSectionAttributes:
@@ -579,6 +586,31 @@ class TestSection:
         assert (
             f"Wrong value in '{project_dir / 'changelog.d/.protokolo.toml'}'"
         ) in str(error)
+
+    def test_from_directory_not_found_error(self, project_dir):
+        """If .protokolo.toml does not exist, raise a
+        ProtokoloTOMLNotFoundError.
+        """
+        (project_dir / "changelog.d/.protokolo.toml").unlink()
+        with pytest.raises(ProtokoloTOMLNotFoundError) as exc_info:
+            Section.from_directory(project_dir / "changelog.d")
+        error = exc_info.value
+        assert error.filename == str(
+            project_dir / "changelog.d/.protokolo.toml"
+        )
+
+    def test_from_directory_is_a_directory_error(self, project_dir):
+        """If .protokolo.toml is not a file, raise
+        ProtokoloTOMLIsADirectoryError.
+        """
+        (project_dir / "changelog.d/.protokolo.toml").unlink()
+        (project_dir / "changelog.d/.protokolo.toml").mkdir()
+        with pytest.raises(ProtokoloTOMLIsADirectoryError) as exc_info:
+            Section.from_directory(project_dir / "changelog.d")
+        error = exc_info.value
+        assert error.filename == str(
+            project_dir / "changelog.d/.protokolo.toml"
+        )
 
 
 class TestEntry:

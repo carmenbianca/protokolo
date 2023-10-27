@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import IO, Any, Iterator, cast
 
 from ._formatter import MarkdownFormatter
+from ._util import validate_int, validate_str
+from .config import parse_toml
 from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
@@ -68,18 +70,18 @@ class SectionAttributes:
         # user input.
         title = values.pop("title", None)
         if title is not None:
-            cls._validate_str(title, "title")
+            validate_str(title, "title")
         level = values.pop("level", 1)
         if level is not None:
-            cls._validate_int(level, "level")
+            validate_int(level, "level")
         if level is None:
             # Sneaky.
             level = 1
         order = values.pop("order", None)
         if order is not None:
-            cls._validate_int(order, "order")
+            validate_int(order, "order")
         for name, value in values.items():
-            cls._validate_str(value, name)
+            validate_str(value, name)
         return cls(
             title=title,
             level=level,
@@ -98,47 +100,8 @@ class SectionAttributes:
             TypeError: *toml* is not a valid type.
             tomllib.TOMLDecodeError: not valid TOML.
         """
-        values = cls.parse_toml(toml)
+        values = parse_toml(toml, sections=["protokolo", "section"])
         return cls.from_dict(values)
-
-    @staticmethod
-    def parse_toml(toml: str | IO[bytes]) -> dict[str, Any]:
-        """
-        Raises:
-            TypeError: *toml* is not a valid type.
-            tomllib.TOMLDecodeError: not valid TOML.
-        """
-        if isinstance(toml, str):
-            values = tomllib.loads(toml)
-        else:
-            try:
-                values = tomllib.load(toml)
-            except tomllib.TOMLDecodeError:
-                raise
-            except Exception as error:
-                raise TypeError("toml must be a str or IO[bytes]") from error
-        try:
-            return values["protokolo"]["section"]
-        except KeyError:
-            return {}
-
-    @staticmethod
-    def _validate_int(value: Any, name: str) -> None:
-        """
-        Raises:
-            DictTypeError: value isn't an int.
-        """
-        if not isinstance(value, int) or isinstance(value, bool):
-            raise DictTypeError(name, int, value)
-
-    @staticmethod
-    def _validate_str(value: Any, name: str) -> None:
-        """
-        Raises:
-            DictTypeError: value isn't a str.
-        """
-        if not isinstance(value, str):
-            raise DictTypeError(name, str, value)
 
 
 class Section:
@@ -186,7 +149,7 @@ class Section:
             )
         with protokolo_toml.open("rb") as fp:
             try:
-                values = SectionAttributes.parse_toml(fp)
+                values = parse_toml(fp, sections=["protokolo", "section"])
             except tomllib.TOMLDecodeError as error:
                 raise tomllib.TOMLDecodeError(
                     f"Invalid TOML in '{fp.name}': {error}"

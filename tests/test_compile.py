@@ -128,62 +128,6 @@ class TestSectionAttributes:
             assert error.expected_type == str
             assert error.got == value
 
-    def test_parse_toml_simple(self):
-        """Provide all values in a toml string."""
-        toml = cleandoc(
-            """
-            [protokolo.section]
-            title = "Title"
-            level = 2
-            order = 3
-            foo = "bar"
-            """
-        )
-        values = SectionAttributes.parse_toml(toml)
-        assert values["title"] == "Title"
-        assert values["level"] == 2
-        assert values["order"] == 3
-        assert values["foo"] == "bar"
-
-    def test_parse_toml_no_values(self):
-        """If there are no values, return an empty dictionary."""
-        toml = cleandoc(
-            """
-            [protokolo.section]
-            """
-        )
-        values = SectionAttributes.parse_toml(toml)
-        assert not values
-
-    def test_parse_toml_no_table(self):
-        """If there is no [protokolo.section] table, return an empty dict."""
-        toml = cleandoc(
-            """
-            title = "Title"
-            """
-        )
-        assert SectionAttributes.parse_toml(toml) == {}
-
-    def test_parse_toml_decode_error(self):
-        """Raise TOMLDecodeError when TOML can't be parsed."""
-        yaml = cleandoc(
-            """
-            hello:
-              - world
-            """
-        )
-        with pytest.raises(tomllib.TOMLDecodeError):
-            SectionAttributes.parse_toml(yaml)
-        with BytesIO(yaml.encode("utf-8")) as fp:
-            with pytest.raises(tomllib.TOMLDecodeError):
-                SectionAttributes.parse_toml(fp)
-
-    def test_parse_toml_wrong_type(self):
-        """Passing the wrong type results in an error."""
-        values = {"title": "Section"}
-        with pytest.raises(TypeError):
-            SectionAttributes.parse_toml(values)  # type: ignore
-
     def test_from_toml_str_simple(self):
         """Provide all values in a toml string."""
         toml = cleandoc(

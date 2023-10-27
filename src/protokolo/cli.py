@@ -9,6 +9,7 @@ from pathlib import Path
 import click
 
 from .compile import Section
+from .types import SupportedMarkup
 
 
 @click.group()
@@ -38,7 +39,7 @@ def cli(ctx: click.Context) -> None:
 @click.option(
     "--markup",
     default="markdown",
-    type=click.Choice(["markdown", "restructuredtext"]),
+    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
     show_default="determined by config",
     help="markup language.",
 )
@@ -55,7 +56,10 @@ def cli(ctx: click.Context) -> None:
 )
 @click.pass_context
 def compile_(
-    ctx: click.Context, changelog: click.File, markup: str, directory: Path
+    ctx: click.Context,
+    changelog: click.File,
+    markup: SupportedMarkup,
+    directory: Path,
 ) -> None:
     """Compile a directory of change log entries into a CHANGELOG file.
     Directories and subdirectories are analogous to sections and subsections,

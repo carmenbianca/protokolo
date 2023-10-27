@@ -14,13 +14,13 @@ from pathlib import Path
 from typing import IO, Any, Iterator, cast
 
 from ._formatter import MarkdownFormatter
-from ._util import StrPath
 from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
 )
+from .types import StrPath
 
 # pylint: disable=too-few-public-methods
 

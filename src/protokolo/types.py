@@ -2,8 +2,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-"""Some internal plumbing code."""
+"""Some typing definitions."""
 
 from os import PathLike
+from typing import Literal
 
 StrPath = str | PathLike
+SupportedMarkup = Literal["markdown", "restructuredtext"]

@@ -4,23 +4,7 @@
 
 """Test the formatting code."""
 
-import pytest
-
 from protokolo._formatter import MarkdownFormatter
-
-
-class TestMarkupFormatter:
-    """Collect all tests for MarkupFormatter."""
-
-    def test_format_section_zero_level(self, formatter):
-        """Level cannot be 0."""
-        with pytest.raises(ValueError):
-            formatter.format_section("Foo", 0)
-
-    def test_format_section_minus_one_level(self, formatter):
-        """Level cannot be negative."""
-        with pytest.raises(ValueError):
-            formatter.format_section("Foo", -1)
 
 
 class TestMarkdownFormatter:
@@ -44,13 +28,3 @@ class TestMarkdownFormatter:
     def test_format_section_no_title(self):
         """Format a section without a title."""
         assert MarkdownFormatter.format_section("", 1) == "#"
-
-    def test_format_section_zero_level(self):
-        """Level cannot be 0."""
-        with pytest.raises(ValueError):
-            MarkdownFormatter.format_section("Foo", 0)
-
-    def test_format_section_minus_one_level(self):
-        """Level cannot be negative."""
-        with pytest.raises(ValueError):
-            MarkdownFormatter.format_section("Foo", -1)

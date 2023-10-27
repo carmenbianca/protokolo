@@ -19,13 +19,7 @@ class MarkupFormatter(ABC):
         section might look like this::
 
             ## Hello, world
-
-        Raises:
-            ValueError: level is 0 or lower.
         """
-        if level <= 0:
-            raise ValueError(f"level must be positive, but is {level}")
-        return title
 
 
 class MarkdownFormatter(MarkupFormatter):
@@ -33,7 +27,6 @@ class MarkdownFormatter(MarkupFormatter):
 
     @classmethod
     def format_section(cls, title: str, level: int) -> str:
-        super().format_section(title, level)
         pound_signs = f"{'#' * level}"
         if title:
             return f"{pound_signs} {title}"

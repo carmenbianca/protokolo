@@ -4,13 +4,13 @@
 
 """Some miscellaneous utilities."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from typing import Any
 
 from .exceptions import DictTypeError
 
 
-def nested_itemgetter(*items: Any) -> Callable[[dict[Any, Any]], Any]:
+def nested_itemgetter(*items: Any) -> Callable[[Mapping[Any, Any]], Any]:
     """A nested implementation of operator.itemgetter.
 
     >>> config = {"hello": {"world": "foo"}}
@@ -21,7 +21,7 @@ def nested_itemgetter(*items: Any) -> Callable[[dict[Any, Any]], Any]:
         KeyError: if any of the items doesn't exist in the nested structure.
     """
 
-    def browse(values: dict[Any, Any]) -> Any:
+    def browse(values: Mapping[Any, Any]) -> Any:
         for item in items:
             values = values[item]
         return values

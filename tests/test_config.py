@@ -11,7 +11,7 @@ from io import BytesIO
 
 import pytest
 
-from protokolo.config import TOMLConfig, parse_toml
+from protokolo.config import GlobalConfig, TOMLConfig, parse_toml
 from protokolo.exceptions import DictTypeError, DictTypeListError
 from protokolo.types import TOMLValueType
 
@@ -30,12 +30,12 @@ class TestParseToml:
             foo = "bar"
             """
         )
-        values = parse_toml(toml, sections=["protokolo", "section"])
+        values = parse_toml(toml, section=["protokolo", "section"])
         assert values["title"] == "Title"
         assert values["level"] == 2
         assert values["order"] == 3
         assert values["foo"] == "bar"
-        parent = parse_toml(toml, sections=["protokolo"])
+        parent = parse_toml(toml, section=["protokolo"])
         assert parent["section"] == values
 
     def test_parse_toml_no_values(self):
@@ -45,7 +45,7 @@ class TestParseToml:
             [protokolo.section]
             """
         )
-        values = parse_toml(toml, sections=["protokolo", "section"])
+        values = parse_toml(toml, section=["protokolo", "section"])
         assert not values
 
     def test_parse_toml_no_table(self):
@@ -55,8 +55,8 @@ class TestParseToml:
             title = "Title"
             """
         )
-        assert parse_toml(toml, sections=["protokolo"]) == {}
-        assert parse_toml(toml, sections=None) == {"title": "Title"}
+        assert parse_toml(toml, section=["protokolo"]) == {}
+        assert parse_toml(toml, section=None) == {"title": "Title"}
 
     def test_parse_toml_decode_error(self):
         """Raise TOMLDecodeError when TOML can't be parsed."""
@@ -238,3 +238,59 @@ class TestTOMLConfig:
             },
         }
         config.validate()
+
+
+class TestGlobalConfig:
+    """Collect all tests for GlobalConfig."""
+
+    def test_find_config_protokolo_toml(self, project_dir):
+        """Find config at .protokolo.toml"""
+        (project_dir / ".protokolo.toml").touch()
+        assert GlobalConfig.find_config(project_dir) == (
+            project_dir / ".protokolo.toml"
+        )
+
+    def test_find_config_pyproject_toml(self, project_dir):
+        """Find config at pyproject.toml"""
+        (project_dir / "pyproject.toml").touch()
+        assert GlobalConfig.find_config(project_dir) == (
+            project_dir / "pyproject.toml"
+        )
+
+    def test_find_config_none(self, project_dir):
+        """Don't find any config."""
+        assert GlobalConfig.find_config(project_dir) is None
+
+    def test_from_file_protokolo_toml(self, project_dir):
+        """Load from .protokolo.toml."""
+        (project_dir / ".protokolo.toml").write_text(
+            cleandoc(
+                """
+                [protokolo]
+                changelog = "CHANGELOG"
+                markup = "markdown"
+                directory = "changelog.d"
+                """
+            )
+        )
+        config = GlobalConfig.from_file(project_dir / ".protokolo.toml")
+        assert config.changelog == "CHANGELOG"
+        assert config.markup == "markdown"
+        assert config.directory == "changelog.d"
+
+    def test_from_file_pyproject_toml(self, project_dir):
+        """Load from pyproject.toml."""
+        (project_dir / "pyproject.toml").write_text(
+            cleandoc(
+                """
+                [tool.protokolo]
+                changelog = "CHANGELOG"
+                markup = "markdown"
+                directory = "changelog.d"
+                """
+            )
+        )
+        config = GlobalConfig.from_file(project_dir / "pyproject.toml")
+        assert config.changelog == "CHANGELOG"
+        assert config.markup == "markdown"
+        assert config.directory == "changelog.d"

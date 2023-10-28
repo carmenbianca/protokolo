@@ -7,17 +7,18 @@
 import contextlib
 import tomllib
 from collections.abc import Sequence
+from pathlib import Path
 from types import UnionType
 from typing import IO, Any, Self, cast
 
 from ._util import nested_itemgetter, type_in_expected_type
 from .exceptions import DictTypeError, DictTypeListError
-from .types import NestedTypeDict, TOMLValue, TOMLValueType
+from .types import NestedTypeDict, StrPath, TOMLValue, TOMLValueType
 
 
 def parse_toml(
     toml: str | IO[bytes],
-    sections: Sequence[str] | None = None,
+    section: Sequence[str] | None = None,
 ) -> dict[str, Any]:
     """
     Args:
@@ -38,10 +39,10 @@ def parse_toml(
             raise
         except Exception as error:
             raise TypeError("toml must be a str or IO[bytes]") from error
-    if not sections:
+    if not section:
         return values
     try:
-        return nested_itemgetter(*sections)(values)
+        return nested_itemgetter(*section)(values)
     except KeyError:
         return {}
 
@@ -130,25 +131,85 @@ class TOMLConfig:
             raise DictTypeError(name, expected_type, item)
 
 
-class Config:
+class GlobalConfig(TOMLConfig):
     """A container object for config values of the global .protokolo.toml."""
 
-    def __init__(self, config: dict[str, str] | None = None):
-        if config is None:
-            config = {}
-        self._config = config
+    expected_types = {"changelog": str, "markup": str, "directory": str}
+
+    _file_section = {
+        ".protokolo.toml": ["protokolo"],
+        "pyproject.toml": ["tool", "protokolo"],
+    }
+
+    def __init__(
+        self,
+        changelog: str | None = None,
+        markup: str | None = None,
+        directory: str | None = None,
+        **kwargs: TOMLValue,
+    ):
+        kwargs["changelog"] = changelog
+        kwargs["markup"] = markup
+        kwargs["directory"] = directory
+        super().__init__(**kwargs)
 
     @classmethod
-    def from_dict(cls, values: dict[str, Any]) -> Self:
-        """Generate Config from a dictionary containing the keys and values."""
-        return cls(values)
+    def from_file(cls, path: StrPath) -> Self:
+        """Factory method to create a GlobalConfig from a path. The exact table
+        that is loaded from the file depends on the file name. In
+        pyproject.toml, the table [tool.protokolo] is loaded, whereas
+        [protokolo] is loaded everywhere else.
+        """
+        path = Path(path)
+        section = cls._file_section.get(path.name, ["protokolo"])
+        with path.open("rb") as fp:
+            try:
+                values = parse_toml(fp, section=section)
+            except tomllib.TOMLDecodeError as error:
+                raise tomllib.TOMLDecodeError(
+                    f"Invalid TOML in '{fp.name}': {error}"
+                ) from error
+        return cls(**values)
 
     @classmethod
-    def from_file(cls) -> Self:
-        """TODO"""
-        return cls()
+    def find_config(cls, directory: StrPath) -> Path | None:
+        """In *directory*, find the config file.
 
-    @classmethod
-    def from_directory(cls) -> Self:
-        """TODO"""
-        return cls()
+        The order of precedence (highest to lowest) is:
+
+        - .protokolo.toml
+        - pyproject.toml
+        """
+        directory = Path(directory)
+        for name in cls._file_section:
+            target = directory / name
+            if target.exists() and target.is_file():
+                return target
+        return None
+
+    @property
+    def changelog(self) -> str | None:
+        """The path to CHANGELOG."""
+        return cast(str | None, self["changelog"])
+
+    @changelog.setter
+    def changelog(self, value: str | None) -> None:
+        self["changelog"] = value
+
+    @property
+    def markup(self) -> str | None:
+        """The markup language used by the project."""
+        return cast(str | None, self["markup"])
+
+    @markup.setter
+    def markup(self, value: str | None) -> None:
+        self["markup"] = value
+
+    @property
+    def directory(self) -> str | None:
+        """The directory where the change log entries are stored."""
+        return cast(str | None, self["directory"])
+
+    @directory.setter
+    def directory(self, value: str | None) -> None:
+        self["directory"] = value

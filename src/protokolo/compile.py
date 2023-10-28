@@ -186,7 +186,7 @@ class Section:
             )
         with protokolo_toml.open("rb") as fp:
             try:
-                values = parse_toml(fp, sections=["protokolo", "section"])
+                values = parse_toml(fp, section=["protokolo", "section"])
             except tomllib.TOMLDecodeError as error:
                 raise tomllib.TOMLDecodeError(
                     f"Invalid TOML in '{fp.name}': {error}"

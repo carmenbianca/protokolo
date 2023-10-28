@@ -4,11 +4,15 @@
 
 """The global configuration of Protokolo."""
 
+import contextlib
 import tomllib
 from collections.abc import Sequence
-from typing import IO, Any
+from types import UnionType
+from typing import IO, Any, Self, cast
 
-from ._util import nested_itemgetter, validate_str
+from ._util import nested_itemgetter
+from .exceptions import DictTypeError, DictTypeListError
+from .types import NestedTypeDict, TOMLType, TOMLValue, TOMLValueType
 
 
 def parse_toml(
@@ -42,6 +46,113 @@ def parse_toml(
         return {}
 
 
+class TOMLConfig:
+    """A utility class to hold data parsed from a TOML file."""
+
+    _expected_types: NestedTypeDict = {}
+
+    def __init__(self, values: TOMLType):
+        self._config = values
+        self.validate()
+
+    @classmethod
+    def from_dict(cls, values: dict[str, Any]) -> Self:
+        """Generate TomlConfig from a dictionary containing the keys and
+        values.
+
+        Raises:
+            DictTypeError: value types are wrong.
+        """
+        return cls(values)
+
+    def __getitem__(self, key: str | Sequence[str]) -> TOMLValue:
+        if isinstance(key, str):
+            keys = [key]
+        else:
+            keys = list(key)
+        return nested_itemgetter(*keys)(self._config)
+
+    def __setitem__(self, key: str | Sequence[str], value: TOMLValue) -> None:
+        if isinstance(key, str):
+            final_key = key
+            keys = []
+        else:
+            copied = list(key)
+            final_key = copied.pop()
+            keys = copied
+        # Technically this can fail because self._config is a Mapping instead of
+        # a MutableMetting.
+        nested_itemgetter(*keys)(self._config)[final_key] = value
+
+    def validate(self) -> None:
+        """
+        Raises:
+            DictTypeError: value isn't an expected/supported type.
+        """
+        self._validate(cast(dict[str, Any], self._config))
+
+    @classmethod
+    def _validate(
+        cls, values: dict[str, Any], path: Sequence[str] | None = None
+    ) -> None:
+        if path is None:
+            path = []
+        for name, value in values.items():
+            expected_type: UnionType = TOMLValueType
+            with contextlib.suppress(KeyError):
+                expected_type = nested_itemgetter(*(list(path) + [name]))(
+                    cls._expected_types
+                )
+            if isinstance(value, dict):
+                cls._validate(value, path=list(path) + [name])
+            elif isinstance(value, list):
+                for item in value:
+                    cls._validate_list_item(
+                        item, name, expected_type=expected_type
+                    )
+            else:
+                cls._validate_item(value, name, expected_type=expected_type)
+
+    @classmethod
+    def _validate_item(
+        cls,
+        item: Any,
+        name: str,
+        expected_type: type | UnionType = TOMLValueType,
+    ) -> None:
+        # Because `isinstance(False, int)` is True, but we want it to be False,
+        # we do some custom magic here to achieve that effect.
+        bool_err = False
+        # pylint: disable=unidiomatic-typecheck
+        if type(item) is bool and (
+            expected_type is not bool
+            or (
+                isinstance(expected_type, UnionType)
+                and bool not in expected_type.__args__
+            )
+        ):
+            bool_err = True
+        if bool_err or not isinstance(item, expected_type):
+            # TODO: False and True shouldn't be type int
+            raise DictTypeError(name, expected_type, item)
+
+    @classmethod
+    def _validate_list_item(
+        cls,
+        item: Any,
+        list_name: str,
+        expected_type: type | UnionType = str | int | float | type(None),
+    ) -> None:
+        try:
+            cls._validate_item(item, list_name, expected_type)
+        except DictTypeError as error:
+            raise DictTypeListError(
+                list_name,
+                expected_type,
+                item,
+            ) from error
+
+
 class Config:
     """A container object for config values of the global .protokolo.toml."""
 
@@ -51,18 +162,16 @@ class Config:
         self._config = config
 
     @classmethod
-    def from_dict(cls, values: dict[str, str]) -> "Config":
-        """TODO"""
-        for name, value in values.items():
-            validate_str(value, name)
+    def from_dict(cls, values: dict[str, Any]) -> Self:
+        """Generate Config from a dictionary containing the keys and values."""
         return cls(values)
 
     @classmethod
-    def from_file(cls) -> "Config":
+    def from_file(cls) -> Self:
         """TODO"""
         return cls()
 
     @classmethod
-    def from_directory(cls) -> "Config":
+    def from_directory(cls) -> Self:
         """TODO"""
         return cls()

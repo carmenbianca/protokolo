@@ -11,49 +11,42 @@ from itertools import chain
 from operator import attrgetter
 from os import strerror
 from pathlib import Path
-from typing import IO, Any, Iterator, cast
+from typing import Any, Iterator, cast
 
 from ._formatter import MarkdownFormatter
-from ._util import validate_int, validate_str
-from .config import parse_toml
+from .config import TOMLConfig, parse_toml
 from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
 )
-from .types import StrPath
+from .types import StrPath, TOMLValue
 
 # pylint: disable=too-few-public-methods
 
 
-class SectionAttributes:
+class SectionAttributes(TOMLConfig):
     """A data container to hold some metadata for a Section."""
+
+    _expected_types = {"title": str, "level": int, "order": int | None}
 
     def __init__(
         self,
         title: str | None = None,
         level: int = 1,
         order: int | None = None,
-        **kwargs: str,
+        **kwargs: TOMLValue,
     ):
         if title is None:
             title = "TODO: No section title defined"
-        self.title: str = title
+        kwargs["title"] = title
         # This shouldn't happen, but let's deal with it anyway.
         if level is None:
             level = 1
-        if level <= 0:
-            raise AttributeNotPositiveError(
-                f"level must be a positive integer, got {repr(level)}"
-            )
-        self.level: int = level
-        if order is not None and order <= 0:
-            raise AttributeNotPositiveError(
-                f"order must be None or a positive integer, got {repr(order)}"
-            )
-        self.order: int | None = order
-        self.other: dict[str, str] = kwargs
+        kwargs["level"] = level
+        kwargs["order"] = order
+        super().__init__(kwargs)
 
     @classmethod
     def from_dict(cls, values: dict[str, Any]) -> "SectionAttributes":
@@ -69,19 +62,11 @@ class SectionAttributes:
         # We do some type validation here, assuming that the dictionary contains
         # user input.
         title = values.pop("title", None)
-        if title is not None:
-            validate_str(title, "title")
         level = values.pop("level", 1)
-        if level is not None:
-            validate_int(level, "level")
         if level is None:
             # Sneaky.
             level = 1
         order = values.pop("order", None)
-        if order is not None:
-            validate_int(order, "order")
-        for name, value in values.items():
-            validate_str(value, name)
         return cls(
             title=title,
             level=level,
@@ -89,19 +74,55 @@ class SectionAttributes:
             **values,
         )
 
-    @classmethod
-    def from_toml(cls, toml: str | IO[bytes]) -> "SectionAttributes":
-        """Parse a TOML string or file into a SectionAttributes object.
-
+    def validate(self) -> None:
+        """
         Raises:
             AttributeNotPositiveError: one of the values should have been
                 positive.
-            DictTypeError: a provided value has the wrong type.
-            TypeError: *toml* is not a valid type.
-            tomllib.TOMLDecodeError: not valid TOML.
+            DictTypeError: value isn't an expected/supported type.
         """
-        values = parse_toml(toml, sections=["protokolo", "section"])
-        return cls.from_dict(values)
+        super().validate()
+        if self.level <= 0:
+            raise AttributeNotPositiveError(
+                f"level must be a positive integer, got {repr(self.level)}"
+            )
+        if self.order is not None and self.order <= 0:
+            raise AttributeNotPositiveError(
+                f"order must be None or a positive integer, got"
+                f" {repr(self.order)}"
+            )
+
+    @property
+    def title(self) -> str:
+        """The title of a section. If no value is provided, it defaults to
+        'TODO: No section title defined'.
+        """
+        return cast(str, self["title"])
+
+    @title.setter
+    def title(self, value: str) -> None:
+        self["title"] = value
+
+    @property
+    def level(self) -> int:
+        """The level of the section header, which must not be zero or lower."""
+        return cast(int, self["level"])
+
+    @level.setter
+    def level(self, value: int) -> None:
+        self["level"] = value
+
+    @property
+    def order(self) -> int | None:
+        """The order of the section in relation to others. It must not be zero
+        or lower, and may be None, in which case it is alphabetically sorted
+        after all sections that do have an order.
+        """
+        return cast(int | None, self["order"])
+
+    @order.setter
+    def order(self, value: int | None) -> None:
+        self["order"] = value
 
 
 class Section:

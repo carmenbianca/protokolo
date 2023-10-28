@@ -4,8 +4,28 @@
 
 """Some typing definitions."""
 
+from datetime import date, datetime
 from os import PathLike
-from typing import Literal
+from types import UnionType
+from typing import Literal, Mapping
 
 StrPath = str | PathLike
+
 SupportedMarkup = Literal["markdown", "restructuredtext"]
+
+TOMLType = Mapping[str, "TOMLValue"]
+TOMLValue = (
+    str
+    | int
+    | float
+    | bool
+    | datetime
+    | date
+    | None
+    | TOMLType
+    | list["TOMLType"]
+)
+TOMLValueType: UnionType = str | int | float | bool | datetime | date | None
+
+NestedTypeDict = Mapping[str, "NestedTypeValue"]
+NestedTypeValue = type | UnionType | NestedTypeDict

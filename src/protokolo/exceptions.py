@@ -4,6 +4,7 @@
 
 """Exception classes."""
 
+from operator import attrgetter
 from typing import Any
 
 
@@ -29,18 +30,28 @@ class DictTypeError(TypeError, ProtokoloError):
         """Custom str output."""
         if self.key is None:
             return super().__str__()
-        text = f"{repr(self.key)} does not have the correct type."
+        text = self._key_text()
         if self.expected_type:
-            try:
-                name = self.expected_type.__name__
-            except AttributeError:
-                name = self.expected_type.__class__.__name__
+            attrs = [
+                attrgetter("__name__"),  # str
+                attrgetter("__args__"),  # str | None
+                attrgetter("__class__.__name__"),  # "hello"
+            ]
+            for attr in attrs:
+                try:
+                    name = attr(self.expected_type)
+                    break
+                except AttributeError:
+                    continue
             text += f" Expected {name}."
         if self.got:
             text += f" Got {repr(self.got)}."
         if self.source:
             text = f"{self.source}: {text}"
         return text
+
+    def _key_text(self) -> str:
+        return f"{repr(self.key)} does not have the correct type."
 
     @staticmethod
     def _get_item_default(
@@ -50,6 +61,15 @@ class DictTypeError(TypeError, ProtokoloError):
             return args[index]
         except IndexError:
             return default
+
+
+class DictTypeListError(DictTypeError):
+    """Like DictTypeError, but the item is in a list (inside of a dictionary)
+    instead of in a dictionary.
+    """
+
+    def _key_text(self) -> str:
+        return f"List {repr(self.key)} contains an element with the wrong type."
 
 
 class ProtokoloTOMLError(ProtokoloError):

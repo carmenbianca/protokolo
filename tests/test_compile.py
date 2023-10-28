@@ -7,7 +7,6 @@
 import random
 import tomllib
 from inspect import cleandoc
-from io import BytesIO
 
 import pytest
 
@@ -52,7 +51,7 @@ class TestSectionAttributes:
         assert attrs.title == "Title"
         assert attrs.level == 2
         assert attrs.order == 3
-        assert attrs.other["foo"] == "bar"
+        assert attrs["foo"] == "bar"
 
     def test_from_dict_empty(self):
         """Initiating from an empty dictionary is the same as initiating an
@@ -65,8 +64,6 @@ class TestSectionAttributes:
         )
         assert from_dict.level == empty.level == 1
         assert from_dict.order == empty.order == None
-        # pylint: disable=use-implicit-booleaness-not-comparison
-        assert from_dict.other == empty.other == {}
 
     def test_from_dict_wrong_type_level(self):
         """If the level is not an int, expect an error."""
@@ -95,7 +92,7 @@ class TestSectionAttributes:
                 SectionAttributes.from_dict({"order": value})
             error = exc_info.value
             assert error.key == "order"
-            assert error.expected_type == int
+            assert error.expected_type == int | None
             assert error.got == value
 
     def test_from_dict_wrong_type_title(self):
@@ -113,67 +110,15 @@ class TestSectionAttributes:
             assert error.expected_type == str
             assert error.got == value
 
-    def test_from_dict_wrong_type_other(self):
-        """If another value is not a str, expect an error."""
-        # No errors
-        SectionAttributes.from_dict({"foo": "bar"})
-        SectionAttributes.from_dict({"title": None})
-        # Errors
-        wrong_values = {1, 1.1, False}
-        for value in wrong_values:
-            with pytest.raises(DictTypeError) as exc_info:
-                SectionAttributes.from_dict({"foo": value})
-            error = exc_info.value
-            assert error.key == "foo"
-            assert error.expected_type == str
-            assert error.got == value
+    def test_from_dict_subdict(self):
+        """Don't raise an error if there is a subdict."""
+        attrs = SectionAttributes.from_dict({"foo": {"bar": "quz"}})
+        assert attrs["foo"] == {"bar": "quz"}
 
-    def test_from_toml_str_simple(self):
-        """Provide all values in a toml string."""
-        toml = cleandoc(
-            """
-            [protokolo.section]
-            title = "Title"
-            level = 2
-            order = 3
-            foo = "bar"
-            """
-        )
-        attrs = SectionAttributes.from_toml(toml)
-        assert attrs.title == "Title"
-        assert attrs.level == 2
-        assert attrs.order == 3
-        assert attrs.other["foo"] == "bar"
-
-    def test_from_toml_io_simple(self):
-        """Provide all values in a toml IO."""
-        toml = cleandoc(
-            """
-            [protokolo.section]
-            title = "Title"
-            level = 2
-            order = 3
-            foo = "bar"
-            """
-        ).encode("utf-8")
-        toml_io = BytesIO(toml)
-        attrs = SectionAttributes.from_toml(toml_io)
-        assert attrs.title == "Title"
-        assert attrs.level == 2
-        assert attrs.order == 3
-        assert attrs.other["foo"] == "bar"
-
-    def test_from_toml_missing_table(self):
-        """If the [protokolo.section] table is missing, return an empty
-        SectionAttributes.
-        """
-        toml = cleandoc(
-            """
-            title = "Title"
-            """
-        )
-        result = SectionAttributes.from_toml(toml)
-        assert result.title == "TODO: No section title defined"
+    def test_from_dict_list(self):
+        """Don't raise an error if there is a list."""
+        attrs = SectionAttributes.from_dict({"foo": ["a", "b"]})
+        assert attrs["foo"] == ["a", "b"]
 
 
 class TestSection:

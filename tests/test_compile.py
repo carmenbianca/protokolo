@@ -115,11 +115,6 @@ class TestSectionAttributes:
         attrs = SectionAttributes.from_dict({"foo": {"bar": "quz"}})
         assert attrs["foo"] == {"bar": "quz"}
 
-    def test_from_dict_list(self):
-        """Don't raise an error if there is a list."""
-        attrs = SectionAttributes.from_dict({"foo": ["a", "b"]})
-        assert attrs["foo"] == ["a", "b"]
-
 
 class TestSection:
     """Collect all tests for Section."""

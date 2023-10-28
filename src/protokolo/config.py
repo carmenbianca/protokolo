@@ -12,7 +12,7 @@ from typing import IO, Any, Self, cast
 
 from ._util import nested_itemgetter
 from .exceptions import DictTypeError, DictTypeListError
-from .types import NestedTypeDict, TOMLType, TOMLValue, TOMLValueType
+from .types import NestedTypeDict, TOMLValue, TOMLValueType
 
 
 def parse_toml(
@@ -51,19 +51,19 @@ class TOMLConfig:
 
     _expected_types: NestedTypeDict = {}
 
-    def __init__(self, values: TOMLType):
-        self._config = values
+    def __init__(self, **kwargs: TOMLValue):
+        self._config = kwargs
         self.validate()
 
     @classmethod
     def from_dict(cls, values: dict[str, Any]) -> Self:
-        """Generate TomlConfig from a dictionary containing the keys and
+        """Generate TOMLConfig from a dictionary containing the keys and
         values.
 
         Raises:
             DictTypeError: value types are wrong.
         """
-        return cls(values)
+        return cls(**values)
 
     def __getitem__(self, key: str | Sequence[str]) -> TOMLValue:
         if isinstance(key, str):
@@ -107,9 +107,10 @@ class TOMLConfig:
                 cls._validate(value, path=list(path) + [name])
             elif isinstance(value, list):
                 for item in value:
-                    cls._validate_list_item(
-                        item, name, expected_type=expected_type
-                    )
+                    cls._validate(item, path=list(path) + [name])
+                    # cls._validate_list_item(
+                    #     item, name, expected_type=TOMLValueType
+                    # )
             else:
                 cls._validate_item(value, name, expected_type=expected_type)
 
@@ -125,7 +126,7 @@ class TOMLConfig:
         bool_err = False
         # pylint: disable=unidiomatic-typecheck
         if type(item) is bool and (
-            expected_type is not bool
+            (isinstance(expected_type, type) and expected_type is not bool)
             or (
                 isinstance(expected_type, UnionType)
                 and bool not in expected_type.__args__

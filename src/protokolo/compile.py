@@ -46,7 +46,7 @@ class SectionAttributes(TOMLConfig):
             level = 1
         kwargs["level"] = level
         kwargs["order"] = order
-        super().__init__(kwargs)
+        super().__init__(**kwargs)
 
     @classmethod
     def from_dict(cls, values: dict[str, Any]) -> "SectionAttributes":

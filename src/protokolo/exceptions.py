@@ -40,9 +40,16 @@ class DictTypeError(TypeError, ProtokoloError):
             for attr in attrs:
                 try:
                     name = attr(self.expected_type)
+                    # Get the nice str representation of UnionTypes.
+                    if isinstance(name, tuple):
+                        name = self.expected_type
                     break
                 except AttributeError:
                     continue
+            else:
+                raise TypeError(
+                    f"Expected a type, got {repr(self.expected_type)}"
+                )
             text += f" Expected {name}."
         if self.got:
             text += f" Got {repr(self.got)}."

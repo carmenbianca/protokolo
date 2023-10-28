@@ -54,6 +54,15 @@ class TestDictTypeError:
             == "'title' does not have the correct type. Expected str."
         )
 
+    def test_expected_type_is_union_type(self):
+        """If the expected type is a UnionType, print it nicely."""
+        error = DictTypeError("title", str | None)
+        assert error.expected_type == str | None
+        assert (
+            str(error)
+            == "'title' does not have the correct type. Expected str | None."
+        )
+
     def test_incl_got(self):
         """Include up to got."""
         error = DictTypeError("title", str, 1)

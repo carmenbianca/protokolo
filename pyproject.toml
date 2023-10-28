@@ -25,7 +25,6 @@ include = [
     { path = "LICENSES", format = "sdist" },
 ]
 
-
 [tool.poetry.scripts]
 protokolo = 'protokolo.cli:cli'
 
@@ -50,6 +49,11 @@ python-lsp-server = "*"
 pylsp-mypy = "*"
 pyls-isort = "*"
 python-lsp-black = "*"
+
+[tool.protokolo]
+changelog = "CHANGELOG.md"
+markup = "markdown"
+directory = "changelog.d"
 
 [build-system]
 requires = ["poetry-core>=1.1.0"]

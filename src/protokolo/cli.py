@@ -4,11 +4,13 @@
 
 """Main entry of program."""
 
+from io import TextIOWrapper
 from pathlib import Path
 
 import click
 
 from .compile import Section
+from .config import GlobalConfig
 from .types import SupportedMarkup
 
 
@@ -21,17 +23,21 @@ def cli(ctx: click.Context) -> None:
         ctx.default_map = {}
 
     if ctx.invoked_subcommand in ["compile"]:
-        # TODO: Read default values from .protokolo.toml.
-        ctx.default_map["compile"] = {
-            # "changelog": "CHANGELOG",
-            # "directory": Path("tmp"),
-        }
+        # TODO: Make directory to search configurable.
+        config_path = GlobalConfig.find_config(Path.cwd())
+        if config_path:
+            config = GlobalConfig.from_file(config_path)
+            ctx.default_map["compile"] = {
+                "changelog": config.changelog,
+                "markup": config.markup,
+                "directory": config.directory,
+            }
 
 
 @cli.command(name="compile")
 @click.option(
     "--changelog",
-    type=click.File("w", encoding="utf-8", lazy=True),
+    type=click.File("r+", encoding="utf-8", lazy=True),
     required=True,
     show_default="determined by config",
     help="file into which to compile.",
@@ -93,6 +99,19 @@ def compile_(
 
     For more documentation and options, read the documentation at TODO.
     """
+    # TODO: use these args.
+    for _ in (ctx, markup):
+        pass
+    # TODO: make all of this nicer.
     section = Section.from_directory(directory)
-    print(section.compile())
-    print(ctx, changelog, markup)
+    new_section = section.compile()
+    fp: TextIOWrapper
+    with changelog.open() as fp:  # type: ignore
+        contents = fp.read()
+        new_contents = contents.replace(
+            "<!-- protokolo-section-tag -->",
+            f"<!-- protokolo-section-tag -->\n\n{new_section}",
+        )
+        fp.seek(0)
+        fp.write(new_contents)
+        fp.truncate()

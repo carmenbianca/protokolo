@@ -28,10 +28,11 @@ class DictTypeError(TypeError, ProtokoloError):
 
     def __str__(self) -> str:
         """Custom str output."""
-        if self.key is None:
+        amount = len(self.args)
+        if amount <= 0:
             return super().__str__()
         text = self._key_text()
-        if self.expected_type:
+        if amount >= 2:
             attrs = [
                 attrgetter("__name__"),  # str
                 attrgetter("__args__"),  # str | None
@@ -51,9 +52,9 @@ class DictTypeError(TypeError, ProtokoloError):
                     f"Expected a type, got {repr(self.expected_type)}"
                 )
             text += f" Expected {name}."
-        if self.got:
+        if amount >= 3:
             text += f" Got {repr(self.got)}."
-        if self.source:
+        if amount >= 4:
             text = f"{self.source}: {text}"
         return text
 

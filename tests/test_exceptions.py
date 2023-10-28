@@ -72,6 +72,15 @@ class TestDictTypeError:
             == "'title' does not have the correct type. Expected str. Got 1."
         )
 
+    def test_got_is_none(self):
+        """got is Falsey/None; still print it."""
+        error = DictTypeError("title", str, None)
+        assert error.got is None
+        assert (
+            str(error)
+            == "'title' does not have the correct type. Expected str. Got None."
+        )
+
     def test_incl_source(self):
         """Include up to source."""
         error = DictTypeError("title", str, 1, "foo.toml")

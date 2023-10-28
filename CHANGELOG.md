@@ -16,6 +16,8 @@ Every release contains the following sections:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+<!-- protokolo-section-tag -->
+
 ## 0.1.0 - 2023-10-20
 
 This release doesn't contain much of anything. I made it to claim the namespace

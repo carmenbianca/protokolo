@@ -134,7 +134,11 @@ class TOMLConfig:
 class GlobalConfig(TOMLConfig):
     """A container object for config values of the global .protokolo.toml."""
 
-    expected_types = {"changelog": str, "markup": str, "directory": str}
+    expected_types = {
+        "changelog": str | None,
+        "markup": str | None,
+        "directory": str | None,
+    }
 
     _file_section = {
         ".protokolo.toml": ["protokolo"],

@@ -261,6 +261,11 @@ class TestGlobalConfig:
         """Don't find any config."""
         assert GlobalConfig.find_config(project_dir) is None
 
+    def test_find_config_is_dir(self, project_dir):
+        """Return None if config file is a directory."""
+        (project_dir / ".protokolo.toml").mkdir()
+        assert GlobalConfig.find_config(project_dir) is None
+
     def test_from_file_protokolo_toml(self, project_dir):
         """Load from .protokolo.toml."""
         (project_dir / ".protokolo.toml").write_text(

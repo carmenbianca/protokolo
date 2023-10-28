@@ -26,6 +26,7 @@ def cli(ctx: click.Context) -> None:
         # TODO: Make directory to search configurable.
         config_path = GlobalConfig.find_config(Path.cwd())
         if config_path:
+            # TODO: error handling
             config = GlobalConfig.from_file(config_path)
             ctx.default_map["compile"] = {
                 "changelog": config.changelog,
@@ -103,10 +104,13 @@ def compile_(
     for _ in (ctx, markup):
         pass
     # TODO: make all of this nicer.
+    # TODO: error handling
     section = Section.from_directory(directory)
+    # TODO: error handling
     new_section = section.compile()
     fp: TextIOWrapper
     with changelog.open() as fp:  # type: ignore
+        # TODO: use buffer reading, probably
         contents = fp.read()
         new_contents = contents.replace(
             "<!-- protokolo-section-tag -->",

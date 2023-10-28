@@ -125,6 +125,22 @@ class SectionAttributes(TOMLConfig):
         self["order"] = value
 
 
+class Entry:
+    """An entry, analogous to a file."""
+
+    def __init__(self, text: str, source: StrPath | None = None):
+        self.text: str = text
+        if source is not None:
+            source = Path(source)
+        self.source: Path | None = source
+
+    def compile(self) -> str:
+        """Compile the entry. For the time being, this just means stripping the
+        newline characters around the text.
+        """
+        return self.text.strip("\n")
+
+
 class Section:
     """A section, analogous to a directory."""
 
@@ -287,19 +303,3 @@ class Section:
             key=attrgetter("attrs.title"),
         )
         return chain(ordered_sorted, alphabetical_sorted)
-
-
-class Entry:
-    """An entry, analogous to a file."""
-
-    def __init__(self, text: str, source: StrPath | None = None):
-        self.text: str = text
-        if source is not None:
-            source = Path(source)
-        self.source: Path | None = source
-
-    def compile(self) -> str:
-        """Compile the entry. For the time being, this just means stripping the
-        newline characters around the text.
-        """
-        return self.text.strip("\n")

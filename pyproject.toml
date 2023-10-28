@@ -83,4 +83,3 @@ check_untyped_defs = true
 module = "protokolo.*"
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
-

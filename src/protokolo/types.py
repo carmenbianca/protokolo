@@ -25,7 +25,9 @@ TOMLValue = (
     | TOMLType
     | list["TOMLType"]
 )
-TOMLValueType: UnionType = str | int | float | bool | datetime | date | None
+TOMLValueType: UnionType = (
+    str | int | float | bool | datetime | date | None | list | dict
+)
 
 NestedTypeDict = Mapping[str, "NestedTypeValue"]
 NestedTypeValue = type | UnionType | NestedTypeDict

@@ -5,7 +5,23 @@
 """Some miscellaneous utilities."""
 
 from collections.abc import Callable, Mapping
+from types import UnionType
 from typing import Any
+
+
+def type_in_expected_type(value: type, expected_type: type | UnionType) -> bool:
+    """Check whether the type *value* matches any of *expected_type*.
+
+    >>> type_in_expected_type(int, int)
+    True
+    >>> type_in_expected_type(str, str | bytes)
+    True
+    >>> type_in_expected_type(str, float | int)
+    False
+    """
+    return (isinstance(expected_type, type) and value is expected_type) or (
+        isinstance(expected_type, UnionType) and value in expected_type.__args__
+    )
 
 
 def nested_itemgetter(*path: Any) -> Callable[[Mapping[Any, Any]], Any]:

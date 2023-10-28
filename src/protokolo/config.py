@@ -10,7 +10,7 @@ from collections.abc import Sequence
 from types import UnionType
 from typing import IO, Any, Self, cast
 
-from ._util import nested_itemgetter
+from ._util import nested_itemgetter, type_in_expected_type
 from .exceptions import DictTypeError, DictTypeListError
 from .types import NestedTypeDict, TOMLValue, TOMLValueType
 
@@ -85,9 +85,11 @@ class TOMLConfig:
         nested_itemgetter(*keys)(self._config)[final_key] = value
 
     def validate(self) -> None:
-        """
+        """TODO.
+
         Raises:
             DictTypeError: value isn't an expected/supported type.
+            DictTypeListError: if a list contains elements other than a dict.
         """
         self._validate(cast(dict[str, Any], self._config))
 
@@ -105,14 +107,13 @@ class TOMLConfig:
                 )
             if isinstance(value, dict):
                 cls._validate(value, path=list(path) + [name])
-            elif isinstance(value, list):
-                for item in value:
-                    cls._validate(item, path=list(path) + [name])
-                    # cls._validate_list_item(
-                    #     item, name, expected_type=TOMLValueType
-                    # )
             else:
                 cls._validate_item(value, name, expected_type=expected_type)
+            if isinstance(value, list):
+                for item in value:
+                    if not isinstance(item, dict):
+                        raise DictTypeListError(name, dict, item)
+                    cls._validate(item, path=list(path) + [name])
 
     @classmethod
     def _validate_item(
@@ -124,34 +125,12 @@ class TOMLConfig:
         # Because `isinstance(False, int)` is True, but we want it to be False,
         # we do some custom magic here to achieve that effect.
         bool_err = False
-        # pylint: disable=unidiomatic-typecheck
-        if type(item) is bool and (
-            (isinstance(expected_type, type) and expected_type is not bool)
-            or (
-                isinstance(expected_type, UnionType)
-                and bool not in expected_type.__args__
-            )
+        if isinstance(item, bool) and not type_in_expected_type(
+            bool, expected_type
         ):
             bool_err = True
         if bool_err or not isinstance(item, expected_type):
-            # TODO: False and True shouldn't be type int
             raise DictTypeError(name, expected_type, item)
-
-    @classmethod
-    def _validate_list_item(
-        cls,
-        item: Any,
-        list_name: str,
-        expected_type: type | UnionType = str | int | float | type(None),
-    ) -> None:
-        try:
-            cls._validate_item(item, list_name, expected_type)
-        except DictTypeError as error:
-            raise DictTypeListError(
-                list_name,
-                expected_type,
-                item,
-            ) from error
 
 
 class Config:

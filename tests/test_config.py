@@ -12,7 +12,7 @@ from io import BytesIO
 import pytest
 
 from protokolo.config import TOMLConfig, parse_toml
-from protokolo.exceptions import DictTypeError
+from protokolo.exceptions import DictTypeError, DictTypeListError
 from protokolo.types import TOMLValueType
 
 
@@ -117,6 +117,15 @@ class TestTOMLConfig:
         assert error.key == "foo"
         assert error.expected_type == TOMLValueType
         assert error.got == value
+
+    def test_from_dict_list_no_dict_inside(self):
+        """A list is always a list of dicts."""
+        with pytest.raises(DictTypeListError) as exc_info:
+            TOMLConfig.from_dict({"foo": [1]})
+        error = exc_info.value
+        assert error.key == "foo"
+        assert error.expected_type == dict
+        assert error.got == 1
 
     def test_setitem(self):
         """You can set an item on the TOMLConfig object."""

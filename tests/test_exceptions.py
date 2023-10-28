@@ -6,7 +6,7 @@
 
 import pytest
 
-from protokolo.exceptions import DictTypeError
+from protokolo.exceptions import DictTypeError, DictTypeListError
 
 # pylint: disable=pointless-exception-statement
 
@@ -80,4 +80,27 @@ class TestDictTypeError:
             str(error)
             == "foo.toml: 'title' does not have the correct type. Expected str."
             " Got 1."
+        )
+
+
+class TestDictTypeListError:
+    """Collect all tests for DictTypeListError."""
+
+    def test_only_key(self):
+        """Only key provided."""
+        error = DictTypeListError("title")
+        assert error.key == "title"
+        assert (
+            str(error)
+            == "List 'title' contains an element with the wrong type."
+        )
+
+    def test_incl_source(self):
+        """Include up to source."""
+        error = DictTypeListError("title", str, 1, "foo.toml")
+        assert error.source == "foo.toml"
+        assert (
+            str(error)
+            == "foo.toml: List 'title' contains an element with the wrong type."
+            " Expected str. Got 1."
         )

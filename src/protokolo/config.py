@@ -49,7 +49,7 @@ def parse_toml(
 class TOMLConfig:
     """A utility class to hold data parsed from a TOML file."""
 
-    _expected_types: NestedTypeDict = {}
+    expected_types: NestedTypeDict = {}
 
     def __init__(self, **kwargs: TOMLValue):
         self._config = kwargs
@@ -93,9 +93,8 @@ class TOMLConfig:
         """
         self._validate(cast(dict[str, Any], self._config))
 
-    @classmethod
     def _validate(
-        cls, values: dict[str, Any], path: Sequence[str] | None = None
+        self, values: dict[str, Any], path: Sequence[str] | None = None
     ) -> None:
         if path is None:
             path = []
@@ -103,20 +102,19 @@ class TOMLConfig:
             expected_type: UnionType = TOMLValueType
             with contextlib.suppress(KeyError):
                 expected_type = nested_itemgetter(*(list(path) + [name]))(
-                    cls._expected_types
+                    self.expected_types
                 )
-            cls._validate_item(value, name, expected_type=expected_type)
+            self._validate_item(value, name, expected_type=expected_type)
             if isinstance(value, dict):
-                cls._validate(value, path=list(path) + [name])
+                self._validate(value, path=list(path) + [f"{name}+dict"])
             elif isinstance(value, list):
                 for item in value:
                     if not isinstance(item, dict):
                         raise DictTypeListError(name, dict, item)
-                    cls._validate(item, path=list(path) + [name])
+                    self._validate(item, path=list(path) + [f"{name}+list"])
 
-    @classmethod
+    @staticmethod
     def _validate_item(
-        cls,
         item: Any,
         name: str,
         expected_type: type | UnionType = TOMLValueType,

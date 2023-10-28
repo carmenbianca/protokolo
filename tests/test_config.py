@@ -159,3 +159,82 @@ class TestTOMLConfig:
         assert error.key == "foo"
         assert error.expected_type == TOMLValueType
         assert error.got == value
+
+    def test_validate_simple_expected(self):
+        """No error when validating a valid expected type."""
+        config = TOMLConfig.from_dict({"foo": "bar"})
+        config.expected_types = {"foo": str}
+        config.validate()
+
+    def test_validate_nested_expected(self):
+        """No error when validating a valid nested expected type."""
+        config = TOMLConfig.from_dict({"foo": {"bar": "baz"}})
+        config.expected_types = {"foo": dict, "foo+dict": {"bar": str}}
+        config.validate()
+
+    def test_validate_simple_not_expected(self):
+        """Error when validating an invalid expected type."""
+        config = TOMLConfig.from_dict({"foo": "bar"})
+        config.expected_types = {"foo": int}
+        with pytest.raises(DictTypeError) as exc_info:
+            config.validate()
+        error = exc_info.value
+        assert error.key == "foo"
+        assert error.expected_type == int
+        assert error.got == "bar"
+
+    def test_validate_list_wrong_type(self):
+        """If a value is a list instead of the expected type, raise an error."""
+        config = TOMLConfig.from_dict({"foo": [{"bar": "baz"}]})
+        config.expected_types = {"foo": str}
+        with pytest.raises(DictTypeError) as exc_info:
+            config.validate()
+        error = exc_info.value
+        assert error.key == "foo"
+        assert error.expected_type == str
+        assert error.got == [{"bar": "baz"}]
+
+    def test_validate_dict_wrong_type(self):
+        """If a value is a dict instead of the expected type, raise an error."""
+        config = TOMLConfig.from_dict({"foo": {"bar": "baz"}})
+        config.expected_types = {"foo": str}
+        with pytest.raises(DictTypeError) as exc_info:
+            config.validate()
+        error = exc_info.value
+        assert error.key == "foo"
+        assert error.expected_type == str
+        assert error.got == {"bar": "baz"}
+
+    def test_validate_item_of_list(self):
+        """Validate the items of lists."""
+        config = TOMLConfig.from_dict({"foo": [{"bar": "baz"}, {"bar": "quz"}]})
+        config.expected_types = {"foo": list, "foo+list": {"bar": str}}
+        config.validate()
+
+    def test_validate_very_nested(self):
+        """A rather complex nesting test."""
+        config = TOMLConfig.from_dict(
+            {
+                "foo": {
+                    "bar": {
+                        "baz": [
+                            {"quz": 1},
+                            {"quz": 2},
+                        ]
+                    }
+                }
+            }
+        )
+        config.expected_types = {
+            "foo": dict,
+            "foo+dict": {
+                "bar": dict,
+                "bar+dict": {
+                    "baz": list,
+                    "baz+list": {
+                        "quz": int,
+                    },
+                },
+            },
+        }
+        config.validate()

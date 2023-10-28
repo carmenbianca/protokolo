@@ -11,7 +11,7 @@ from itertools import chain
 from operator import attrgetter
 from os import strerror
 from pathlib import Path
-from typing import Any, Iterator, cast
+from typing import Any, Iterator, Self, cast
 
 from ._formatter import MarkdownFormatter
 from .config import TOMLConfig, parse_toml
@@ -29,7 +29,7 @@ from .types import StrPath, TOMLValue
 class SectionAttributes(TOMLConfig):
     """A data container to hold some metadata for a Section."""
 
-    _expected_types = {"title": str, "level": int, "order": int | None}
+    expected_types = {"title": str, "level": int, "order": int | None}
 
     def __init__(
         self,
@@ -49,7 +49,7 @@ class SectionAttributes(TOMLConfig):
         super().__init__(**kwargs)
 
     @classmethod
-    def from_dict(cls, values: dict[str, Any]) -> "SectionAttributes":
+    def from_dict(cls, values: dict[str, Any]) -> Self:
         """Generate SectionAttributes from a dictionary containing the keys and
         values.
 
@@ -140,10 +140,10 @@ class Section:
             source = Path(source)
         self.source: Path | None = source
         self.entries: set[Entry] = set()
-        self.subsections: set[Section] = set()
+        self.subsections: set[Self] = set()
 
     @classmethod
-    def from_directory(cls, directory: StrPath, level: int = 1) -> "Section":
+    def from_directory(cls, directory: StrPath, level: int = 1) -> Self:
         """Factory method to recursively create a Section from a directory.
 
         The *level* keyword argument is overridden by the level value in
@@ -254,7 +254,7 @@ class Section:
                 return False
         return True
 
-    def sorted_entries(self) -> Iterator["Entry"]:
+    def sorted_entries(self) -> Iterator[Entry]:
         """Yield the entries, ordered by their source. Entries that do not have
         a source are sorted afterwards by their text.
         """
@@ -269,7 +269,7 @@ class Section:
         )
         return chain(source_sorted, alphabetical_sorted)
 
-    def sorted_subsections(self) -> Iterator["Section"]:
+    def sorted_subsections(self) -> Iterator[Self]:
         """Yield the subsections, first ordered by their order value, then the
         remainder sorted alphabetically.
         """

@@ -105,11 +105,10 @@ class TOMLConfig:
                 expected_type = nested_itemgetter(*(list(path) + [name]))(
                     cls._expected_types
                 )
+            cls._validate_item(value, name, expected_type=expected_type)
             if isinstance(value, dict):
                 cls._validate(value, path=list(path) + [name])
-            else:
-                cls._validate_item(value, name, expected_type=expected_type)
-            if isinstance(value, list):
+            elif isinstance(value, list):
                 for item in value:
                     if not isinstance(item, dict):
                         raise DictTypeListError(name, dict, item)

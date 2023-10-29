@@ -4,6 +4,7 @@
 
 """Main entry of program."""
 
+import tomllib
 from io import TextIOWrapper
 from pathlib import Path
 
@@ -11,6 +12,7 @@ import click
 
 from .compile import Section
 from .config import GlobalConfig
+from .exceptions import DictTypeError
 from .types import SupportedMarkup
 
 
@@ -28,7 +30,12 @@ def cli(ctx: click.Context) -> None:
         config_path = GlobalConfig.find_config(Path.cwd())
         if config_path:
             # TODO: error handling
-            config = GlobalConfig.from_file(config_path)
+            try:
+                config = GlobalConfig.from_file(config_path)
+            except tomllib.TOMLDecodeError as error:
+                raise click.UsageError(str(error)) from error
+            except DictTypeError as error:
+                raise click.UsageError(str(error)) from error
             ctx.default_map["compile"] = {
                 "changelog": config.changelog,
                 "markup": config.markup,

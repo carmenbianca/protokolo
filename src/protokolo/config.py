@@ -67,7 +67,8 @@ class TOMLConfig:
         values.
 
         Raises:
-            DictTypeError: value types are wrong.
+            DictTypeError: value isn't an expected/supported type.
+            DictTypeListError: if a list contains elements other than a dict.
         """
         return cls(**values)
 
@@ -170,7 +171,8 @@ class SectionAttributes(TOMLConfig):
         Raises:
             AttributeNotPositiveError: one of the values should have been
                 positive.
-            DictTypeError: value types are wrong.
+            DictTypeError: value isn't an expected/supported type.
+            DictTypeListError: if a list contains elements other than a dict.
         """
         values = deepcopy(values)
         # We do some type validation here, assuming that the dictionary contains
@@ -194,6 +196,7 @@ class SectionAttributes(TOMLConfig):
             AttributeNotPositiveError: one of the values should have been
                 positive.
             DictTypeError: value isn't an expected/supported type.
+            DictTypeListError: if a list contains elements other than a dict.
         """
         super().validate()
         if self.level <= 0:
@@ -271,6 +274,11 @@ class GlobalConfig(TOMLConfig):
         that is loaded from the file depends on the file name. In
         pyproject.toml, the table [tool.protokolo] is loaded, whereas
         [protokolo] is loaded everywhere else.
+
+        Raises:
+            tomllib.TOMLDecodeError: if the file could not be decoded.
+            DictTypeError: value isn't an expected/supported type.
+            DictTypeListError: if a list contains elements other than a dict.
         """
         path = Path(path)
         section = cls._file_section.get(path.name, ["protokolo"])

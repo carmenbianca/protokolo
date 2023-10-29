@@ -309,7 +309,7 @@ class TestSection:
             "- Added feature."
         )
         section = Section.from_directory(project_dir / "changelog.d")
-        assert section.attrs.level == 1
+        assert section.attrs.level == 2
         assert section.attrs.title == "${version} - ${date}"
         assert len(section.entries) == 1
         announcement = next(iter(section.entries))
@@ -319,7 +319,7 @@ class TestSection:
         )
         assert len(section.subsections) == 1
         subsection = next(iter(section.subsections))
-        assert subsection.attrs.level == 2
+        assert subsection.attrs.level == 3
         assert subsection.attrs.title == "Features"
         assert len(subsection.entries) == 1
         feature = next(iter(subsection.entries))

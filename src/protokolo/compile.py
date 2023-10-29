@@ -13,15 +13,17 @@ from os import strerror
 from pathlib import Path
 from typing import Any, Iterator, Self, cast
 
-from ._formatter import MarkdownFormatter
+from ._formatter import MARKUP_EXTENSION_MAPPING as _MARKUP_EXTENSION_MAPPING
+from ._formatter import MARKUP_FORMATTER_MAPPING as _MARKUP_FORMATTER_MAPPING
 from .config import TOMLConfig, parse_toml
 from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
+    HeaderFormatError,
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
 )
-from .types import StrPath, TOMLValue
+from .types import StrPath, SupportedMarkup, TOMLValue
 
 # pylint: disable=too-few-public-methods
 
@@ -128,7 +130,11 @@ class SectionAttributes(TOMLConfig):
 class Entry:
     """An entry, analogous to a file."""
 
-    def __init__(self, text: str, source: StrPath | None = None):
+    def __init__(
+        self,
+        text: str,
+        source: StrPath | None = None,
+    ):
         self.text: str = text
         if source is not None:
             source = Path(source)
@@ -147,11 +153,13 @@ class Section:
     def __init__(
         self,
         attrs: SectionAttributes | None = None,
+        markup: SupportedMarkup = "markdown",
         source: StrPath | None = None,
     ):
         if attrs is None:
             attrs = SectionAttributes()
         self.attrs: SectionAttributes = attrs
+        self.markup = markup
         if source is not None:
             source = Path(source)
         self.source: Path | None = source
@@ -159,7 +167,12 @@ class Section:
         self.subsections: set[Self] = set()
 
     @classmethod
-    def from_directory(cls, directory: StrPath, level: int = 1) -> Self:
+    def from_directory(
+        cls,
+        directory: StrPath,
+        level: int = 1,
+        markup: SupportedMarkup = "markdown",
+    ) -> Self:
         """Factory method to recursively create a Section from a directory.
 
         The *level* keyword argument is overridden by the level value in
@@ -212,12 +225,15 @@ class Section:
             if path.is_dir():
                 subsections.add(cls.from_directory(path, level=level + 1))
             # TODO: Handle more suffixes
-            elif path.is_file() and path.suffix == ".md":
+            elif (
+                path.is_file()
+                and path.suffix in _MARKUP_EXTENSION_MAPPING[markup]
+            ):
                 with path.open("r", encoding="utf-8") as fp_:
                     content = fp_.read()
                     entries.add(Entry(text=content, source=path))
 
-        section = cls(attrs=attrs, source=directory)
+        section = cls(attrs=attrs, markup=markup, source=directory)
         section.subsections = subsections
         section.entries = entries
 
@@ -228,22 +244,35 @@ class Section:
         order, then the subsections.
 
         Empty sections are not compiled.
+
+        Raises:
+            HeaderFormatError: could not format header of section.
         """
         buffer = self.write_to_buffer()
         return buffer.getvalue()
 
     def write_to_buffer(self, buffer: StringIO | None = None) -> StringIO:
-        """Like compile, but writing to a StringIO buffer."""
+        """Like compile, but writing to a StringIO buffer.
+
+        Raises:
+            HeaderFormatError: could not format header of section.
+        """
         if buffer is None:
             buffer = StringIO()
 
         if self.is_empty():
             return buffer
 
-        # TODO: Make this nicer obviously.
-        buffer.write(
-            MarkdownFormatter.format_section(self.attrs.title, self.attrs.level)
-        )
+        try:
+            header = _MARKUP_FORMATTER_MAPPING[self.markup].format_section(
+                self.attrs.title, self.attrs.level
+            )
+        except HeaderFormatError as error:
+            raise HeaderFormatError(
+                f"Failed to format section header of {repr(str(self.source))}:"
+                f" {str(error)}"
+            ) from error
+        buffer.write(header)
 
         for entry in self.sorted_entries():
             buffer.write("\n\n")

@@ -101,11 +101,11 @@ def compile_(
     For more documentation and options, read the documentation at TODO.
     """
     # TODO: use these args.
-    for _ in (ctx, markup):
+    for _ in (ctx,):
         pass
     # TODO: make all of this nicer.
     # TODO: error handling
-    section = Section.from_directory(directory)
+    section = Section.from_directory(directory, markup=markup)
     # TODO: error handling
     new_section = section.compile()
     fp: TextIOWrapper

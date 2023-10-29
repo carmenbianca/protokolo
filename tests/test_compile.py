@@ -10,7 +10,8 @@ from inspect import cleandoc
 
 import pytest
 
-from protokolo.compile import Entry, Section, SectionAttributes
+from protokolo.compile import Entry, Section
+from protokolo.config import SectionAttributes
 from protokolo.exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
@@ -19,101 +20,6 @@ from protokolo.exceptions import (
 )
 
 # pylint: disable=too-many-public-methods
-
-
-class TestSectionAttributes:
-    """Collect all tests for SectionAttributes."""
-
-    def test_level_positive(self):
-        """level must be a positive integer."""
-        SectionAttributes(level=1)
-        # Automagically fix unexpected type
-        attrs = SectionAttributes(level=None)  # type: ignore
-        assert attrs.level == 1
-        with pytest.raises(AttributeNotPositiveError):
-            SectionAttributes(level=0)
-        with pytest.raises(AttributeNotPositiveError):
-            SectionAttributes(level=-1)
-
-    def test_order_positive(self):
-        """order must be a positive integer."""
-        SectionAttributes(order=1)
-        SectionAttributes(order=None)
-        with pytest.raises(AttributeNotPositiveError):
-            SectionAttributes(order=0)
-        with pytest.raises(AttributeNotPositiveError):
-            SectionAttributes(order=-1)
-
-    def test_from_dict_simple(self):
-        """Provide all values."""
-        values = {"title": "Title", "level": 2, "order": 3, "foo": "bar"}
-        attrs = SectionAttributes.from_dict(values)
-        assert attrs.title == "Title"
-        assert attrs.level == 2
-        assert attrs.order == 3
-        assert attrs["foo"] == "bar"
-
-    def test_from_dict_empty(self):
-        """Initiating from an empty dictionary is the same as initiating an
-        empty object.
-        """
-        from_dict = SectionAttributes.from_dict({})
-        empty = SectionAttributes()
-        assert (
-            from_dict.title == empty.title == "TODO: No section title defined"
-        )
-        assert from_dict.level == empty.level == 1
-        assert from_dict.order == empty.order == None
-
-    def test_from_dict_wrong_type_level(self):
-        """If the level is not an int, expect an error."""
-        # No errors
-        SectionAttributes.from_dict({"level": 1})
-        SectionAttributes.from_dict({"level": None})
-        # Errors
-        wrong_values = {"1", 1.1, "1.1", "Foo", True}
-        for value in wrong_values:
-            with pytest.raises(DictTypeError) as exc_info:
-                SectionAttributes.from_dict({"level": value})
-            error = exc_info.value
-            assert error.key == "level"
-            assert error.expected_type == int
-            assert error.got == value
-
-    def test_from_dict_wrong_type_order(self):
-        """If the order is not an int, expect an error."""
-        # No errors
-        SectionAttributes.from_dict({"order": 1})
-        SectionAttributes.from_dict({"order": None})
-        # Errors
-        wrong_values = {"1", 1.1, "1.1", "Foo", True}
-        for value in wrong_values:
-            with pytest.raises(DictTypeError) as exc_info:
-                SectionAttributes.from_dict({"order": value})
-            error = exc_info.value
-            assert error.key == "order"
-            assert error.expected_type == int | None
-            assert error.got == value
-
-    def test_from_dict_wrong_type_title(self):
-        """If the title is not a str, expect an error."""
-        # No errors
-        SectionAttributes.from_dict({"title": "Foo"})
-        SectionAttributes.from_dict({"title": None})
-        # Errors
-        wrong_values = {1, 1.1, False}
-        for value in wrong_values:
-            with pytest.raises(DictTypeError) as exc_info:
-                SectionAttributes.from_dict({"title": value})
-            error = exc_info.value
-            assert error.key == "title"
-            assert error.expected_type == str
-            assert error.got == value
-
-    def test_from_dict_subdict(self):
-        """Don't raise an error if there is a subdict."""
-        attrs = SectionAttributes.from_dict({"foo": {"bar": "quz"}})
-        assert attrs["foo"] == {"bar": "quz"}
 
 
 class TestSection:

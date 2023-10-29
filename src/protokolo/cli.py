@@ -47,7 +47,7 @@ def cli(ctx: click.Context) -> None:
     "--markup",
     default="markdown",
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
-    show_default="determined by config",
+    show_default="determined by config, or markdown",
     help="markup language.",
 )
 @click.argument(

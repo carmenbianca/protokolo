@@ -166,7 +166,7 @@ class Section:
 
         try:
             header = _MARKUP_FORMATTER_MAPPING[self.markup].format_section(
-                self.attrs.title, self.attrs.level
+                self.attrs,
             )
         except HeaderFormatError as error:
             raise HeaderFormatError(

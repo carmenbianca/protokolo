@@ -7,6 +7,7 @@
 from abc import ABC, abstractmethod
 from inspect import cleandoc
 
+from .config import SectionAttributes
 from .exceptions import HeaderFormatError
 
 # pylint: disable=too-few-public-methods
@@ -17,7 +18,7 @@ class MarkupFormatter(ABC):
 
     @classmethod
     @abstractmethod
-    def format_section(cls, title: str, level: int) -> str:
+    def format_section(cls, attrs: SectionAttributes) -> str:
         """Format a title as a section header. For instance, a level-2 Markdown
         section might look like this::
 
@@ -26,9 +27,11 @@ class MarkupFormatter(ABC):
         Raises:
             HeaderFormatError: could not format the header as given.
         """
-        if level <= 0:
-            raise HeaderFormatError(f"Level {level} must be positive.")
-        if not title:
+        # This is technically invalid. Valid attrs do not have a non-positive
+        # level.
+        if attrs.level <= 0:
+            raise HeaderFormatError(f"Level {attrs.level} must be positive.")
+        if not attrs.title:
             raise HeaderFormatError("title cannot be empty.")
         return ""
 
@@ -37,12 +40,10 @@ class MarkdownFormatter(MarkupFormatter):
     """A Markdown formatter."""
 
     @classmethod
-    def format_section(cls, title: str, level: int) -> str:
-        super().format_section(title, level)
-        pound_signs = f"{'#' * level}"
-        if title:
-            return f"{pound_signs} {title}"
-        return pound_signs
+    def format_section(cls, attrs: SectionAttributes) -> str:
+        super().format_section(attrs)
+        pound_signs = f"{'#' * attrs.level}"
+        return f"{pound_signs} {attrs.title}"
 
 
 class ReStructuredTextFormatter(MarkupFormatter):
@@ -62,19 +63,19 @@ class ReStructuredTextFormatter(MarkupFormatter):
     }
 
     @classmethod
-    def format_section(cls, title: str, level: int) -> str:
-        super().format_section(title, level)
+    def format_section(cls, attrs: SectionAttributes) -> str:
+        super().format_section(attrs)
         try:
-            sign = cls._levels[level]
+            sign = cls._levels[attrs.level]
         except KeyError as error:
             raise HeaderFormatError(
-                f"Header level {level} is too deep."
+                f"Header level {attrs.level} is too deep."
             ) from error
-        length = len(title)
+        length = len(attrs.title)
         return cleandoc(
             f"""
-            {sign * length if level == 1 else ''}
-            {title}
+            {sign * length if attrs.level == 1 else ''}
+            {attrs.title}
             {sign * length}
             """
         )

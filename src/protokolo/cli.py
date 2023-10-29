@@ -78,7 +78,7 @@ def compile_(
 
     \b
     [protokolo.section]
-    title = "{version} - {date}"
+    title = "${version} - ${date}"
     level = 2
 
     When the section is compiled, it looks a little like this:

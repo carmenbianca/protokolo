@@ -310,7 +310,7 @@ class TestSection:
         )
         section = Section.from_directory(project_dir / "changelog.d")
         assert section.attrs.level == 1
-        assert section.attrs.title == "{version} - {date}"
+        assert section.attrs.title == "${version} - ${date}"
         assert len(section.entries) == 1
         announcement = next(iter(section.entries))
         assert announcement.text == "Hello, world!"

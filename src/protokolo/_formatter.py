@@ -5,7 +5,9 @@
 """Code to combine the files in protokolo/ into a single text block."""
 
 from abc import ABC, abstractmethod
+from datetime import date
 from inspect import cleandoc
+from string import Template
 
 from .config import SectionAttributes
 from .exceptions import HeaderFormatError
@@ -17,13 +19,28 @@ class MarkupFormatter(ABC):
     """A simple formatter class."""
 
     @classmethod
-    @abstractmethod
     def format_section(cls, attrs: SectionAttributes) -> str:
         """Format a title as a section header. For instance, a level-2 Markdown
         section might look like this::
 
             ## Hello, world
 
+        You can use ``$key`` (or ``${key}``) placeholders in the title to
+        replace them with the values of the corresponding keys in *attrs*.
+        ``$date`` is special in that it is replaced with today's date. ``$$`` is
+        replaced by a single ``$``.
+
+        Raises:
+            HeaderFormatError: could not format the header as given.
+
+        """
+        cls._validate(attrs)
+        text = cls._format_section(attrs)
+        return cls._format_output(text, attrs)
+
+    @classmethod
+    def _validate(cls, attrs: SectionAttributes) -> None:
+        """
         Raises:
             HeaderFormatError: could not format the header as given.
         """
@@ -33,15 +50,31 @@ class MarkupFormatter(ABC):
             raise HeaderFormatError(f"Level {attrs.level} must be positive.")
         if not attrs.title:
             raise HeaderFormatError("title cannot be empty.")
-        return ""
+
+    @classmethod
+    @abstractmethod
+    def _format_section(cls, attrs: SectionAttributes) -> str:
+        ...
+
+    @classmethod
+    def _format_output(cls, text: str, attrs: SectionAttributes) -> str:
+        values = attrs.as_dict()
+        # No recursive funny stuff.
+        values.pop("title")
+        # Don't render None.
+        values = {
+            key: value for key, value in values.items() if value is not None
+        }
+        values.setdefault("date", date.today())
+        template = Template(text)
+        return template.safe_substitute(**values)
 
 
 class MarkdownFormatter(MarkupFormatter):
     """A Markdown formatter."""
 
     @classmethod
-    def format_section(cls, attrs: SectionAttributes) -> str:
-        super().format_section(attrs)
+    def _format_section(cls, attrs: SectionAttributes) -> str:
         pound_signs = f"{'#' * attrs.level}"
         return f"{pound_signs} {attrs.title}"
 
@@ -63,14 +96,14 @@ class ReStructuredTextFormatter(MarkupFormatter):
     }
 
     @classmethod
-    def format_section(cls, attrs: SectionAttributes) -> str:
-        super().format_section(attrs)
-        try:
-            sign = cls._levels[attrs.level]
-        except KeyError as error:
-            raise HeaderFormatError(
-                f"Header level {attrs.level} is too deep."
-            ) from error
+    def _validate(cls, attrs: SectionAttributes) -> None:
+        super()._validate(attrs)
+        if attrs.level > len(cls._levels):
+            raise HeaderFormatError(f"Header level {attrs.level} is too deep.")
+
+    @classmethod
+    def _format_section(cls, attrs: SectionAttributes) -> str:
+        sign = cls._levels[attrs.level]
         length = len(attrs.title)
         return cleandoc(
             f"""

@@ -4,9 +4,11 @@
 
 """Test the formatting code."""
 
+from datetime import date
 from inspect import cleandoc
 
 import pytest
+from freezegun import freeze_time
 
 from protokolo._formatter import MarkdownFormatter, ReStructuredTextFormatter
 from protokolo.config import SectionAttributes
@@ -64,6 +66,70 @@ class TestMarkdownFormatter:
         attrs.level = -1
         with pytest.raises(HeaderFormatError):
             MarkdownFormatter.format_section(attrs)
+
+    def test_format_section_format_simple(self):
+        """Do additional formatting in the title."""
+        assert (
+            MarkdownFormatter.format_section(
+                SectionAttributes(title="Foo $level $foo", level=1, foo=2)
+            )
+            == "# Foo 1 2"
+        )
+        assert (
+            MarkdownFormatter.format_section(
+                SectionAttributes(title="Foo ${level} ${foo}", level=1, foo=2)
+            )
+            == "# Foo 1 2"
+        )
+
+    @freeze_time("2023-11-08")
+    def test_format_section_format_date(self):
+        """$date is replaced with today's date."""
+        assert (
+            MarkdownFormatter.format_section(
+                SectionAttributes(title="Foo $date", level=1)
+            )
+            == "# Foo 2023-11-08"
+        )
+
+    @freeze_time("2023-11-08")
+    def test_format_section_format_date_override(self):
+        """If date is defined in the attrs, don't actually use today's date."""
+        assert (
+            MarkdownFormatter.format_section(
+                SectionAttributes(
+                    title="Foo $date", level=1, date=date(2023, 10, 25)
+                )
+            )
+            == "# Foo 2023-10-25"
+        )
+
+    def test_format_section_format_missing(self):
+        """If a key has no value, don't render it."""
+        assert (
+            MarkdownFormatter.format_section(
+                SectionAttributes(title="Foo $bar", level=1)
+            )
+            == "# Foo $bar"
+        )
+
+    def test_format_section_format_none(self):
+        """If a key has value None, don't render it."""
+        assert (
+            MarkdownFormatter.format_section(
+                SectionAttributes(title="Foo $bar", level=1, bar=None)
+            )
+            == "# Foo $bar"
+        )
+
+    def test_format_section_format_title(self):
+        """Don't recursively render $title."""
+        assert (
+            MarkdownFormatter.format_section(
+                SectionAttributes(title="Foo $title", level=1)
+            )
+            == "# Foo $title"
+        )
 
 
 class TestReStructuredTextFormatter:

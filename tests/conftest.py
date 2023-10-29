@@ -38,7 +38,7 @@ def project_dir(tmpdir_factory) -> Path:
         cleandoc(
             """
             [protokolo.section]
-            title = "{version} - {date}"
+            title = "${version} - ${date}"
             """
         )
     )

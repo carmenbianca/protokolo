@@ -7,6 +7,7 @@
 import contextlib
 import tomllib
 from collections.abc import Sequence
+from copy import deepcopy
 from pathlib import Path
 from types import UnionType
 from typing import IO, Any, Self, cast
@@ -86,8 +87,12 @@ class TOMLConfig:
             final_key = copied.pop()
             keys = copied
         # Technically this can fail because self._config is a Mapping instead of
-        # a MutableMetting.
+        # a MutableMapping.
         nested_itemgetter(*keys)(self._config)[final_key] = value
+
+    def as_dict(self) -> dict[str, TOMLValue]:
+        """Return a mapping of the TOMLConfig."""
+        return deepcopy(self._config)
 
     def validate(self) -> None:
         """TODO.
@@ -167,7 +172,7 @@ class SectionAttributes(TOMLConfig):
                 positive.
             DictTypeError: value types are wrong.
         """
-        values = values.copy()
+        values = deepcopy(values)
         # We do some type validation here, assuming that the dictionary contains
         # user input.
         title = values.pop("title", None)

@@ -3,5 +3,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 [protokolo.section]
-title = "{version} - {date}"
+title = "${version} - ${date}"
 level = 2

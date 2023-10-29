@@ -4,32 +4,17 @@
 
 """Fixtures and stuff."""
 
-from collections.abc import Generator
-from inspect import cleandoc, isclass
+from inspect import cleandoc
 from pathlib import Path
 
 import pytest
+from click.testing import CliRunner
 
-from protokolo import _formatter
-from protokolo._formatter import MarkupFormatter
-
-formatter_classes = [
-    cls
-    for cls in _formatter.__dict__.values()
-    if isclass(cls)
-    and issubclass(cls, MarkupFormatter)
-    and cls is not MarkupFormatter
-]
-
-
-@pytest.fixture(scope="session", params=formatter_classes)
-def formatter(request) -> Generator[MarkupFormatter, None, None]:
-    """Return a formatter class."""
-    yield request.param
+# pylint: disable=unused-argument
 
 
 @pytest.fixture()
-def project_dir(tmpdir_factory) -> Path:
+def project_dir(tmpdir_factory, monkeypatch) -> Path:
     """Create a temporary project directory."""
     directory = Path(str(tmpdir_factory.mktemp("project_dir")))
     changelog_d = directory / "changelog.d"
@@ -52,5 +37,12 @@ def project_dir(tmpdir_factory) -> Path:
             """
         )
     )
+    monkeypatch.chdir(directory)
 
     return directory
+
+
+@pytest.fixture()
+def runner(project_dir) -> CliRunner:
+    """Return a :class:`CliRunner` for a :func:`project_dir`."""
+    return CliRunner()

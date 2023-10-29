@@ -14,7 +14,8 @@ from .config import GlobalConfig
 from .types import SupportedMarkup
 
 
-@click.group()
+@click.group(name="protokolo")
+@click.version_option(package_name="protokolo")
 @click.pass_context
 def cli(ctx: click.Context) -> None:
     """Protokolo is a change log generator."""

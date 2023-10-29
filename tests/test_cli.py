@@ -4,6 +4,7 @@
 
 """Test the formatting code."""
 
+import protokolo
 from protokolo.cli import cli, compile_
 
 # pylint: disable=too-few-public-methods
@@ -18,6 +19,11 @@ class TestCli:
         with_help = runner.invoke(cli, ["--help"])
         assert without_help.output == with_help.output
         assert without_help.exit_code == with_help.exit_code == 0
+
+    def test_version(self, runner):
+        """--version returns the correct version."""
+        result = runner.invoke(cli, ["--version"])
+        assert result.output == f"protokolo, version {protokolo.__version__}\n"
 
 
 class TestCompile:

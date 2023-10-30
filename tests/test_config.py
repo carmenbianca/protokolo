@@ -125,7 +125,8 @@ class TestTOMLConfig:
         error = exc_info.value
         assert error.key == "foo"
         assert error.expected_type == TOMLValueType
-        assert error.got == value
+        # TODO: This is not true because error.got is a (deep)copy of value.
+        # assert error.got == value
 
     def test_from_dict_list_no_dict_inside(self):
         """A list is always a list of dicts."""
@@ -276,6 +277,8 @@ class TestSectionAttributes:
         """Provide all values."""
         values = {"title": "Title", "level": 2, "order": 3, "foo": "bar"}
         attrs = SectionAttributes.from_dict(values)
+        # https://github.com/pylint-dev/pylint/issues/9203
+        # pylint: disable=no-member
         assert attrs.title == "Title"
         assert attrs.level == 2
         assert attrs.order == 3
@@ -287,6 +290,8 @@ class TestSectionAttributes:
         """
         from_dict = SectionAttributes.from_dict({})
         empty = SectionAttributes()
+        # https://github.com/pylint-dev/pylint/issues/9203
+        # pylint: disable=no-member
         assert (
             from_dict.title == empty.title == "TODO: No section title defined"
         )

@@ -20,6 +20,8 @@ from .exceptions import (
 )
 from .types import NestedTypeDict, StrPath, TOMLValue, TOMLValueType
 
+# pylint: disable=too-many-arguments
+
 
 def parse_toml(
     toml: str | IO[bytes],
@@ -57,12 +59,25 @@ class TOMLConfig:
 
     expected_types: NestedTypeDict = {}
 
-    def __init__(self, **kwargs: TOMLValue):
-        self._config = kwargs
+    def __init__(
+        self,
+        values: dict[str, TOMLValue] | None = None,
+        source: StrPath | None = None,
+        **kwargs: TOMLValue,
+    ):
+        """TODO: explain using either values or kwargs."""
+        if source is not None:
+            source = Path(source)
+        self.source: Path | None = source
+        if values is None:
+            values = kwargs
+        self._config: dict[str, TOMLValue] = deepcopy(values)
         self.validate()
 
     @classmethod
-    def from_dict(cls, values: dict[str, Any]) -> Self:
+    def from_dict(
+        cls, values: dict[str, Any], source: StrPath | None = None
+    ) -> Self:
         """Generate TOMLConfig from a dictionary containing the keys and
         values.
 
@@ -70,7 +85,8 @@ class TOMLConfig:
             DictTypeError: value isn't an expected/supported type.
             DictTypeListError: if a list contains elements other than a dict.
         """
-        return cls(**values)
+        result = cls(values, source=source)
+        return result
 
     def __getitem__(self, key: str | Sequence[str]) -> TOMLValue:
         if isinstance(key, str):
@@ -121,11 +137,13 @@ class TOMLConfig:
             elif isinstance(value, list):
                 for item in value:
                     if not isinstance(item, dict):
-                        raise DictTypeListError(name, dict, item)
+                        raise DictTypeListError(
+                            name, dict, item, str(self.source)
+                        )
                     self._validate(item, path=list(path) + [f"{name}+list"])
 
-    @staticmethod
     def _validate_item(
+        self,
         item: Any,
         name: str,
         expected_type: type | UnionType = TOMLValueType,
@@ -138,7 +156,7 @@ class TOMLConfig:
         ):
             bool_err = True
         if bool_err or not isinstance(item, expected_type):
-            raise DictTypeError(name, expected_type, item)
+            raise DictTypeError(name, expected_type, item, str(self.source))
 
 
 class SectionAttributes(TOMLConfig):
@@ -148,23 +166,34 @@ class SectionAttributes(TOMLConfig):
 
     def __init__(
         self,
+        values: dict[str, TOMLValue] | None = None,
+        source: StrPath | None = None,
         title: str | None = None,
         level: int = 1,
         order: int | None = None,
         **kwargs: TOMLValue,
     ):
-        if title is None:
-            title = "TODO: No section title defined"
-        kwargs["title"] = title
-        # This shouldn't happen, but let's deal with it anyway.
-        if level is None:
-            level = 1
-        kwargs["level"] = level
-        kwargs["order"] = order
-        super().__init__(**kwargs)
+        if values is None:
+            values = kwargs
+            values["title"] = title
+            values["level"] = level
+            values["order"] = order
+        else:
+            values = deepcopy(values)
+        # Make sure these items exist in the dictionary.
+        values.setdefault("title", None)
+        values.setdefault("level", None)
+        values.setdefault("order", None)
+        if values.get("title") is None:
+            values["title"] = "TODO: No section title defined"
+        if values.get("level") is None:
+            values["level"] = 1
+        super().__init__(values, source=source)
 
     @classmethod
-    def from_dict(cls, values: dict[str, Any]) -> Self:
+    def from_dict(
+        cls, values: dict[str, Any], source: StrPath | None = None
+    ) -> Self:
         """Generate SectionAttributes from a dictionary containing the keys and
         values.
 
@@ -174,21 +203,7 @@ class SectionAttributes(TOMLConfig):
             DictTypeError: value isn't an expected/supported type.
             DictTypeListError: if a list contains elements other than a dict.
         """
-        values = deepcopy(values)
-        # We do some type validation here, assuming that the dictionary contains
-        # user input.
-        title = values.pop("title", None)
-        level = values.pop("level", 1)
-        if level is None:
-            # Sneaky.
-            level = 1
-        order = values.pop("order", None)
-        return cls(
-            title=title,
-            level=level,
-            order=order,
-            **values,
-        )
+        return super().from_dict(values, source=source)
 
     def validate(self) -> None:
         """
@@ -258,15 +273,24 @@ class GlobalConfig(TOMLConfig):
 
     def __init__(
         self,
+        values: dict[str, TOMLValue] | None = None,
+        source: StrPath | None = None,
         changelog: str | None = None,
         markup: str | None = None,
         directory: str | None = None,
         **kwargs: TOMLValue,
     ):
-        kwargs["changelog"] = changelog
-        kwargs["markup"] = markup
-        kwargs["directory"] = directory
-        super().__init__(**kwargs)
+        if values is None:
+            values = kwargs
+            values["changelog"] = changelog
+            values["markup"] = markup
+            values["directory"] = directory
+        else:
+            values = deepcopy(values)
+        values.setdefault("changelog", None)
+        values.setdefault("markup", None)
+        values.setdefault("directory", None)
+        super().__init__(values, source=source)
 
     @classmethod
     def from_file(cls, path: StrPath) -> Self:
@@ -289,7 +313,7 @@ class GlobalConfig(TOMLConfig):
                 raise tomllib.TOMLDecodeError(
                     f"Invalid TOML in '{fp.name}': {error}"
                 ) from error
-        return cls(**values)
+        return cls.from_dict(values, source=path)
 
     @classmethod
     def find_config(cls, directory: StrPath) -> Path | None:

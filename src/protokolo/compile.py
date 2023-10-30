@@ -18,7 +18,6 @@ from ._formatter import MARKUP_FORMATTER_MAPPING as _MARKUP_FORMATTER_MAPPING
 from .config import SectionAttributes, parse_toml
 from .exceptions import (
     AttributeNotPositiveError,
-    DictTypeError,
     HeaderFormatError,
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
@@ -106,11 +105,7 @@ class Section:
                     f"Invalid TOML in '{fp.name}': {error}"
                 ) from error
         try:
-            attrs = SectionAttributes.from_dict(values)
-        except DictTypeError as error:
-            raise DictTypeError(
-                error.key, error.expected_type, error.got, fp.name
-            ) from error
+            attrs = SectionAttributes.from_dict(values, source=fp.name)
         except AttributeNotPositiveError as error:
             raise AttributeNotPositiveError(
                 f"Wrong value in '{fp.name}': {error}"

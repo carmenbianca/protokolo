@@ -88,6 +88,23 @@ class Section:
                 positive integer.
         """
         directory = Path(directory)
+        section = cls(markup=markup, source=directory)
+
+        section._load_section_attributes(directory, level)
+        section._load_subsections_and_entries(directory, section.attrs.level)
+
+        return section
+
+    def _load_section_attributes(self, directory: Path, level: int) -> None:
+        """Locate .protokolo.toml and create a SectionAttributes object from it,
+        then set that object on self.
+
+        Raises:
+            OSError: input/output error.
+            ProtokoloTOMLNotFoundError: .protokolo.toml doesn't exist.
+            ProtokoloTOMLIsADirectoryError: .protokolo.toml is not a file.
+            TOMLDecodeError: .protokolo.toml couldn't be parsed.
+        """
         protokolo_toml = directory / ".protokolo.toml"
         if not protokolo_toml.exists():
             raise ProtokoloTOMLNotFoundError(
@@ -114,26 +131,37 @@ class Section:
         # in the toml, second by the level value.
         level = values.get("level") or level
         attrs.level = level
+        self.attrs = attrs
 
+    def _load_subsections_and_entries(
+        self, directory: Path, level: int
+    ) -> None:
+        """Locate subsections and entries. Load entries onto self, and
+        recursively create subsections to also load them onto self.
+
+        Raises:
+            OSError: input/output error.
+            ProtokoloTOMLNotFoundError: .protokolo.toml doesn't exist.
+            ProtokoloTOMLIsADirectoryError: .protokolo.toml is not a file.
+            TOMLDecodeError: .protokolo.toml couldn't be parsed.
+            DictTypeError: .protokolo.toml fields have the wrong type.
+            AttributeNotPositiveError: value in .protokolo.toml should be a
+                positive integer.
+        """
         subsections = set()
         entries = set()
         for path in directory.iterdir():
             if path.is_dir():
-                subsections.add(cls.from_directory(path, level=level + 1))
-            # TODO: Handle more suffixes
+                subsections.add(self.from_directory(path, level=level + 1))
             elif (
                 path.is_file()
-                and path.suffix in _MARKUP_EXTENSION_MAPPING[markup]
+                and path.suffix in _MARKUP_EXTENSION_MAPPING[self.markup]
             ):
                 with path.open("r", encoding="utf-8") as fp_:
                     content = fp_.read()
                     entries.add(Entry(text=content, source=path))
-
-        section = cls(attrs=attrs, markup=markup, source=directory)
-        section.subsections = subsections
-        section.entries = entries
-
-        return section
+        self.subsections = cast(set[Self], subsections)
+        self.entries = entries
 
     def compile(self) -> str:
         """Compile the entire section recursively, first printing the entries in

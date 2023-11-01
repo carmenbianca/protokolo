@@ -60,19 +60,20 @@ class TestCompile:
         )
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.md").read_text()
+
         assert (
             cleandoc(
                 """
-            Lorem ipsum.
+                Lorem ipsum.
 
-            <!-- protokolo-section-tag -->
+                <!-- protokolo-section-tag -->
 
-            ## ${version} - 2023-11-08
+                ## ${version} - 2023-11-08
 
-            Foo
+                Foo
 
-            ## 0.1.0 - 2020-01-01
-            """
+                ## 0.1.0 - 2020-01-01
+                """
             )
             in changelog
         )

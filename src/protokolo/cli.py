@@ -17,6 +17,7 @@ from .exceptions import (
     DictTypeError,
     HeaderFormatError,
 )
+from .replace import find_first_occurrence, insert_into_str
 from .types import SupportedMarkup
 
 
@@ -130,15 +131,20 @@ def compile_(
     except HeaderFormatError as error:
         raise click.UsageError(str(error)) from error
 
+    if not new_section:
+        # TODO: exit early.
+        pass
+
     try:
         fp: TextIOWrapper
         with changelog.open() as fp:  # type: ignore
             # TODO: use buffer reading, probably
             contents = fp.read()
-            new_contents = contents.replace(
-                "<!-- protokolo-section-tag -->",
-                f"<!-- protokolo-section-tag -->\n\n{new_section}",
-            )
+            lineno = find_first_occurrence("protokolo-section-tag", contents)
+            if lineno is None:
+                # TODO: message, test
+                raise click.UsageError("TODO")
+            new_contents = insert_into_str(f"\n{new_section}", contents, lineno)
             fp.seek(0)
             fp.write(new_contents)
             fp.truncate()

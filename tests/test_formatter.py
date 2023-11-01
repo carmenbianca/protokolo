@@ -71,13 +71,17 @@ class TestMarkdownFormatter:
         """Do additional formatting in the title."""
         assert (
             MarkdownFormatter.format_section(
-                SectionAttributes(title="Foo $level $foo", level=1, foo=2)
+                SectionAttributes(
+                    title="Foo $level $foo", level=1, values={"foo": 2}
+                )
             )
             == "# Foo 1 2"
         )
         assert (
             MarkdownFormatter.format_section(
-                SectionAttributes(title="Foo ${level} ${foo}", level=1, foo=2)
+                SectionAttributes(
+                    title="Foo ${level} ${foo}", level=1, values={"foo": 2}
+                )
             )
             == "# Foo 1 2"
         )
@@ -98,7 +102,9 @@ class TestMarkdownFormatter:
         assert (
             MarkdownFormatter.format_section(
                 SectionAttributes(
-                    title="Foo $date", level=1, date=date(2023, 10, 25)
+                    title="Foo $date",
+                    level=1,
+                    values={"date": date(2023, 10, 25)},
                 )
             )
             == "# Foo 2023-10-25"
@@ -117,7 +123,9 @@ class TestMarkdownFormatter:
         """If a key has value None, don't render it."""
         assert (
             MarkdownFormatter.format_section(
-                SectionAttributes(title="Foo $bar", level=1, bar=None)
+                SectionAttributes(
+                    title="Foo $bar", level=1, values={"bar": None}
+                )
             )
             == "# Foo $bar"
         )

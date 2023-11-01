@@ -63,14 +63,12 @@ class TOMLConfig:
         self,
         values: dict[str, TOMLValue] | None = None,
         source: StrPath | None = None,
-        **kwargs: TOMLValue,
     ):
-        """TODO: explain using either values or kwargs."""
         if source is not None:
             source = Path(source)
         self.source: Path | None = source
         if values is None:
-            values = kwargs
+            values = {}
         self._config: dict[str, TOMLValue] = deepcopy(values)
         self.validate()
 
@@ -78,15 +76,15 @@ class TOMLConfig:
     def from_dict(
         cls, values: dict[str, Any], source: StrPath | None = None
     ) -> Self:
-        """Generate TOMLConfig from a dictionary containing the keys and
-        values.
+        """Generate TOMLConfig from a dictionary containing the keys and values.
+        This is useless for the TOMLConfig base class, but potentially useful
+        for subclasses that change the ``__init__`` signature.
 
         Raises:
             DictTypeError: value isn't an expected/supported type.
             DictTypeListError: if a list contains elements other than a dict.
         """
-        result = cls(values, source=source)
-        return result
+        return cls(values=values, source=source)
 
     def __getitem__(self, key: str | Sequence[str]) -> TOMLValue:
         if isinstance(key, str):
@@ -112,7 +110,34 @@ class TOMLConfig:
         return deepcopy(self._config)
 
     def validate(self) -> None:
-        """TODO.
+        """Verify that all keys contain valid TOML types. This is automatically
+        run on object instantiation.
+
+        The *expected_values* (class) attribute can contain a dictionary
+        describing the expected type of each key. For example:
+
+        >>> toml = '''
+        ...     [foo]
+        ...     hello = "world"
+        ...     [[foo.bar]]
+        ...     baz = 1
+        ...     [[foo.bar]]
+        ...     baz = 2
+        ...     '''
+        ...
+        >>> config = TOMLConfig(parse_toml(toml))
+        >>> config.expected_types = {
+        ...     "foo": dict,
+        ...     "foo+dict": {
+        ...         "hello": str,
+        ...         "bar": list,
+        ...         "bar+list": {
+        ...             "baz": int,
+        ...         }
+        ...     }
+        ... }
+        ...
+        >>> config.validate()
 
         Raises:
             DictTypeError: value isn't an expected/supported type.
@@ -166,24 +191,23 @@ class SectionAttributes(TOMLConfig):
 
     def __init__(
         self,
-        values: dict[str, TOMLValue] | None = None,
-        source: StrPath | None = None,
         title: str | None = None,
         level: int = 1,
         order: int | None = None,
-        **kwargs: TOMLValue,
+        values: dict[str, TOMLValue] | None = None,
+        source: StrPath | None = None,
     ):
+        """If *title*, *level*, or *order* also occur as keys in *values*, then
+        *values* takes precedence.
+        """
         if values is None:
-            values = kwargs
-            values["title"] = title
-            values["level"] = level
-            values["order"] = order
+            values = {}
         else:
             values = deepcopy(values)
         # Make sure these items exist in the dictionary.
-        values.setdefault("title", None)
-        values.setdefault("level", None)
-        values.setdefault("order", None)
+        values.setdefault("title", title)
+        values.setdefault("level", level)
+        values.setdefault("order", order)
         if values.get("title") is None:
             values["title"] = "TODO: No section title defined"
         if values.get("level") is None:
@@ -273,23 +297,22 @@ class GlobalConfig(TOMLConfig):
 
     def __init__(
         self,
-        values: dict[str, TOMLValue] | None = None,
-        source: StrPath | None = None,
         changelog: str | None = None,
         markup: str | None = None,
         directory: str | None = None,
-        **kwargs: TOMLValue,
+        values: dict[str, TOMLValue] | None = None,
+        source: StrPath | None = None,
     ):
+        """If *changelog*, *markup*, or *directory* also occur as keys in
+        *values*, then *values* takes precedence.
+        """
         if values is None:
-            values = kwargs
-            values["changelog"] = changelog
-            values["markup"] = markup
-            values["directory"] = directory
+            values = {}
         else:
             values = deepcopy(values)
-        values.setdefault("changelog", None)
-        values.setdefault("markup", None)
-        values.setdefault("directory", None)
+        values.setdefault("changelog", changelog)
+        values.setdefault("markup", markup)
+        values.setdefault("directory", directory)
         super().__init__(values, source=source)
 
     @classmethod

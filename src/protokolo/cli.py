@@ -12,7 +12,11 @@ import click
 
 from .compile import Section
 from .config import GlobalConfig
-from .exceptions import DictTypeError
+from .exceptions import (
+    AttributeNotPositiveError,
+    DictTypeError,
+    HeaderFormatError,
+)
 from .types import SupportedMarkup
 
 
@@ -27,14 +31,13 @@ def cli(ctx: click.Context) -> None:
 
     if ctx.invoked_subcommand in ["compile"]:
         # TODO: Make directory to search configurable.
+        cwd = Path.cwd()
         config_path = GlobalConfig.find_config(Path.cwd())
         if config_path:
-            # TODO: error handling
+            config_path = config_path.relative_to(cwd)
             try:
                 config = GlobalConfig.from_file(config_path)
-            except tomllib.TOMLDecodeError as error:
-                raise click.UsageError(str(error)) from error
-            except DictTypeError as error:
+            except (tomllib.TOMLDecodeError, DictTypeError, OSError) as error:
                 raise click.UsageError(str(error)) from error
             ctx.default_map["compile"] = {
                 "changelog": config.changelog,
@@ -112,18 +115,33 @@ def compile_(
     for _ in (ctx,):
         pass
     # TODO: make all of this nicer.
-    # TODO: error handling
-    section = Section.from_directory(directory, markup=markup)
-    # TODO: error handling
-    new_section = section.compile()
-    fp: TextIOWrapper
-    with changelog.open() as fp:  # type: ignore
-        # TODO: use buffer reading, probably
-        contents = fp.read()
-        new_contents = contents.replace(
-            "<!-- protokolo-section-tag -->",
-            f"<!-- protokolo-section-tag -->\n\n{new_section}",
-        )
-        fp.seek(0)
-        fp.write(new_contents)
-        fp.truncate()
+    try:
+        section = Section.from_directory(directory, markup=markup)
+    except (
+        tomllib.TOMLDecodeError,
+        DictTypeError,
+        AttributeNotPositiveError,
+        OSError,
+    ) as error:
+        raise click.UsageError(str(error)) from error
+
+    try:
+        new_section = section.compile()
+    except HeaderFormatError as error:
+        raise click.UsageError(str(error)) from error
+
+    try:
+        fp: TextIOWrapper
+        with changelog.open() as fp:  # type: ignore
+            # TODO: use buffer reading, probably
+            contents = fp.read()
+            new_contents = contents.replace(
+                "<!-- protokolo-section-tag -->",
+                f"<!-- protokolo-section-tag -->\n\n{new_section}",
+            )
+            fp.seek(0)
+            fp.write(new_contents)
+            fp.truncate()
+    except OSError as error:
+        # TODO: test this
+        raise click.UsageError(str(error))

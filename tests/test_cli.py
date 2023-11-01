@@ -92,10 +92,7 @@ class TestCompile:
             ],
         )
         assert result.exit_code != 0
-        assert (
-            f"Error: Invalid TOML in"
-            f" {repr(str(Path('.protokolo.toml').absolute()))}" in result.output
-        )
+        assert "Error: Invalid TOML in '.protokolo.toml'" in result.output
 
     def test_global_config_wrong_type(self, runner):
         """An element has the wrong type."""
@@ -119,5 +116,145 @@ class TestCompile:
             ],
         )
         assert result.exit_code != 0
-        # TODO: finish writing this test. the source of the file needs to be
-        # shown in the error.
+        assert (
+            "Error: .protokolo.toml: 'changelog' does not have the correct"
+            " type. Expected str | None. Got 1."
+        ) in result.output
+
+    def test_global_config_not_readable(self, runner):
+        """.protokolo.toml is not readable (or any other OSError, really)."""
+        Path(".protokolo.toml").touch()
+        Path(".protokolo.toml").chmod(0o100)  # write-only
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code != 0
+        assert "Permission denied" in result.output
+
+    def test_section_config_parse_error(self, runner):
+        """.protokolo.toml cannot be parsed."""
+        Path("changelog.d/.protokolo.toml").write_text("{'Foo")
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code != 0
+        assert (
+            "Error: Invalid TOML in 'changelog.d/.protokolo.toml'"
+            in result.output
+        )
+
+    def test_section_config_wrong_type(self, runner):
+        """An element has the wrong type."""
+        Path("changelog.d/.protokolo.toml").write_text(
+            cleandoc(
+                """
+                [protokolo.section]
+                title = 1
+                """
+            )
+        )
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code != 0
+        assert (
+            "Error: changelog.d/.protokolo.toml:"
+            " 'title' does not have the correct type. Expected str. Got 1."
+        ) in result.output
+
+    def test_section_config_not_positive(self, runner):
+        """An element has should be positive."""
+        Path("changelog.d/.protokolo.toml").write_text(
+            cleandoc(
+                """
+                [protokolo.section]
+                level = -1
+                """
+            )
+        )
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code != 0
+        assert (
+            "Error: Wrong value in 'changelog.d/.protokolo.toml': level must be"
+            " a positive integer, got -1" in result.output
+        )
+
+    def test_section_config_not_readable(self, runner):
+        """.protokolo.toml is not readable (or any other OSError, really)."""
+        Path("changelog.d/.protokolo.toml").touch()
+        Path("changelog.d/.protokolo.toml").chmod(0o100)  # write-only
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code != 0
+        assert "Permission denied" in result.output
+
+    def test_header_format_error(self, runner):
+        """Could not format a header."""
+        Path("changelog.d/.protokolo.toml").write_text(
+            cleandoc(
+                """
+                [protokolo.section]
+                level = 10
+                """
+            )
+        )
+        Path("changelog.d/foo.rst").write_text("Foo")
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.rst",
+                "--markup",
+                "restructuredtext",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code != 0
+        assert (
+            "Error: Failed to format section header of 'changelog.d': Header"
+            " level 10 is too deep." in result.output
+        )

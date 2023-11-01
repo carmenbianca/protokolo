@@ -77,6 +77,7 @@ class TestCompile:
             )
             in changelog
         )
+        assert not Path("changelog.d/foo.md").exists()
 
     def test_global_config_parse_error(self, runner):
         """.protokolo.toml cannot be parsed."""
@@ -259,3 +260,130 @@ class TestCompile:
             "Error: Failed to format section header of 'changelog.d': Header"
             " level 10 is too deep." in result.output
         )
+
+    def test_nothing_to_compile(self, runner):
+        """There are no change log entries."""
+        changelog = Path("CHANGELOG.md").read_text()
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code == 0
+        assert result.output == "There are no change log entries to compile.\n"
+        assert Path("CHANGELOG.md").read_text() == changelog
+
+    def test_no_replacement_tag(self, runner):
+        """There is no protokolo-section-tag in CHANGELOG."""
+        Path("CHANGELOG.md").write_text("Hello, world!")
+        Path("changelog.d/foo.md").write_text("Foo")
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code != 0
+        assert (
+            "Error: There is no 'protokolo-section-tag' in 'CHANGELOG.md'"
+            in result.output
+        )
+
+    @freeze_time("2023-11-08")
+    def test_nested_entries_deleted(self, runner):
+        """Entries in nested sections are also deleted, but other files are
+        not.
+        """
+        Path("changelog.d/feature/foo.md").write_text("Foo")
+        Path("changelog.d/feature/bar.txt").write_text("Bar")
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code == 0
+        changelog = Path("CHANGELOG.md").read_text()
+
+        assert (
+            cleandoc(
+                """
+                Lorem ipsum.
+
+                <!-- protokolo-section-tag -->
+
+                ## ${version} - 2023-11-08
+
+                ### Features
+
+                Foo
+
+                ## 0.1.0 - 2020-01-01
+                """
+            )
+            in changelog
+        )
+        assert not Path("changelog.d/feature/foo.md").exists()
+        assert Path("changelog.d/feature/bar.txt").exists()
+
+    @freeze_time("2023-11-08")
+    def test_restructuredtext(self, runner):
+        """A simple test, but for restructuredtext."""
+        Path("changelog.d/foo.rst").write_text("Foo")
+        Path("changelog.d/feature/bar.rst").write_text("Bar")
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.rst",
+                "--markup",
+                "restructuredtext",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code == 0
+        changelog = Path("CHANGELOG.rst").read_text()
+
+        assert (
+            cleandoc(
+                """
+                Lorem ipsum.
+
+                ..
+                    protokolo-section-tag
+
+                ${version} - 2023-11-08
+                =======================
+
+                Foo
+
+                Features
+                --------
+
+                Bar
+
+                0.1.0 - 2020-01-01
+                ==================
+                """
+            )
+            in changelog
+        )
+        assert not Path("changelog.d/feature/bar.rst").exists()
+        assert not Path("changelog.d/foo.rst").exists()

@@ -42,7 +42,8 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
 
             Lorem ipsum.
 
-            <!-- protokolo-section-tag -->
+            ..
+                protokolo-section-tag
 
             0.1.0 - 2020-01-01
             ==================

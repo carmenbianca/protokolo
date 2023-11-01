@@ -152,7 +152,11 @@ class Section:
         entries = set()
         for path in directory.iterdir():
             if path.is_dir():
-                subsections.add(self.from_directory(path, level=level + 1))
+                subsections.add(
+                    self.from_directory(
+                        path, level=level + 1, markup=self.markup
+                    )
+                )
             elif (
                 path.is_file()
                 and path.suffix in _MARKUP_EXTENSION_MAPPING[self.markup]

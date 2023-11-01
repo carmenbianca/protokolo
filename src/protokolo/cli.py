@@ -4,12 +4,14 @@
 
 """Main entry of program."""
 
+import os
 import tomllib
 from io import TextIOWrapper
 from pathlib import Path
 
 import click
 
+from ._formatter import MARKUP_EXTENSION_MAPPING as _MARKUP_EXTENSION_MAPPING
 from .compile import Section
 from .config import GlobalConfig
 from .exceptions import (
@@ -115,7 +117,8 @@ def compile_(
     # TODO: use these args.
     for _ in (ctx,):
         pass
-    # TODO: make all of this nicer.
+
+    # Create Section
     try:
         section = Section.from_directory(directory, markup=markup)
     except (
@@ -126,28 +129,41 @@ def compile_(
     ) as error:
         raise click.UsageError(str(error)) from error
 
+    # Compile Section
     try:
         new_section = section.compile()
     except HeaderFormatError as error:
         raise click.UsageError(str(error)) from error
 
     if not new_section:
-        # TODO: exit early.
-        pass
+        click.echo("There are no change log entries to compile.")
+        return
 
+    # Write to CHANGELOG
     try:
         fp: TextIOWrapper
         with changelog.open() as fp:  # type: ignore
             # TODO: use buffer reading, probably
             contents = fp.read()
+            # TODO: magic variable
             lineno = find_first_occurrence("protokolo-section-tag", contents)
             if lineno is None:
-                # TODO: message, test
-                raise click.UsageError("TODO")
+                raise click.UsageError(
+                    f"There is no 'protokolo-section-tag' in"
+                    f" {repr(changelog.name)}."
+                )
             new_contents = insert_into_str(f"\n{new_section}", contents, lineno)
             fp.seek(0)
             fp.write(new_contents)
             fp.truncate()
     except OSError as error:
-        # TODO: test this
+        # TODO: This is a little tricky to test. click already exits early if
+        # changelog isn't readable/writable.
         raise click.UsageError(str(error))
+
+    # Delete change log entries
+    for dirpath, _, filenames in os.walk(directory):
+        for filename in filenames:
+            path = Path(dirpath) / filename
+            if path.suffix in _MARKUP_EXTENSION_MAPPING[markup]:
+                path.unlink()

@@ -183,3 +183,15 @@ class TestReStructuredTextFormatter:
             ReStructuredTextFormatter.format_section(
                 SectionAttributes(title="Foo", level=10)
             )
+
+    def test_format_with_replacement(self):
+        """The length of the section symbols adjusts to the rendered text."""
+        assert ReStructuredTextFormatter.format_section(
+            SectionAttributes(title="Foo $bar", level=1, values={"bar": "bar"})
+        ) == cleandoc(
+            """
+            =======
+            Foo bar
+            =======
+            """
+        )

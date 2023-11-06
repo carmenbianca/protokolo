@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from datetime import date
 from inspect import cleandoc
 from string import Template
+from typing import cast
 
 from .config import SectionAttributes
 from .exceptions import HeaderFormatError
@@ -35,8 +36,8 @@ class MarkupFormatter(ABC):
 
         """
         cls._validate(attrs)
-        text = cls._format_section(attrs)
-        return cls._format_output(text, attrs)
+        title = cls._format_output(attrs)
+        return cls._format_section(title, attrs)
 
     @classmethod
     def _validate(cls, attrs: SectionAttributes) -> None:
@@ -53,20 +54,20 @@ class MarkupFormatter(ABC):
 
     @classmethod
     @abstractmethod
-    def _format_section(cls, attrs: SectionAttributes) -> str:
+    def _format_section(cls, title: str, attrs: SectionAttributes) -> str:
         ...
 
     @classmethod
-    def _format_output(cls, text: str, attrs: SectionAttributes) -> str:
+    def _format_output(cls, attrs: SectionAttributes) -> str:
         values = attrs.as_dict()
         # No recursive funny stuff.
-        values.pop("title")
+        title = cast(str, values.pop("title"))
         # Don't render None.
         values = {
             key: value for key, value in values.items() if value is not None
         }
         values.setdefault("date", date.today())
-        template = Template(text)
+        template = Template(title)
         return template.safe_substitute(**values)
 
 
@@ -74,9 +75,9 @@ class MarkdownFormatter(MarkupFormatter):
     """A Markdown formatter."""
 
     @classmethod
-    def _format_section(cls, attrs: SectionAttributes) -> str:
+    def _format_section(cls, title: str, attrs: SectionAttributes) -> str:
         pound_signs = f"{'#' * attrs.level}"
-        return f"{pound_signs} {attrs.title}"
+        return f"{pound_signs} {title}"
 
 
 class ReStructuredTextFormatter(MarkupFormatter):
@@ -102,13 +103,13 @@ class ReStructuredTextFormatter(MarkupFormatter):
             raise HeaderFormatError(f"Header level {attrs.level} is too deep.")
 
     @classmethod
-    def _format_section(cls, attrs: SectionAttributes) -> str:
+    def _format_section(cls, title: str, attrs: SectionAttributes) -> str:
         sign = cls._levels[attrs.level]
-        length = len(attrs.title)
+        length = len(title)
         return cleandoc(
             f"""
             {sign * length if attrs.level == 1 else ''}
-            {attrs.title}
+            {title}
             {sign * length}
             """
         )

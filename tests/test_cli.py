@@ -469,3 +469,12 @@ class TestInit:
         assert Path("CHANGELOG.md").read_text() == "foo"
         assert Path("changelog.d/.protokolo.toml").read_text() == "foo"
         assert Path("changelog.d/added/.protokolo.toml").read_text() == "foo"
+
+    def test_oserror(self, empty_runner):
+        """Handle OSErrors"""
+        empty_runner.invoke(cli, ["init"])
+        Path("changelog.d/added/.protokolo.toml").unlink()
+        Path("changelog.d/added").chmod(0o100)  # write-only
+        result = empty_runner.invoke(cli, ["init"])
+        assert result.exit_code != 0
+        assert "Permission denied" in result.output

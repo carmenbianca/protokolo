@@ -74,12 +74,26 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
             """
         )
     )
-    monkeypatch.chdir(directory)
 
+    monkeypatch.chdir(directory)
+    return directory
+
+
+@pytest.fixture()
+def empty_dir(tmpdir_factory, monkeypatch) -> Path:
+    """Create a temporary empty directory."""
+    directory = Path(str(tmpdir_factory.mktemp("project_dir")))
+    monkeypatch.chdir(directory)
     return directory
 
 
 @pytest.fixture()
 def runner(project_dir) -> CliRunner:
     """Return a :class:`CliRunner` for a :func:`project_dir`."""
+    return CliRunner()
+
+
+@pytest.fixture()
+def empty_runner(empty_dir) -> CliRunner:
+    """Return a :class:`CliRunner` for an :func:`empty_dir`."""
     return CliRunner()

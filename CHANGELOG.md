@@ -6,8 +6,8 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 
 # Change log
 
-This change log follows the [Keep a Changelog](http://keepachangelog.com/) spec.
-Every release contains the following sections:
+This change log follows the [Keep a Changelog](http://keepachangelog.com/)
+recommendations. Every release contains the following sections:
 
 - `Added` for new features.
 - `Changed` for changes in existing functionality.

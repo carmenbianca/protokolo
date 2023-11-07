@@ -12,6 +12,7 @@ from pathlib import Path
 import click
 
 from ._formatter import MARKUP_EXTENSION_MAPPING as _MARKUP_EXTENSION_MAPPING
+from ._util import create_changelog, create_keep_a_changelog
 from .compile import Section
 from .config import GlobalConfig
 from .exceptions import (
@@ -32,7 +33,8 @@ def cli(ctx: click.Context) -> None:
     if ctx.default_map is None:
         ctx.default_map = {}
 
-    if ctx.invoked_subcommand in ["compile"]:
+    # Only load the global config if the subcommand needs it.
+    if ctx.invoked_subcommand in ["compile", "init"]:
         # TODO: Make directory to search configurable.
         cwd = Path.cwd()
         config_path = GlobalConfig.find_config(Path.cwd())
@@ -42,7 +44,13 @@ def cli(ctx: click.Context) -> None:
                 config = GlobalConfig.from_file(config_path)
             except (tomllib.TOMLDecodeError, DictTypeError, OSError) as error:
                 raise click.UsageError(str(error)) from error
+            # TODO: reuse this repetition maybe?
             ctx.default_map["compile"] = {
+                "changelog": config.changelog,
+                "markup": config.markup,
+                "directory": config.directory,
+            }
+            ctx.default_map["init"] = {
                 "changelog": config.changelog,
                 "markup": config.markup,
                 "directory": config.directory,
@@ -52,17 +60,17 @@ def cli(ctx: click.Context) -> None:
 @cli.command(name="compile")
 @click.option(
     "--changelog",
+    show_default="determined by config",
     type=click.File("r+", encoding="utf-8", lazy=True),
     required=True,
-    show_default="determined by config",
-    help="file into which to compile.",
+    help="File into which to compile.",
 )
 @click.option(
     "--markup",
     default="markdown",
-    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
     show_default="determined by config, or markdown",
-    help="markup language.",
+    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
+    help="Markup language.",
 )
 @click.argument(
     "directory",
@@ -75,9 +83,7 @@ def cli(ctx: click.Context) -> None:
     ),
     required=True,
 )
-@click.pass_context
 def compile_(
-    ctx: click.Context,
     changelog: click.File,
     markup: SupportedMarkup,
     directory: Path,
@@ -114,10 +120,6 @@ def compile_(
 
     For more documentation and options, read the documentation at TODO.
     """
-    # TODO: use these args.
-    for _ in (ctx,):
-        pass
-
     # Create Section
     try:
         section = Section.from_directory(directory, markup=markup)
@@ -167,3 +169,67 @@ def compile_(
             path = Path(dirpath) / filename
             if path.suffix in _MARKUP_EXTENSION_MAPPING[markup]:
                 path.unlink()
+
+
+@cli.command(name="init")
+@click.option(
+    "--changelog",
+    default="CHANGELOG.md",
+    show_default="determined by config, or CHANGELOG.md",
+    type=click.File("w", encoding="utf-8", lazy=True),
+    help="CHANGELOG file to create.",
+)
+@click.option(
+    "--markup",
+    default="markdown",
+    show_default="determined by config, or markdown",
+    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
+    help="Markup language.",
+)
+@click.option(
+    "--directory",
+    default="changelog.d",
+    show_default="determined by config, or changelog.d",
+    type=click.Path(
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        path_type=Path,
+    ),
+    help="Directory of change log sections and entries.",
+)
+def init(
+    changelog: click.File,
+    markup: SupportedMarkup,
+    directory: Path,
+) -> None:
+    """Set up your project to be ready to use Protokolo. It creates a
+    CHANGELOG.md file, a changelog.d directory with subsections that match the
+    Keep a Changelog recommendations, and .protokolo.toml files with metadata
+    for those (sub)sections. The end result looks a little like this:
+
+    \b
+    .
+    ├── changelog.d
+    │   ├── added
+    │   │   └── .protokolo.toml
+    │   ├── changed
+    │   │   └── .protokolo.toml
+    │   ├── deprecated
+    │   │   └── .protokolo.toml
+    │   ├── fixed
+    │   │   └── .protokolo.toml
+    │   ├── removed
+    │   │   └── .protokolo.toml
+    │   ├── security
+    │   │   └── .protokolo.toml
+    │   └── .protokolo.toml
+    └── CHANGELOG.md
+
+    Files that already exist are never overwritten.
+    """
+    try:
+        create_changelog(changelog.name, markup)
+        create_keep_a_changelog(directory)
+    except OSError as error:
+        raise click.UsageError(str(error))

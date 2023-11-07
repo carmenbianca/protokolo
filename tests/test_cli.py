@@ -387,3 +387,85 @@ class TestCompile:
         )
         assert not Path("changelog.d/feature/bar.rst").exists()
         assert not Path("changelog.d/foo.rst").exists()
+
+
+class TestInit:
+    """Collect all tests for init."""
+
+    def test_help_is_not_default(self, runner):
+        """--help is not the default action."""
+        without_help = runner.invoke(cli, ["init"])
+        with_help = runner.invoke(cli, ["init", "--help"])
+        assert without_help.output != with_help.output
+        assert without_help.exit_code != 0
+        assert with_help.exit_code == 0
+
+    def test_simple(self, empty_runner):
+        """Use without any parameters; correctly set up files."""
+        result = empty_runner.invoke(cli, ["init"])
+        assert result.exit_code == 0
+        assert "# Change log" in Path("CHANGELOG.md").read_text()
+        main_section_toml = Path("changelog.d/.protokolo.toml").read_text()
+        assert "[protokolo.section]" in main_section_toml
+        assert "title =" in main_section_toml
+        assert "level = 2" in main_section_toml
+        sections = [
+            "added",
+            "changed",
+            "deprecated",
+            "removed",
+            "fixed",
+            "security",
+        ]
+        for path in Path("changelog.d").iterdir():
+            assert path.name in sections + [".protokolo.toml"]
+        subsection_toml = Path("changelog.d/added/.protokolo.toml").read_text()
+        assert "[protokolo.section]" in subsection_toml
+        assert 'title = "Added"' in subsection_toml
+        assert "order = 1" in subsection_toml
+        for section in sections:
+            assert Path(f"changelog.d/{section}/.protokolo.toml").is_file()
+
+    def test_changelog_option(self, empty_runner):
+        """Use with --changelog option."""
+        result = empty_runner.invoke(cli, ["init", "--changelog", "CHANGELOG"])
+        assert result.exit_code == 0
+        assert "# Change log" in Path("CHANGELOG").read_text()
+        assert not Path("CHANGELOG.md").exists()
+
+    def test_markup_option(self, empty_runner):
+        """Use with --markup option."""
+        result = empty_runner.invoke(
+            cli, ["init", "--markup", "restructuredtext"]
+        )
+        assert result.exit_code == 0
+        assert (
+            "==========\nChange log\n=========="
+            in Path("CHANGELOG.md").read_text()
+        )
+
+    def test_directory_option(self, empty_runner):
+        """Use with --directory option."""
+        result = empty_runner.invoke(cli, ["init", "--directory", "foo"])
+        assert result.exit_code == 0
+        assert Path("foo").is_dir()
+        assert Path("foo/.protokolo.toml").exists()
+        assert not Path("changelog.d").exists()
+
+    def test_run_twice(self, empty_runner):
+        """Invoke twice without problems."""
+        empty_runner.invoke(cli, ["init"])
+        result = empty_runner.invoke(cli, ["init"])
+        assert result.exit_code == 0
+
+    def test_do_not_override(self, empty_runner):
+        """Do not override contents of files."""
+        empty_runner.invoke(cli, ["init"])
+        Path("CHANGELOG.md").write_text("foo")
+        Path("changelog.d/.protokolo.toml").write_text("foo")
+        Path("changelog.d/added/.protokolo.toml").write_text("foo")
+        result = empty_runner.invoke(cli, ["init"])
+        assert result.exit_code == 0
+        assert Path("CHANGELOG.md").read_text() == "foo"
+        assert Path("changelog.d/.protokolo.toml").read_text() == "foo"
+        assert Path("changelog.d/added/.protokolo.toml").read_text() == "foo"

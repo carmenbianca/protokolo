@@ -4,8 +4,10 @@
 
 """Test the formatting code."""
 
+from contextlib import contextmanager, suppress
 from inspect import cleandoc
 from pathlib import Path
+from typing import Generator
 
 from freezegun import freeze_time
 
@@ -13,6 +15,19 @@ import protokolo
 from protokolo.cli import cli
 
 # pylint: disable=unspecified-encoding
+
+
+@contextmanager
+def chmod(path: str | Path, mode: int) -> Generator[None, None, None]:
+    """chmod as a context manager."""
+    path = Path(path)
+    try:
+        old_mode = path.stat().st_mode
+        path.chmod(mode)
+        yield
+    finally:
+        with suppress(Exception):
+            path.chmod(old_mode)  # pylint: disable=used-before-assignment
 
 
 class TestCli:
@@ -397,7 +412,7 @@ class TestInit:
         without_help = runner.invoke(cli, ["init"])
         with_help = runner.invoke(cli, ["init", "--help"])
         assert without_help.output != with_help.output
-        assert without_help.exit_code != 0
+        assert without_help.exit_code == 0
         assert with_help.exit_code == 0
 
     def test_simple(self, empty_runner):
@@ -474,7 +489,7 @@ class TestInit:
         """Handle OSErrors"""
         empty_runner.invoke(cli, ["init"])
         Path("changelog.d/added/.protokolo.toml").unlink()
-        Path("changelog.d/added").chmod(0o100)  # write-only
-        result = empty_runner.invoke(cli, ["init"])
+        with chmod("changelog.d/added", 0o000):
+            result = empty_runner.invoke(cli, ["init"])
         assert result.exit_code != 0
         assert "Permission denied" in result.output

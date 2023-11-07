@@ -94,9 +94,11 @@ some change log entries go first or last, prefix the file with `000_` or `zzz_`.
 For example, you can create `changelog.d/added/000_important_feature.md` to make
 it appear first.
 
-Finally, compile your change log with `protokolo compile`. This will take all
-change log entries and put them in your `CHANGELOG.md`. If we run it now, the
-following section is added after the `<!-- protokolo-section-tag -->` comment:
+Finally, compile your change log with
+`protokolo compile --changelog CHANGELOG.md changelog.d`. This will take all
+change log entries from `changelog.d` and put them in your `CHANGELOG.md`. If we
+run it now, the following section is added after the
+`<!-- protokolo-section-tag -->` comment:
 
 ```markdown
 ## ${version} - 2023-11-08

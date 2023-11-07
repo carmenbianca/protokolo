@@ -18,6 +18,18 @@ recommendations. Every release contains the following sections:
 
 <!-- protokolo-section-tag -->
 
+## 0.2.0 - 2023-11-07
+
+This is the prototype release of Protokolo. It contains the most basic
+functionality and limited documentation, but is a minimum viable product. You
+can:
+
+- Compile the `changelog.d` directory into a CHANGELOG file with
+  `protokolo compile`.
+- Create the `changelog.d` directory with `protokolo init`.
+- Configure some bits and bobs in `.protokolo.toml` files.
+- Use both Markdown and reStructuredText.
+
 ## 0.1.0 - 2023-10-20
 
 This release doesn't contain much of anything. I made it to claim the namespace

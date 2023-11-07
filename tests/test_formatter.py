@@ -12,7 +12,7 @@ from freezegun import freeze_time
 
 from protokolo._formatter import MarkdownFormatter, ReStructuredTextFormatter
 from protokolo.config import SectionAttributes
-from protokolo.exceptions import HeaderFormatError
+from protokolo.exceptions import HeadingFormatError
 
 
 class TestMarkdownFormatter:
@@ -48,7 +48,7 @@ class TestMarkdownFormatter:
 
     def test_format_section_no_title(self):
         """Cannot format a section without a title."""
-        with pytest.raises(HeaderFormatError):
+        with pytest.raises(HeadingFormatError):
             MarkdownFormatter.format_section(
                 SectionAttributes(title="", level=1)
             )
@@ -57,14 +57,14 @@ class TestMarkdownFormatter:
         """A section must have a level."""
         attrs = SectionAttributes(title="Foo", level=1)
         attrs.level = 0
-        with pytest.raises(HeaderFormatError):
+        with pytest.raises(HeadingFormatError):
             MarkdownFormatter.format_section(attrs)
 
     def test_format_section_negative_level(self):
         """Level cannot be negative."""
         attrs = SectionAttributes(title="Foo", level=1)
         attrs.level = -1
-        with pytest.raises(HeaderFormatError):
+        with pytest.raises(HeadingFormatError):
             MarkdownFormatter.format_section(attrs)
 
     def test_format_section_format_simple(self):
@@ -179,7 +179,7 @@ class TestReStructuredTextFormatter:
 
     def test_format_section_level_too_deep(self):
         """Very deep sections are not supported."""
-        with pytest.raises(HeaderFormatError):
+        with pytest.raises(HeadingFormatError):
             ReStructuredTextFormatter.format_section(
                 SectionAttributes(title="Foo", level=10)
             )

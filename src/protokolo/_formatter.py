@@ -11,7 +11,7 @@ from string import Template
 from typing import cast
 
 from .config import SectionAttributes
-from .exceptions import HeaderFormatError
+from .exceptions import HeadingFormatError
 
 # pylint: disable=too-few-public-methods
 
@@ -21,7 +21,7 @@ class MarkupFormatter(ABC):
 
     @classmethod
     def format_section(cls, attrs: SectionAttributes) -> str:
-        """Format a title as a section header. For instance, a level-2 Markdown
+        """Format a title as a section heading. For instance, a level-2 Markdown
         section might look like this::
 
             ## Hello, world
@@ -32,7 +32,7 @@ class MarkupFormatter(ABC):
         replaced by a single ``$``.
 
         Raises:
-            HeaderFormatError: could not format the header as given.
+            HeadingFormatError: could not format the heading as given.
 
         """
         cls._validate(attrs)
@@ -43,14 +43,14 @@ class MarkupFormatter(ABC):
     def _validate(cls, attrs: SectionAttributes) -> None:
         """
         Raises:
-            HeaderFormatError: could not format the header as given.
+            HeadingFormatError: could not format the heading as given.
         """
         # This is technically invalid. Valid attrs do not have a non-positive
         # level.
         if attrs.level <= 0:
-            raise HeaderFormatError(f"Level {attrs.level} must be positive.")
+            raise HeadingFormatError(f"Level {attrs.level} must be positive.")
         if not attrs.title:
-            raise HeaderFormatError("title cannot be empty.")
+            raise HeadingFormatError("title cannot be empty.")
 
     @classmethod
     @abstractmethod
@@ -86,7 +86,7 @@ class ReStructuredTextFormatter(MarkupFormatter):
     # TODO: Honestly this should be more flexible, but the amount of engineering
     # it would take to achieve that is beyond the scope of what I want to do.
     # What were the designers of reST thinking when they didn't define the
-    # header hierarchy?
+    # heading hierarchy?
     _levels = {
         1: "=",  # Special case.
         2: "=",
@@ -100,7 +100,9 @@ class ReStructuredTextFormatter(MarkupFormatter):
     def _validate(cls, attrs: SectionAttributes) -> None:
         super()._validate(attrs)
         if attrs.level > len(cls._levels):
-            raise HeaderFormatError(f"Header level {attrs.level} is too deep.")
+            raise HeadingFormatError(
+                f"Heading level {attrs.level} is too deep."
+            )
 
     @classmethod
     def _format_section(cls, title: str, attrs: SectionAttributes) -> str:

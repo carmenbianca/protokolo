@@ -261,7 +261,7 @@ class SectionAttributes(TOMLConfig):
 
     @property
     def level(self) -> int:
-        """The level of the section header, which must not be zero or lower."""
+        """The level of the section heading, which must not be zero or lower."""
         return cast(int, self["level"])
 
     @level.setter

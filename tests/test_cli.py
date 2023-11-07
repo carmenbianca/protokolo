@@ -248,8 +248,8 @@ class TestCompile:
         assert result.exit_code != 0
         assert "Permission denied" in result.output
 
-    def test_header_format_error(self, runner):
-        """Could not format a header."""
+    def test_heading_format_error(self, runner):
+        """Could not format a heading."""
         Path("changelog.d/.protokolo.toml").write_text(
             cleandoc(
                 """
@@ -272,7 +272,7 @@ class TestCompile:
         )
         assert result.exit_code != 0
         assert (
-            "Error: Failed to format section header of 'changelog.d': Header"
+            "Error: Failed to format section heading of 'changelog.d': Heading"
             " level 10 is too deep." in result.output
         )
 

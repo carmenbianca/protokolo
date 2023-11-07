@@ -18,7 +18,7 @@ from .config import GlobalConfig
 from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
-    HeaderFormatError,
+    HeadingFormatError,
 )
 from .replace import find_first_occurrence, insert_into_str
 from .types import SupportedMarkup
@@ -88,10 +88,8 @@ def compile_(
     markup: SupportedMarkup,
     directory: Path,
 ) -> None:
-    """Compile a directory of change log entries into a CHANGELOG file.
-    Directories and subdirectories are analogous to sections and subsections,
-    and files are analogous to change log entries, typically list items in a
-    section.
+    """Aggregate all change log entries from files in a directory into a
+    CHANGELOG file.
 
     A change log directory should contain a '.protokolo.toml' file that defines
     some attributes of the section. This is an example file:
@@ -105,16 +103,11 @@ def compile_(
 
     ## 1.0.0 - 2023-11-08
 
-    The section header is followed by the contents of files in the section's
-    directory. The file contents are pasted as-is into the section, separated as
-    paragraphs. The entries are sorted alphabetically by file name. If you want
-    a file to go first or last, prefix it with '000_' or 'zzz_'. Only files with
-    your markup language's file extension (e.g. .md) are compiled as entries.
-
+    The heading is followed by the contents of files in the section's directory.
     If a section is empty (no change log entries), it is not compiled.
 
     The CHANGELOG file should contain the following comment, which is the
-    location in the file where compiled sections will be pasted:
+    location in the file after which the compiled section will be pasted:
 
     <!-- protokolo-section-tag -->
 
@@ -134,7 +127,7 @@ def compile_(
     # Compile Section
     try:
         new_section = section.compile()
-    except HeaderFormatError as error:
+    except HeadingFormatError as error:
         raise click.UsageError(str(error)) from error
 
     if not new_section:
@@ -233,3 +226,4 @@ def init(
         create_keep_a_changelog(directory)
     except OSError as error:
         raise click.UsageError(str(error))
+    # TODO: create .protokolo.toml in project dir.

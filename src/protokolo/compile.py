@@ -18,7 +18,7 @@ from ._formatter import MARKUP_FORMATTER_MAPPING as _MARKUP_FORMATTER_MAPPING
 from .config import SectionAttributes, parse_toml
 from .exceptions import (
     AttributeNotPositiveError,
-    HeaderFormatError,
+    HeadingFormatError,
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
 )
@@ -174,7 +174,7 @@ class Section:
         Empty sections are not compiled.
 
         Raises:
-            HeaderFormatError: could not format header of section.
+            HeadingFormatError: could not format heading of section.
         """
         buffer = self.write_to_buffer()
         return buffer.getvalue()
@@ -183,7 +183,7 @@ class Section:
         """Like compile, but writing to a StringIO buffer.
 
         Raises:
-            HeaderFormatError: could not format header of section.
+            HeadingFormatError: could not format heading of section.
         """
         if buffer is None:
             buffer = StringIO()
@@ -192,15 +192,15 @@ class Section:
             return buffer
 
         try:
-            header = _MARKUP_FORMATTER_MAPPING[self.markup].format_section(
+            heading = _MARKUP_FORMATTER_MAPPING[self.markup].format_section(
                 self.attrs,
             )
-        except HeaderFormatError as error:
-            raise HeaderFormatError(
-                f"Failed to format section header of {repr(str(self.source))}:"
+        except HeadingFormatError as error:
+            raise HeadingFormatError(
+                f"Failed to format section heading of {repr(str(self.source))}:"
                 f" {str(error)}"
             ) from error
-        buffer.write(header)
+        buffer.write(heading)
 
         for entry in self.sorted_entries():
             buffer.write("\n\n")

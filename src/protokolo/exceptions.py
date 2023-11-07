@@ -96,5 +96,5 @@ class ProtokoloTOMLIsADirectoryError(IsADirectoryError, ProtokoloTOMLError):
     """.protokolo.toml is not a file."""
 
 
-class HeaderFormatError(ValueError, ProtokoloError):
-    """Could not create header."""
+class HeadingFormatError(ValueError, ProtokoloError):
+    """Could not create heading."""

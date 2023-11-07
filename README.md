@@ -44,11 +44,76 @@ a new section in CHANGELOG, and delete the files.
 
 ## Install
 
-TODO
+Protokolo is a regular Python package. You can install it using
+`pipx install protokolo`. Make sure that `~/.local/share/bin` is in your `$PATH`
+with `pipx ensurepath`.
 
 ## Usage
 
-TODO
+To set up your project for use with Protokolo, run `protokolo init`. This will
+create a `CHANGELOG.md` file (if one did not already exist) and a directory
+structure under `changelog.d`. The directory structure uses the
+[Keep a Changelog](https://keepachangelog.com/) sections, and ends up looking
+like this:
+
+```
+.
+├── changelog.d
+│   ├── added
+│   │   └── .protokolo.toml
+│   ├── changed
+│   │   └── .protokolo.toml
+│   ├── deprecated
+│   │   └── .protokolo.toml
+│   ├── fixed
+│   │   └── .protokolo.toml
+│   ├── removed
+│   │   └── .protokolo.toml
+│   ├── security
+│   │   └── .protokolo.toml
+│   └── .protokolo.toml
+└── CHANGELOG.md
+```
+
+The `.protokolo.toml` files contain metadata for their respective sections; the
+section title, header level, and order. Their inclusion is mandatory.
+
+To add a change log entry, create the file `changelog.d/added/my_feature.md`,
+and write something like:
+
+```markdown
+- Added `--my-new-feature` option.
+```
+
+Note the item dash at the start; Protokolo does not add them for you. What you
+write is exactly what you get.
+
+You can add more files. Change log entries in the same section (read: directory)
+are sorted alphabetically by their file name. If you want to make certain that
+some change log entries go first or last, prefix the file with `000_` or `zzz_`.
+For example, you can create `changelog.d/added/000_important_feature.md` to make
+it appear first.
+
+Finally, compile your change log with `protokolo compile`. This will take all
+change log entries and put them in your `CHANGELOG.md`. If we run it now, the
+following section is added after the `<!-- protokolo-section-tag -->` comment:
+
+```markdown
+## ${version} - 2023-11-08
+
+### Added
+
+- Added important feature.
+
+- Added `--my-new-feature` option.
+```
+
+The Markdown files in `changelog.d/added/` are deleted. You can manually replace
+`${version}` with a release version, or you can pass the option
+`--format version=1.0.0` to `protokolo compile` to format the header at compile
+time (TODO: not implemented yet).
+
+For more documentation and options, read the documentation at TODO.
 
 ## Maintainers
 
@@ -56,7 +121,10 @@ TODO
 
 ## Contributing
 
-TODO
+The code and issue tracker is hosted at
+<https://codeberg.org/carmenbianca/protokolo>. You are welcome to open any
+issues. For pull requests, bug fixes are always welcome, but new features should
+probably be discussed in any issue first.
 
 ## License
 

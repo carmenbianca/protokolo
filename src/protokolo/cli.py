@@ -90,7 +90,7 @@ def compile_(
 ) -> None:
     """Compile a directory of change log entries into a CHANGELOG file.
     Directories and subdirectories are analogous to sections and subsections,
-    and files are analogous to change log entries, typically paragraphs in a
+    and files are analogous to change log entries, typically list items in a
     section.
 
     A change log directory should contain a '.protokolo.toml' file that defines

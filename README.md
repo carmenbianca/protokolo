@@ -76,7 +76,7 @@ like this:
 ```
 
 The `.protokolo.toml` files contain metadata for their respective sections; the
-section title, header level, and order. Their inclusion is mandatory.
+section title, heading level, and order. Their inclusion is mandatory.
 
 To add a change log entry, create the file `changelog.d/added/my_feature.md`,
 and write something like:
@@ -112,7 +112,7 @@ run it now, the following section is added after the
 
 The Markdown files in `changelog.d/added/` are deleted. You can manually replace
 `${version}` with a release version, or you can pass the option
-`--format version=1.0.0` to `protokolo compile` to format the header at compile
+`--format version=1.0.0` to `protokolo compile` to format the heading at compile
 time (TODO: not implemented yet).
 
 For more documentation and options, read the documentation at TODO.

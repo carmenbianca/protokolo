@@ -7,14 +7,20 @@
 from datetime import date, datetime
 from os import PathLike
 from types import UnionType
-from typing import Literal, Mapping
+from typing import Literal, Mapping, TypeAlias
 
-StrPath = str | PathLike
+# pylint: disable=invalid-name
 
-SupportedMarkup = Literal["markdown", "restructuredtext"]
+#: Anything that looks like a path.
+StrPath: TypeAlias = str | PathLike
 
-TOMLType = Mapping[str, "TOMLValue"]
-TOMLValue = (
+#: The supported markup languages.
+SupportedMarkup: TypeAlias = Literal["markdown", "restructuredtext"]
+
+#: A TOML dictionary.
+TOMLType: TypeAlias = Mapping[str, "TOMLValue"]
+#: All possible types for a value in a TOML dictionary.
+TOMLValue: TypeAlias = (
     str
     | int
     | float
@@ -25,10 +31,13 @@ TOMLValue = (
     | TOMLType
     | list["TOMLType"]
 )
-# Like TOMLValue, but using only Python primitives.
+#: Like :ref:`TOMLValue`, but using only Python primitives.
 TOMLValueType: UnionType = (
     str | int | float | bool | datetime | date | None | dict | list
 )
 
-NestedTypeDict = Mapping[str, "NestedTypeValue"]
-NestedTypeValue = type | UnionType | NestedTypeDict
+#: A dictionary that details the expected types of a
+#: :class:`.config.TOMLConfig`.
+NestedTypeDict: TypeAlias = Mapping[str, "NestedTypeValue"]
+#: Possible values in a :ref:`NestedTypeDict`: types or nested dictionaries.
+NestedTypeValue: TypeAlias = type | UnionType | NestedTypeDict

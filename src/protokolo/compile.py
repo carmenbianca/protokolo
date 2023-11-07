@@ -73,18 +73,19 @@ class Section:
         level: int = 1,
         markup: SupportedMarkup = "markdown",
     ) -> Self:
-        """Factory method to recursively create a Section from a directory.
+        """Factory method to recursively create a :class:`Section` from a
+        directory.
 
         The *level* keyword argument is overridden by the level value in
-        .protokolo.toml.
+        ``.protokolo.toml``.
 
         Raises:
             OSError: input/output error.
-            ProtokoloTOMLNotFoundError: .protokolo.toml doesn't exist.
-            ProtokoloTOMLIsADirectoryError: .protokolo.toml is not a file.
-            TOMLDecodeError: .protokolo.toml couldn't be parsed.
-            DictTypeError: .protokolo.toml fields have the wrong type.
-            AttributeNotPositiveError: value in .protokolo.toml should be a
+            ProtokoloTOMLNotFoundError: ``.protokolo.toml`` doesn't exist.
+            ProtokoloTOMLIsADirectoryError: ``.protokolo.toml`` is not a file.
+            tomllib.TOMLDecodeError: ``.protokolo.toml`` couldn't be parsed.
+            DictTypeError: ``.protokolo.toml`` fields have the wrong type.
+            AttributeNotPositiveError: value in ``.protokolo.toml`` should be a
                 positive integer.
         """
         directory = Path(directory)
@@ -96,14 +97,14 @@ class Section:
         return section
 
     def _load_section_attributes(self, directory: Path, level: int) -> None:
-        """Locate .protokolo.toml and create a SectionAttributes object from it,
-        then set that object on self.
+        """Locate ``.protokolo.toml`` and create a :class:`SectionAttributes`
+        object from it, then set that object on self.
 
         Raises:
             OSError: input/output error.
-            ProtokoloTOMLNotFoundError: .protokolo.toml doesn't exist.
-            ProtokoloTOMLIsADirectoryError: .protokolo.toml is not a file.
-            TOMLDecodeError: .protokolo.toml couldn't be parsed.
+            ProtokoloTOMLNotFoundError: ``.protokolo.toml`` doesn't exist.
+            ProtokoloTOMLIsADirectoryError: ``.protokolo.toml`` is not a file.
+            tomllib.TOMLDecodeError: ``.protokolo.toml`` couldn't be parsed.
         """
         protokolo_toml = directory / ".protokolo.toml"
         if not protokolo_toml.exists():
@@ -141,11 +142,11 @@ class Section:
 
         Raises:
             OSError: input/output error.
-            ProtokoloTOMLNotFoundError: .protokolo.toml doesn't exist.
-            ProtokoloTOMLIsADirectoryError: .protokolo.toml is not a file.
-            TOMLDecodeError: .protokolo.toml couldn't be parsed.
-            DictTypeError: .protokolo.toml fields have the wrong type.
-            AttributeNotPositiveError: value in .protokolo.toml should be a
+            ProtokoloTOMLNotFoundError: ``.protokolo.toml`` doesn't exist.
+            ProtokoloTOMLIsADirectoryError: ``.protokolo.toml`` is not a file.
+            tomllib.TOMLDecodeError: ``.protokolo.toml`` couldn't be parsed.
+            DictTypeError: ``.protokolo.toml`` fields have the wrong type.
+            AttributeNotPositiveError: value in ``.protokolo.toml`` should be a
                 positive integer.
         """
         subsections = set()
@@ -180,7 +181,7 @@ class Section:
         return buffer.getvalue()
 
     def write_to_buffer(self, buffer: StringIO | None = None) -> StringIO:
-        """Like compile, but writing to a StringIO buffer.
+        """Like compile, but writing to a :class:`StringIO` buffer.
 
         Raises:
             HeadingFormatError: could not format heading of section.
@@ -214,9 +215,9 @@ class Section:
         return buffer
 
     def is_empty(self) -> bool:
-        """A Section is empty if it contains neither entries nor subsections. If
-        it contains no entries, and its subsections are empty, then it is also
-        considered empty.
+        """A :class:`Section` is empty if it contains neither entries nor
+        subsections. If it contains no entries, and its subsections are empty,
+        then it is also considered empty.
         """
         if self.entries:
             return False

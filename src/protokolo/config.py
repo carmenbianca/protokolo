@@ -31,7 +31,8 @@ def parse_toml(
     Args:
         toml: A TOML string or binary file object.
         sections: A list of nested sections, for example
-            ["protokolo", "section"] to return the values of [protokolo.section]
+            ``["protokolo", "section"]`` to return the values of
+            ``[protokolo.section]``
 
     Raises:
         TypeError: *toml* is not a valid type.
@@ -76,9 +77,10 @@ class TOMLConfig:
     def from_dict(
         cls, values: dict[str, Any], source: StrPath | None = None
     ) -> Self:
-        """Generate TOMLConfig from a dictionary containing the keys and values.
-        This is useless for the TOMLConfig base class, but potentially useful
-        for subclasses that change the ``__init__`` signature.
+        """Generate :class:`TOMLConfig` from a dictionary containing the keys
+        and values. This is useless for the :class:`TOMLConfig` base class, but
+        potentially useful for subclasses that change the ``__init__``
+        signature.
 
         Raises:
             DictTypeError: value isn't an expected/supported type.
@@ -106,7 +108,7 @@ class TOMLConfig:
         nested_itemgetter(*keys)(self._config)[final_key] = value
 
     def as_dict(self) -> dict[str, TOMLValue]:
-        """Return a mapping of the TOMLConfig."""
+        """Return a mapping of the :class:`TOMLConfig`."""
         return deepcopy(self._config)
 
     def validate(self) -> None:
@@ -185,7 +187,9 @@ class TOMLConfig:
 
 
 class SectionAttributes(TOMLConfig):
-    """A data container to hold some metadata for a Section."""
+    """A data container to hold some metadata for a :class:`.compile.Section`
+    object.
+    """
 
     expected_types = {"title": str, "level": int, "order": int | None}
 
@@ -218,8 +222,8 @@ class SectionAttributes(TOMLConfig):
     def from_dict(
         cls, values: dict[str, Any], source: StrPath | None = None
     ) -> Self:
-        """Generate SectionAttributes from a dictionary containing the keys and
-        values.
+        """Generate :class:`SectionAttributes` from a dictionary containing the
+        keys and values.
 
         Raises:
             AttributeNotPositiveError: one of the values should have been
@@ -271,8 +275,8 @@ class SectionAttributes(TOMLConfig):
     @property
     def order(self) -> int | None:
         """The order of the section in relation to others. It must not be zero
-        or lower, and may be None, in which case it is alphabetically sorted
-        after all sections that do have an order.
+        or lower, and may be :const:`None`, in which case it is alphabetically
+        sorted after all sections that do have an order.
         """
         return cast(int | None, self["order"])
 
@@ -282,7 +286,9 @@ class SectionAttributes(TOMLConfig):
 
 
 class GlobalConfig(TOMLConfig):
-    """A container object for config values of the global .protokolo.toml."""
+    """A container object for config values of the global ``.protokolo.toml``
+    file.
+    """
 
     expected_types = {
         "changelog": str | None,
@@ -317,10 +323,10 @@ class GlobalConfig(TOMLConfig):
 
     @classmethod
     def from_file(cls, path: StrPath) -> Self:
-        """Factory method to create a GlobalConfig from a path. The exact table
-        that is loaded from the file depends on the file name. In
-        pyproject.toml, the table [tool.protokolo] is loaded, whereas
-        [protokolo] is loaded everywhere else.
+        """Factory method to create a :class:`GlobalConfig` from a path. The
+        exact table that is loaded from the file depends on the file name. In
+        ``pyproject.toml``, the table ``[tool.protokolo]`` is loaded, whereas
+        ``[protokolo]`` is loaded everywhere else.
 
         Raises:
             tomllib.TOMLDecodeError: if the file could not be decoded.
@@ -344,8 +350,8 @@ class GlobalConfig(TOMLConfig):
 
         The order of precedence (highest to lowest) is:
 
-        - .protokolo.toml
-        - pyproject.toml
+        - ``.protokolo.toml``
+        - ``pyproject.toml``
         """
         directory = Path(directory)
         for name in cls._file_section:

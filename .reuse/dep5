@@ -3,6 +3,10 @@ Upstream-Name: protokolo
 Upstream-Contact: Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 Source: https://codeberg.org/carmenbianca/protokolo
 
+Files: changelog.d/*.md
+Copyright: Protokolo contributors
+License: CC-BY-SA-4.0 OR GPL-3.0-or-later
+
 Files: changelog.d/**/*.md
 Copyright: Protokolo contributors
 License: CC-BY-SA-4.0 OR GPL-3.0-or-later

@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 repos:
-  - repo: https://github.com/psf/black
-    rev: 23.10.0
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 24.2.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
       - id: isort
         name: isort (python)
@@ -20,7 +20,7 @@ repos:
         name: isort (pyi)
         types: [pyi]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.6.1
+    rev: v1.8.0
     hooks:
       - id: mypy
   - repo: https://github.com/pre-commit/mirrors-prettier
@@ -29,7 +29,7 @@ repos:
       - id: prettier
         name: prettier
   - repo: https://github.com/fsfe/reuse-tool
-    rev: v2.1.0
+    rev: v3.0.1
     hooks:
       - id: reuse
   - repo: local

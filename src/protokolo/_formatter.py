@@ -54,8 +54,7 @@ class MarkupFormatter(ABC):
 
     @classmethod
     @abstractmethod
-    def _format_section(cls, title: str, attrs: SectionAttributes) -> str:
-        ...
+    def _format_section(cls, title: str, attrs: SectionAttributes) -> str: ...
 
     @classmethod
     def _format_output(cls, attrs: SectionAttributes) -> str:

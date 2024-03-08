@@ -109,6 +109,7 @@ def compile_(
     The CHANGELOG file should contain the following comment, which is the
     location in the file after which the compiled section will be pasted:
 
+    \b
     <!-- protokolo-section-tag -->
 
     For more documentation and options, read the documentation at TODO.

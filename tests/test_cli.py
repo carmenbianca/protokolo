@@ -440,6 +440,11 @@ class TestInit:
         assert "order = 1" in subsection_toml
         for section in sections:
             assert Path(f"changelog.d/{section}/.protokolo.toml").is_file()
+        assert Path(".protokolo.toml").exists()
+        root_toml = Path(".protokolo.toml").read_text()
+        assert 'changelog = "CHANGELOG.md"' in root_toml
+        assert 'markup = "markdown"' in root_toml
+        assert 'directory = "changelog.d"' in root_toml
 
     def test_changelog_option(self, empty_runner):
         """Use with --changelog option."""
@@ -447,6 +452,9 @@ class TestInit:
         assert result.exit_code == 0
         assert "# Change log" in Path("CHANGELOG").read_text()
         assert not Path("CHANGELOG.md").exists()
+        assert (
+            'changelog = "CHANGELOG"\n' in Path(".protokolo.toml").read_text()
+        )
 
     def test_markup_option(self, empty_runner):
         """Use with --markup option."""
@@ -458,6 +466,9 @@ class TestInit:
             "==========\nChange log\n=========="
             in Path("CHANGELOG.md").read_text()
         )
+        assert (
+            'markup = "restructuredtext"' in Path(".protokolo.toml").read_text()
+        )
 
     def test_directory_option(self, empty_runner):
         """Use with --directory option."""
@@ -466,6 +477,7 @@ class TestInit:
         assert Path("foo").is_dir()
         assert Path("foo/.protokolo.toml").exists()
         assert not Path("changelog.d").exists()
+        assert 'directory = "foo"' in Path(".protokolo.toml").read_text()
 
     def test_run_twice(self, empty_runner):
         """Invoke twice without problems."""

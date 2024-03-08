@@ -12,13 +12,17 @@ from pathlib import Path
 import click
 
 from ._formatter import MARKUP_EXTENSION_MAPPING as _MARKUP_EXTENSION_MAPPING
-from ._util import create_changelog, create_keep_a_changelog
 from .compile import Section
 from .config import GlobalConfig
 from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
     HeadingFormatError,
+)
+from .initialise import (
+    create_changelog,
+    create_keep_a_changelog,
+    create_root_toml,
 )
 from .replace import find_first_occurrence, insert_into_str
 from .types import SupportedMarkup
@@ -225,6 +229,7 @@ def init(
     try:
         create_changelog(changelog.name, markup)
         create_keep_a_changelog(directory)
+        create_root_toml(changelog.name, markup, directory)
     except OSError as error:
         raise click.UsageError(str(error))
     # TODO: create .protokolo.toml in project dir.

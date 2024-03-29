@@ -35,9 +35,3 @@ TOMLValue: TypeAlias = (
 TOMLValueType: UnionType = (
     str | int | float | bool | datetime | date | None | dict | list
 )
-
-#: A dictionary that details the expected types of a
-#: :class:`.config.TOMLConfig`.
-NestedTypeDict: TypeAlias = Mapping[str, "NestedTypeValue"]
-#: Possible values in a :ref:`NestedTypeDict`: types or nested dictionaries.
-NestedTypeValue: TypeAlias = type | UnionType | NestedTypeDict

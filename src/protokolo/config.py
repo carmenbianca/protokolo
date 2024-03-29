@@ -4,7 +4,6 @@
 
 """The global configuration of Protokolo."""
 
-import contextlib
 import tomllib
 from collections.abc import Sequence
 from copy import deepcopy
@@ -12,15 +11,15 @@ from pathlib import Path
 from types import UnionType
 from typing import IO, Any, Self, cast
 
+import attrs
+
 from ._util import nested_itemgetter, type_in_expected_type
 from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
     DictTypeListError,
 )
-from .types import NestedTypeDict, StrPath, TOMLValue, TOMLValueType
-
-# pylint: disable=too-many-arguments
+from .types import StrPath, TOMLValue, TOMLValueType
 
 
 def parse_toml(
@@ -55,22 +54,17 @@ def parse_toml(
         return {}
 
 
+@attrs.define
 class TOMLConfig:
     """A utility class to hold data parsed from a TOML file."""
 
-    expected_types: NestedTypeDict = {}
+    _values: dict[str, TOMLValue] = attrs.field(factory=dict)
+    source: str | None = attrs.field(converter=str, default=None)
 
-    def __init__(
-        self,
-        values: dict[str, TOMLValue] | None = None,
-        source: StrPath | None = None,
-    ):
-        if source is not None:
-            source = Path(source)
-        self.source: Path | None = source
-        if values is None:
-            values = {}
-        self._config: dict[str, TOMLValue] = deepcopy(values)
+    def __attrs_post_init__(self) -> None:
+        self._values = deepcopy(self._values)
+        # Can't use validator on the attribute itself because the validation
+        # depends on `self`. So we do the validation here.
         self.validate()
 
     @classmethod
@@ -86,14 +80,14 @@ class TOMLConfig:
             DictTypeError: value isn't an expected/supported type.
             DictTypeListError: if a list contains elements other than a dict.
         """
-        return cls(values=values, source=source)
+        return cls(values=values, source=str(source))
 
     def __getitem__(self, key: str | Sequence[str]) -> TOMLValue:
         if isinstance(key, str):
             keys = [key]
         else:
             keys = list(key)
-        return nested_itemgetter(*keys)(self._config)
+        return nested_itemgetter(*keys)(self._values)
 
     def __setitem__(self, key: str | Sequence[str], value: TOMLValue) -> None:
         if isinstance(key, str):
@@ -103,71 +97,33 @@ class TOMLConfig:
             copied = list(key)
             final_key = copied.pop()
             keys = copied
-        # Technically this can fail because self._config is a Mapping instead of
-        # a MutableMapping.
-        nested_itemgetter(*keys)(self._config)[final_key] = value
+        nested_itemgetter(*keys)(self._values)[final_key] = value
 
     def as_dict(self) -> dict[str, TOMLValue]:
         """Return a mapping of the :class:`TOMLConfig`."""
-        return deepcopy(self._config)
+        return deepcopy(self._values)
 
     def validate(self) -> None:
         """Verify that all keys contain valid TOML types. This is automatically
         run on object instantiation.
 
-        The *expected_values* (class) attribute can contain a dictionary
-        describing the expected type of each key. For example:
-
-        >>> toml = '''
-        ...     [foo]
-        ...     hello = "world"
-        ...     [[foo.bar]]
-        ...     baz = 1
-        ...     [[foo.bar]]
-        ...     baz = 2
-        ...     '''
-        ...
-        >>> config = TOMLConfig(parse_toml(toml))
-        >>> config.expected_types = {
-        ...     "foo": dict,
-        ...     "foo+dict": {
-        ...         "hello": str,
-        ...         "bar": list,
-        ...         "bar+list": {
-        ...             "baz": int,
-        ...         }
-        ...     }
-        ... }
-        ...
-        >>> config.validate()
-
         Raises:
             DictTypeError: value isn't an expected/supported type.
             DictTypeListError: if a list contains elements other than a dict.
         """
-        self._validate(cast(dict[str, Any], self._config))
+        self._validate(cast(dict[str, Any], self._values))
 
-    def _validate(
-        self, values: dict[str, Any], path: Sequence[str] | None = None
-    ) -> None:
-        if path is None:
-            path = []
+    def _validate(self, values: dict[str, Any]) -> None:
         for name, value in values.items():
-            expected_type: UnionType = TOMLValueType
-            with contextlib.suppress(KeyError):
-                expected_type = nested_itemgetter(*(list(path) + [name]))(
-                    self.expected_types
-                )
+            # Use typed annotations to expect a very specific type. If not,
+            # allow any valid TOML type.
+            # pylint: disable=no-member
+            expected_type = self.__annotations__.get(f"_{name}", TOMLValueType)
             self._validate_item(value, name, expected_type=expected_type)
             if isinstance(value, dict):
-                self._validate(value, path=list(path) + [f"{name}+dict"])
+                self._validate(value)
             elif isinstance(value, list):
-                for item in value:
-                    if not isinstance(item, dict):
-                        raise DictTypeListError(
-                            name, dict, item, str(self.source)
-                        )
-                    self._validate(item, path=list(path) + [f"{name}+list"])
+                self._validate_list(value, name)
 
     def _validate_item(
         self,
@@ -185,38 +141,50 @@ class TOMLConfig:
         if bool_err or not isinstance(item, expected_type):
             raise DictTypeError(name, expected_type, item, str(self.source))
 
+    def _validate_list(
+        self,
+        values: list[Any],
+        name: str,
+    ) -> None:
+        for item in values:
+            if isinstance(item, dict):
+                self._validate(item)
+            elif isinstance(item, list):
+                self._validate_list(item, name)
+            else:
+                try:
+                    self._validate_item(item, name)
+                except DictTypeError as error:
+                    raise DictTypeListError(
+                        name, TOMLValueType, item, self.source
+                    ) from error
 
+
+@attrs.define
 class SectionAttributes(TOMLConfig):
     """A data container to hold some metadata for a :class:`.compile.Section`
     object.
     """
 
-    expected_types = {"title": str, "level": int, "order": int | None}
+    _title: str = attrs.field(
+        default="TODO: No section title defined",
+        repr=False,
+        eq=False,
+        order=False,
+    )
+    _level: int = attrs.field(default=1, repr=False, eq=False, order=False)
+    _order: int | None = attrs.field(
+        default=None, repr=False, eq=False, order=False
+    )
 
-    def __init__(
-        self,
-        title: str | None = None,
-        level: int = 1,
-        order: int | None = None,
-        values: dict[str, TOMLValue] | None = None,
-        source: StrPath | None = None,
-    ):
-        """If *title*, *level*, or *order* also occur as keys in *values*, then
-        *values* takes precedence.
-        """
-        if values is None:
-            values = {}
-        else:
-            values = deepcopy(values)
-        # Make sure these items exist in the dictionary.
-        values.setdefault("title", title)
-        values.setdefault("level", level)
-        values.setdefault("order", order)
-        if values.get("title") is None:
-            values["title"] = "TODO: No section title defined"
-        if values.get("level") is None:
-            values["level"] = 1
-        super().__init__(values, source=source)
+    def __attrs_post_init__(self) -> None:
+        self._values = deepcopy(self._values)
+        # The private variables are no longer used after they are written to
+        # _values.
+        self._values.setdefault("title", self._title)
+        self._values.setdefault("level", self._level)
+        self._values.setdefault("order", self._order)
+        super().__attrs_post_init__()
 
     @classmethod
     def from_dict(
@@ -285,41 +253,33 @@ class SectionAttributes(TOMLConfig):
         self["order"] = value
 
 
+@attrs.define
 class GlobalConfig(TOMLConfig):
     """A container object for config values of the global ``.protokolo.toml``
     file.
     """
 
-    expected_types = {
-        "changelog": str | None,
-        "markup": str | None,
-        "directory": str | None,
-    }
+    _changelog: str | None = attrs.field(
+        default=None, repr=False, eq=False, order=False
+    )
+    _markup: str | None = attrs.field(
+        default=None, repr=False, eq=False, order=False
+    )
+    _directory: str | None = attrs.field(
+        default=None, repr=False, eq=False, order=False
+    )
 
-    _file_section = {
+    _FILE_SECTION = {
         ".protokolo.toml": ["protokolo"],
         "pyproject.toml": ["tool", "protokolo"],
     }
 
-    def __init__(
-        self,
-        changelog: str | None = None,
-        markup: str | None = None,
-        directory: str | None = None,
-        values: dict[str, TOMLValue] | None = None,
-        source: StrPath | None = None,
-    ):
-        """If *changelog*, *markup*, or *directory* also occur as keys in
-        *values*, then *values* takes precedence.
-        """
-        if values is None:
-            values = {}
-        else:
-            values = deepcopy(values)
-        values.setdefault("changelog", changelog)
-        values.setdefault("markup", markup)
-        values.setdefault("directory", directory)
-        super().__init__(values, source=source)
+    def __attrs_post_init__(self) -> None:
+        self._values = deepcopy(self._values)
+        self._values.setdefault("changelog", self._changelog)
+        self._values.setdefault("markup", self._markup)
+        self._values.setdefault("directory", self._directory)
+        super().__attrs_post_init__()
 
     @classmethod
     def from_file(cls, path: StrPath) -> Self:
@@ -334,7 +294,7 @@ class GlobalConfig(TOMLConfig):
             DictTypeListError: if a list contains elements other than a dict.
         """
         path = Path(path)
-        section = cls._file_section.get(path.name, ["protokolo"])
+        section = cls._FILE_SECTION.get(path.name, ["protokolo"])
         with path.open("rb") as fp:
             try:
                 values = parse_toml(fp, section=section)
@@ -354,7 +314,7 @@ class GlobalConfig(TOMLConfig):
         - ``pyproject.toml``
         """
         directory = Path(directory)
-        for name in cls._file_section:
+        for name in cls._FILE_SECTION:
             target = directory / name
             if target.exists() and target.is_file():
                 return target

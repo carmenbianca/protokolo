@@ -13,6 +13,9 @@ from os import strerror
 from pathlib import Path
 from typing import Iterator, Self, cast
 
+import attrs as attrs_
+from attrs.converters import optional
+
 from ._formatter import MARKUP_EXTENSION_MAPPING as _MARKUP_EXTENSION_MAPPING
 from ._formatter import MARKUP_FORMATTER_MAPPING as _MARKUP_FORMATTER_MAPPING
 from .config import SectionAttributes, parse_toml
@@ -27,18 +30,12 @@ from .types import StrPath, SupportedMarkup
 # pylint: disable=too-few-public-methods
 
 
+@attrs_.define(frozen=True)
 class Entry:
     """An entry, analogous to a file."""
 
-    def __init__(
-        self,
-        text: str,
-        source: StrPath | None = None,
-    ):
-        self.text: str = text
-        if source is not None:
-            source = Path(source)
-        self.source: Path | None = source
+    text: str
+    source: Path | None = attrs_.field(default=None, converter=optional(Path))
 
     def compile(self) -> str:
         """Compile the entry. For the time being, this just means stripping the
@@ -47,24 +44,16 @@ class Entry:
         return self.text.strip("\n")
 
 
+@attrs_.define(eq=False)
 class Section:
     """A section, analogous to a directory."""
 
-    def __init__(
-        self,
-        attrs: SectionAttributes | None = None,
-        markup: SupportedMarkup = "markdown",
-        source: StrPath | None = None,
-    ):
-        if attrs is None:
-            attrs = SectionAttributes()
-        self.attrs: SectionAttributes = attrs
-        self.markup = markup
-        if source is not None:
-            source = Path(source)
-        self.source: Path | None = source
-        self.entries: set[Entry] = set()
-        self.subsections: set[Self] = set()
+    attrs: SectionAttributes = attrs_.field(factory=SectionAttributes)
+    markup: SupportedMarkup = "markdown"
+    source: Path | None = attrs_.field(default=None, converter=optional(Path))
+
+    entries: set[Entry] = attrs_.field(factory=set, init=False)
+    subsections: set[Self] = attrs_.field(factory=set, init=False)
 
     @classmethod
     def from_directory(

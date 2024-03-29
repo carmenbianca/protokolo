@@ -105,6 +105,7 @@ class TestTOMLConfig:
             "none": None,
             "dict": {"foo": "bar"},
             "list": [{"foo": "bar"}, {"baz": "quz"}],
+            "list-primitive": [1, 2],
         }
         config = TOMLConfig.from_dict(values)
         assert config["str"] == "foo"
@@ -116,6 +117,7 @@ class TestTOMLConfig:
         assert config["none"] is None
         assert config["dict"] == {"foo": "bar"}
         assert config["list"] == [{"foo": "bar"}, {"baz": "quz"}]
+        assert config["list-primitive"] == [1, 2]
 
     def test_from_dict_unsupported_type(self):
         """Many complex types are not supported."""
@@ -127,15 +129,6 @@ class TestTOMLConfig:
         assert error.expected_type == TOMLValueType
         # TODO: This is not true because error.got is a (deep)copy of value.
         # assert error.got == value
-
-    def test_from_dict_list_no_dict_inside(self):
-        """A list is always a list of dicts."""
-        with pytest.raises(DictTypeListError) as exc_info:
-            TOMLConfig.from_dict({"foo": [1]})
-        error = exc_info.value
-        assert error.key == "foo"
-        assert error.expected_type == dict
-        assert error.got == 1
 
     def test_setitem(self):
         """You can set an item on the TOMLConfig object."""
@@ -170,84 +163,17 @@ class TestTOMLConfig:
         assert error.expected_type == TOMLValueType
         assert error.got == value
 
-    def test_validate_simple_expected(self):
-        """No error when validating a valid expected type."""
-        config = TOMLConfig.from_dict({"foo": "bar"})
-        config.expected_types = {"foo": str}
-        config.validate()
-
-    def test_validate_nested_expected(self):
-        """No error when validating a valid nested expected type."""
-        config = TOMLConfig.from_dict({"foo": {"bar": "baz"}})
-        config.expected_types = {"foo": dict, "foo+dict": {"bar": str}}
-        config.validate()
-
-    def test_validate_simple_not_expected(self):
-        """Error when validating an invalid expected type."""
-        config = TOMLConfig.from_dict({"foo": "bar"})
-        config.expected_types = {"foo": int}
-        with pytest.raises(DictTypeError) as exc_info:
+    def test_validate_list_item(self):
+        """List items get a special exception DictTypeListError."""
+        config = TOMLConfig()
+        value = object()
+        config["foo"] = [value]  # type: ignore
+        with pytest.raises(DictTypeListError) as exc_info:
             config.validate()
         error = exc_info.value
         assert error.key == "foo"
-        assert error.expected_type == int
-        assert error.got == "bar"
-
-    def test_validate_list_wrong_type(self):
-        """If a value is a list instead of the expected type, raise an error."""
-        config = TOMLConfig.from_dict({"foo": [{"bar": "baz"}]})
-        config.expected_types = {"foo": str}
-        with pytest.raises(DictTypeError) as exc_info:
-            config.validate()
-        error = exc_info.value
-        assert error.key == "foo"
-        assert error.expected_type == str
-        assert error.got == [{"bar": "baz"}]
-
-    def test_validate_dict_wrong_type(self):
-        """If a value is a dict instead of the expected type, raise an error."""
-        config = TOMLConfig.from_dict({"foo": {"bar": "baz"}})
-        config.expected_types = {"foo": str}
-        with pytest.raises(DictTypeError) as exc_info:
-            config.validate()
-        error = exc_info.value
-        assert error.key == "foo"
-        assert error.expected_type == str
-        assert error.got == {"bar": "baz"}
-
-    def test_validate_item_of_list(self):
-        """Validate the items of lists."""
-        config = TOMLConfig.from_dict({"foo": [{"bar": "baz"}, {"bar": "quz"}]})
-        config.expected_types = {"foo": list, "foo+list": {"bar": str}}
-        config.validate()
-
-    def test_validate_very_nested(self):
-        """A rather complex nesting test."""
-        config = TOMLConfig.from_dict(
-            {
-                "foo": {
-                    "bar": {
-                        "baz": [
-                            {"quz": 1},
-                            {"quz": 2},
-                        ]
-                    }
-                }
-            }
-        )
-        config.expected_types = {
-            "foo": dict,
-            "foo+dict": {
-                "bar": dict,
-                "bar+dict": {
-                    "baz": list,
-                    "baz+list": {
-                        "quz": int,
-                    },
-                },
-            },
-        }
-        config.validate()
+        assert error.expected_type == TOMLValueType
+        assert error.got == value
 
 
 class TestSectionAttributes:
@@ -256,9 +182,6 @@ class TestSectionAttributes:
     def test_level_positive(self):
         """level must be a positive integer."""
         SectionAttributes(level=1)
-        # Automagically fix unexpected type
-        attrs = SectionAttributes(level=None)  # type: ignore
-        assert attrs.level == 1
         with pytest.raises(AttributeNotPositiveError):
             SectionAttributes(level=0)
         with pytest.raises(AttributeNotPositiveError):
@@ -267,7 +190,6 @@ class TestSectionAttributes:
     def test_order_positive(self):
         """order must be a positive integer."""
         SectionAttributes(order=1)
-        SectionAttributes(order=None)
         with pytest.raises(AttributeNotPositiveError):
             SectionAttributes(order=0)
         with pytest.raises(AttributeNotPositiveError):
@@ -302,7 +224,6 @@ class TestSectionAttributes:
         """If the level is not an int, expect an error."""
         # No errors
         SectionAttributes.from_dict({"level": 1})
-        SectionAttributes.from_dict({"level": None})
         # Errors
         wrong_values = {"1", 1.1, "1.1", "Foo", True}
         for value in wrong_values:
@@ -317,7 +238,6 @@ class TestSectionAttributes:
         """If the order is not an int, expect an error."""
         # No errors
         SectionAttributes.from_dict({"order": 1})
-        SectionAttributes.from_dict({"order": None})
         # Errors
         wrong_values = {"1", 1.1, "1.1", "Foo", True}
         for value in wrong_values:
@@ -332,7 +252,6 @@ class TestSectionAttributes:
         """If the title is not a str, expect an error."""
         # No errors
         SectionAttributes.from_dict({"title": "Foo"})
-        SectionAttributes.from_dict({"title": None})
         # Errors
         wrong_values = {1, 1.1, False}
         for value in wrong_values:

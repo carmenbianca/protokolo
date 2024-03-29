@@ -1,0 +1,1 @@
+- Re-wrote the internals to use the `attrs` library for easier validation.

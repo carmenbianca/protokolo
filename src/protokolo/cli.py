@@ -178,13 +178,6 @@ def compile_(
     help="CHANGELOG file to create.",
 )
 @click.option(
-    "--markup",
-    default="markdown",
-    show_default="determined by config, or markdown",
-    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
-    help="Markup language.",
-)
-@click.option(
     "--directory",
     default="changelog.d",
     show_default="determined by config, or changelog.d",
@@ -196,10 +189,17 @@ def compile_(
     ),
     help="Directory of change log sections and entries.",
 )
+@click.option(
+    "--markup",
+    default="markdown",
+    show_default="determined by config, or markdown",
+    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
+    help="Markup language.",
+)
 def init(
     changelog: click.File,
-    markup: SupportedMarkup,
     directory: Path,
+    markup: SupportedMarkup,
 ) -> None:
     """Set up your project to be ready to use Protokolo. It creates a
     CHANGELOG.md file, a changelog.d directory with subsections that match the
@@ -222,9 +222,11 @@ def init(
     │   ├── security
     │   │   └── .protokolo.toml
     │   └── .protokolo.toml
-    └── CHANGELOG.md
+    ├── CHANGELOG.md
+    └── .protokolo.toml
 
-    Files that already exist are never overwritten.
+    Files that already exist are never overwritten, except the root
+    .protokolo.toml file, which is always (re-)generated.
     """
     try:
         create_changelog(changelog.name, markup)

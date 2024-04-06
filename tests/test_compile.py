@@ -310,7 +310,11 @@ class TestSection:
         )
         section = Section.from_directory(project_dir / "changelog.d")
         assert section.attrs.level == 2
-        assert section.attrs.title == "${version} - ${date}"
+        assert (
+            # Strange pylint false positive here.
+            section.attrs.title  # pylint: disable=no-member
+            == "${version} - ${date}"
+        )
         assert len(section.entries) == 1
         announcement = next(iter(section.entries))
         assert announcement.text == "Hello, world!"

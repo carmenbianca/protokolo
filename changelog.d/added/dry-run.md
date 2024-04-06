@@ -1,0 +1,1 @@
+- Added `--dry-run` to `compile`.

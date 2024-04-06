@@ -289,6 +289,7 @@ class GlobalConfig(TOMLConfig):
         ``[protokolo]`` is loaded everywhere else.
 
         Raises:
+            OSError: if the file could not be opened.
             tomllib.TOMLDecodeError: if the file could not be decoded.
             DictTypeError: value isn't an expected/supported type.
             DictTypeListError: if a list contains elements other than a dict.

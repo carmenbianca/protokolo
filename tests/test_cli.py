@@ -4,30 +4,29 @@
 
 """Test the formatting code."""
 
-from contextlib import contextmanager, suppress
+import errno
 from inspect import cleandoc
 from pathlib import Path
-from typing import Generator
 
 from freezegun import freeze_time
 
 import protokolo
+from protokolo import cli as cli_module
 from protokolo.cli import cli
+from protokolo.config import GlobalConfig, SectionAttributes
 
 # pylint: disable=unspecified-encoding
 
 
-@contextmanager
-def chmod(path: str | Path, mode: int) -> Generator[None, None, None]:
-    """chmod as a context manager."""
-    path = Path(path)
-    try:
-        old_mode = path.stat().st_mode
-        path.chmod(mode)
-        yield
-    finally:
-        with suppress(Exception):
-            path.chmod(old_mode)  # pylint: disable=used-before-assignment
+def raise_permission(filename):
+    """A context manager for a function that raises a permission error on
+    *filename*.
+    """
+
+    def inner(*args, **kwargs):
+        raise PermissionError(errno.EACCES, "Permission denied", filename)
+
+    return inner
 
 
 class TestCli:
@@ -138,10 +137,12 @@ class TestCompile:
             " type. Expected str | None. Got 1."
         ) in result.output
 
-    def test_global_config_not_readable(self, runner):
-        """.protokolo.toml is not readable (or any other OSError, really)."""
+    def test_global_config_not_readable(self, runner, monkeypatch):
+        """.protokolo.toml is not accessible (or any other OSError, really)."""
         Path(".protokolo.toml").touch()
-        Path(".protokolo.toml").chmod(0o100)  # write-only
+        monkeypatch.setattr(
+            GlobalConfig, "from_file", raise_permission(".protokolo.toml")
+        )
         result = runner.invoke(
             cli,
             [
@@ -230,10 +231,14 @@ class TestCompile:
             " a positive integer, got -1" in result.output
         )
 
-    def test_section_config_not_readable(self, runner):
-        """.protokolo.toml is not readable (or any other OSError, really)."""
+    def test_section_config_not_readable(self, runner, monkeypatch):
+        """.protokolo.toml is not accessible (or any other OSError, really)."""
         Path("changelog.d/.protokolo.toml").touch()
-        Path("changelog.d/.protokolo.toml").chmod(0o100)  # write-only
+        monkeypatch.setattr(
+            SectionAttributes,
+            "__init__",
+            raise_permission("changelog.d/.protokolo.toml"),
+        )
         result = runner.invoke(
             cli,
             [
@@ -497,11 +502,14 @@ class TestInit:
         assert Path("changelog.d/.protokolo.toml").read_text() == "foo"
         assert Path("changelog.d/added/.protokolo.toml").read_text() == "foo"
 
-    def test_oserror(self, empty_runner):
+    def test_oserror(self, empty_runner, monkeypatch):
         """Handle OSErrors"""
         empty_runner.invoke(cli, ["init"])
-        Path("changelog.d/added/.protokolo.toml").unlink()
-        with chmod("changelog.d/added", 0o000):
-            result = empty_runner.invoke(cli, ["init"])
+        monkeypatch.setattr(
+            cli_module,
+            "create_keep_a_changelog",
+            raise_permission("changelog.d"),
+        )
+        result = empty_runner.invoke(cli, ["init"])
         assert result.exit_code != 0
         assert "Permission denied" in result.output

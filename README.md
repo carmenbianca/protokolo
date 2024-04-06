@@ -59,20 +59,21 @@ like this:
 ```
 .
 ├── changelog.d
-│   ├── added
-│   │   └── .protokolo.toml
-│   ├── changed
-│   │   └── .protokolo.toml
-│   ├── deprecated
-│   │   └── .protokolo.toml
-│   ├── fixed
-│   │   └── .protokolo.toml
-│   ├── removed
-│   │   └── .protokolo.toml
-│   ├── security
-│   │   └── .protokolo.toml
-│   └── .protokolo.toml
-└── CHANGELOG.md
+│   ├── added
+│   │   └── .protokolo.toml
+│   ├── changed
+│   │   └── .protokolo.toml
+│   ├── deprecated
+│   │   └── .protokolo.toml
+│   ├── fixed
+│   │   └── .protokolo.toml
+│   ├── removed
+│   │   └── .protokolo.toml
+│   ├── security
+│   │   └── .protokolo.toml
+│   └── .protokolo.toml
+├── CHANGELOG.md
+└── .protokolo.toml
 ```
 
 The `.protokolo.toml` files contain metadata for their respective sections; the

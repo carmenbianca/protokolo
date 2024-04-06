@@ -403,6 +403,46 @@ class TestCompile:
         assert not Path("changelog.d/feature/bar.rst").exists()
         assert not Path("changelog.d/foo.rst").exists()
 
+    @freeze_time("2023-11-08")
+    def test_dry_run(self, runner):
+        """Test that no filesystem changes are made during dry run."""
+        Path("changelog.d/foo.md").write_text("Foo")
+        changelog_text = Path("CHANGELOG.md").read_text()
+
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--dry-run",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code == 0
+        assert Path("CHANGELOG.md").read_text() == changelog_text
+        assert Path("changelog.d/foo.md").exists()
+        assert Path("changelog.d/foo.md").read_text() == "Foo"
+
+        assert result.stdout.strip() == cleandoc(
+            """
+            # Change log
+
+            Lorem ipsum.
+
+            <!-- protokolo-section-tag -->
+
+            ## ${version} - 2023-11-08
+
+            Foo
+
+            ## 0.1.0 - 2020-01-01
+
+            First release.
+            """
+        )
+        assert result.stdout.endswith("\n")
+
 
 class TestInit:
     """Collect all tests for init."""

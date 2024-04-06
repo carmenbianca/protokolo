@@ -76,6 +76,12 @@ def cli(ctx: click.Context) -> None:
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
     help="Markup language.",
 )
+@click.option(
+    "--dry-run",
+    "-n",
+    is_flag=True,
+    help="Do not write to file system; print to STDOUT.",
+)
 @click.argument(
     "directory",
     type=click.Path(
@@ -90,6 +96,7 @@ def cli(ctx: click.Context) -> None:
 def compile_(
     changelog: click.File,
     markup: SupportedMarkup,
+    dry_run: bool,
     directory: Path,
 ) -> None:
     """Aggregate all change log entries from files in a directory into a
@@ -153,20 +160,24 @@ def compile_(
                     f" {repr(changelog.name)}."
                 )
             new_contents = insert_into_str(f"\n{new_section}", contents, lineno)
-            fp.seek(0)
-            fp.write(new_contents)
-            fp.truncate()
+            if dry_run:
+                click.echo(new_contents)
+            else:
+                fp.seek(0)
+                fp.write(new_contents)
+                fp.truncate()
     except OSError as error:
         # TODO: This is a little tricky to test. click already exits early if
         # changelog isn't readable/writable.
         raise click.UsageError(str(error))
 
     # Delete change log entries
-    for dirpath, _, filenames in os.walk(directory):
-        for filename in filenames:
-            path = Path(dirpath) / filename
-            if path.suffix in _MARKUP_EXTENSION_MAPPING[markup]:
-                path.unlink()
+    if not dry_run:
+        for dirpath, _, filenames in os.walk(directory):
+            for filename in filenames:
+                path = Path(dirpath) / filename
+                if path.suffix in _MARKUP_EXTENSION_MAPPING[markup]:
+                    path.unlink()
 
 
 @cli.command(name="init")
@@ -176,13 +187,6 @@ def compile_(
     show_default="determined by config, or CHANGELOG.md",
     type=click.File("w", encoding="utf-8", lazy=True),
     help="CHANGELOG file to create.",
-)
-@click.option(
-    "--markup",
-    default="markdown",
-    show_default="determined by config, or markdown",
-    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
-    help="Markup language.",
 )
 @click.option(
     "--directory",
@@ -196,10 +200,17 @@ def compile_(
     ),
     help="Directory of change log sections and entries.",
 )
+@click.option(
+    "--markup",
+    default="markdown",
+    show_default="determined by config, or markdown",
+    type=click.Choice(SupportedMarkup.__args__),  # type: ignore
+    help="Markup language.",
+)
 def init(
     changelog: click.File,
-    markup: SupportedMarkup,
     directory: Path,
+    markup: SupportedMarkup,
 ) -> None:
     """Set up your project to be ready to use Protokolo. It creates a
     CHANGELOG.md file, a changelog.d directory with subsections that match the
@@ -209,22 +220,24 @@ def init(
     \b
     .
     ├── changelog.d
-    │   ├── added
-    │   │   └── .protokolo.toml
-    │   ├── changed
-    │   │   └── .protokolo.toml
-    │   ├── deprecated
-    │   │   └── .protokolo.toml
-    │   ├── fixed
-    │   │   └── .protokolo.toml
-    │   ├── removed
-    │   │   └── .protokolo.toml
-    │   ├── security
-    │   │   └── .protokolo.toml
-    │   └── .protokolo.toml
-    └── CHANGELOG.md
+    │   ├── added
+    │   │   └── .protokolo.toml
+    │   ├── changed
+    │   │   └── .protokolo.toml
+    │   ├── deprecated
+    │   │   └── .protokolo.toml
+    │   ├── fixed
+    │   │   └── .protokolo.toml
+    │   ├── removed
+    │   │   └── .protokolo.toml
+    │   ├── security
+    │   │   └── .protokolo.toml
+    │   └── .protokolo.toml
+    ├── CHANGELOG.md
+    └── .protokolo.toml
 
-    Files that already exist are never overwritten.
+    Files that already exist are never overwritten, except the root
+    .protokolo.toml file, which is always (re-)generated.
     """
     try:
         create_changelog(changelog.name, markup)

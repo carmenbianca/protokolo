@@ -1,0 +1,70 @@
+# SPDX-FileCopyrightText: 2024 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+on:
+  push:
+    branches: -main
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: poetry install --no-interaction --only main,test
+      - name: Run tests
+        run: poetry run pytest --cov=protokolo
+
+  pylint:
+    runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: poetry install --no-interaction --only main,dev,test
+      - name: Run pylint
+        run: poetry run pylint src/ tests/
+
+  black-isort:
+    runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: poetry install --no-interaction --only dev
+      - name: Run black and isort
+        run: |
+          poetry run black .
+          poetry run isort --check src/ tests/
+
+  mypy:
+    runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: poetry install --no-interaction --only main,dev,test
+      - name: Run mypy
+        run: poetry run mypy
+
+  prettier:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install prettier@3.0.3
+      - name: Run prettier
+        run: npx prettier --check .
+
+  reuse:
+    runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: poetry install --no-interaction --only dev
+      - name: Run reuse
+        run: poetry run reuse

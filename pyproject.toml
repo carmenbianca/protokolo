@@ -43,7 +43,7 @@ black = ">=20"
 isort = "^5.0.0"
 pre-commit = "^2.9.0"
 bump2version = "^1.0.0"
-pylint = "^2.12.2"
+pylint = "^3.0"
 mypy = "^1.0"
 reuse = "^3.0"
 

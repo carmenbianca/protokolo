@@ -76,6 +76,12 @@ def cli(ctx: click.Context) -> None:
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
     help="Markup language.",
 )
+@click.option(
+    "--dry-run",
+    "-n",
+    is_flag=True,
+    help="Do not write to file system; print to STDOUT.",
+)
 @click.argument(
     "directory",
     type=click.Path(
@@ -90,6 +96,7 @@ def cli(ctx: click.Context) -> None:
 def compile_(
     changelog: click.File,
     markup: SupportedMarkup,
+    dry_run: bool,
     directory: Path,
 ) -> None:
     """Aggregate all change log entries from files in a directory into a
@@ -153,20 +160,24 @@ def compile_(
                     f" {repr(changelog.name)}."
                 )
             new_contents = insert_into_str(f"\n{new_section}", contents, lineno)
-            fp.seek(0)
-            fp.write(new_contents)
-            fp.truncate()
+            if dry_run:
+                click.echo(new_contents)
+            else:
+                fp.seek(0)
+                fp.write(new_contents)
+                fp.truncate()
     except OSError as error:
         # TODO: This is a little tricky to test. click already exits early if
         # changelog isn't readable/writable.
         raise click.UsageError(str(error))
 
     # Delete change log entries
-    for dirpath, _, filenames in os.walk(directory):
-        for filename in filenames:
-            path = Path(dirpath) / filename
-            if path.suffix in _MARKUP_EXTENSION_MAPPING[markup]:
-                path.unlink()
+    if not dry_run:
+        for dirpath, _, filenames in os.walk(directory):
+            for filename in filenames:
+                path = Path(dirpath) / filename
+                if path.suffix in _MARKUP_EXTENSION_MAPPING[markup]:
+                    path.unlink()
 
 
 @cli.command(name="init")

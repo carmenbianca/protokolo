@@ -341,7 +341,7 @@ class GlobalConfig(TOMLConfig):
 
     @property
     def directory(self) -> str | None:
-        """The directory where the change log entries are stored."""
+        """The directory where the change log fragments are stored."""
         return cast(str | None, self["directory"])
 
     @directory.setter

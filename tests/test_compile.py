@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-"""Test the compilation of change log sections and entries."""
+"""Test the compilation of change log sections and fragments."""
 
 import random
 import tomllib
@@ -10,7 +10,7 @@ from inspect import cleandoc
 
 import pytest
 
-from protokolo.compile import Entry, Section
+from protokolo.compile import Fragment, Section
 from protokolo.config import SectionAttributes
 from protokolo.exceptions import (
     AttributeNotPositiveError,
@@ -26,15 +26,15 @@ class TestSection:
     """Collect all tests for Section."""
 
     def test_compile_simple(self):
-        """Test the compilation of a very simple section with one entry and one
-        subsection.
+        """Test the compilation of a very simple section with one fragment and
+        one subsection.
         """
         subsection = Section(
             attrs=SectionAttributes(title="Subsection", level=2)
         )
-        subsection.entries.add(Entry("- world"))
+        subsection.fragments.add(Fragment("- world"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
-        section.entries.add(Entry("- hello"))
+        section.fragments.add(Fragment("- hello"))
         section.subsections.add(subsection)
 
         expected = cleandoc(
@@ -51,7 +51,7 @@ class TestSection:
         assert section.compile() == expected
 
     def test_compile_empty(self):
-        """A section that contains neither entries nor subsections doesn't
+        """A section that contains neither fragments nor subsections doesn't
         compile to anything.
         """
         section = Section()
@@ -73,7 +73,7 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
         )
-        subsection_1.entries.add(Entry("Foo"))
+        subsection_1.fragments.add(Fragment("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2, order=2)
         )
@@ -97,11 +97,11 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
         )
-        subsection_1.entries.add(Entry("Foo"))
+        subsection_1.fragments.add(Fragment("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2, order=2)
         )
-        subsection_2.entries.add(Entry("Bar"))
+        subsection_2.fragments.add(Fragment("Bar"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
@@ -126,11 +126,11 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2)
         )
-        subsection_1.entries.add(Entry("Foo"))
+        subsection_1.fragments.add(Fragment("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2)
         )
-        subsection_2.entries.add(Entry("Bar"))
+        subsection_2.fragments.add(Fragment("Bar"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
@@ -157,19 +157,19 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
         )
-        subsection_1.entries.add(Entry("Foo"))
+        subsection_1.fragments.add(Fragment("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2, order=2)
         )
-        subsection_2.entries.add(Entry("Bar"))
+        subsection_2.fragments.add(Fragment("Bar"))
         subsection_3 = Section(
             attrs=SectionAttributes(title="Subsection Baz", level=2)
         )
-        subsection_3.entries.add(Entry("Baz"))
+        subsection_3.fragments.add(Fragment("Baz"))
         subsection_4 = Section(
             attrs=SectionAttributes(title="Subsection Quz", level=2)
         )
-        subsection_4.entries.add(Entry("Quz"))
+        subsection_4.fragments.add(Fragment("Quz"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.update(
             {subsection_1, subsection_2, subsection_3, subsection_4}
@@ -202,11 +202,11 @@ class TestSection:
         subsection_1 = Section(
             attrs=SectionAttributes(title="Subsection Foo", level=2, order=1)
         )
-        subsection_1.entries.add(Entry("Foo"))
+        subsection_1.fragments.add(Fragment("Foo"))
         subsection_2 = Section(
             attrs=SectionAttributes(title="Subsection Bar", level=2, order=1)
         )
-        subsection_2.entries.add(Entry("Bar"))
+        subsection_2.fragments.add(Fragment("Bar"))
         section = Section(attrs=SectionAttributes(title="Section", level=1))
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
@@ -226,40 +226,40 @@ class TestSection:
         )
         assert section.compile() == expected
 
-    def test_compile_entries_sorted_by_source(self):
-        """Compiled entries are sorted by their source."""
+    def test_compile_fragments_sorted_by_source(self):
+        """Compiled fragments are sorted by their source."""
         section = Section(attrs=SectionAttributes(title="Section"))
-        entries = {
+        fragments = {
             f"{source_nr}.md": str(random.randint(1, 10_000))
             for source_nr in range(10)
         }
-        for source, text in entries.items():
-            section.entries.add(Entry(text, source=source))
+        for source, text in fragments.items():
+            section.fragments.add(Fragment(text, source=source))
 
         expected = "# Section\n\n" + "\n\n".join(
-            item[1] for item in sorted(entries.items())
+            item[1] for item in sorted(fragments.items())
         )
         assert section.compile() == expected
 
-    def test_compile_entries_sorted_by_text(self):
-        """Compiled entries are sorted alphabetically by their text if they have
-        no source.
+    def test_compile_fragments_sorted_by_text(self):
+        """Compiled fragments are sorted alphabetically by their text if they
+        have no source.
         """
         section = Section(attrs=SectionAttributes(title="Section"))
-        entries = {str(random.randint(1, 10_000)) for _ in range(10)}
-        for text in entries:
-            section.entries.add(Entry(text))
+        fragments = {str(random.randint(1, 10_000)) for _ in range(10)}
+        for text in fragments:
+            section.fragments.add(Fragment(text))
 
-        expected = "# Section\n\n" + "\n\n".join(sorted(entries))
+        expected = "# Section\n\n" + "\n\n".join(sorted(fragments))
         assert section.compile() == expected
 
-    def test_compile_entries_sorted_mixed(self):
-        """Compiled entries that have a source are sorted before ones that
+    def test_compile_fragments_sorted_mixed(self):
+        """Compiled fragments that have a source are sorted before ones that
         don't.
         """
         section = Section(attrs=SectionAttributes(title="Section"))
-        section.entries.add(Entry("Foo", source="foo.md"))
-        section.entries.add(Entry("Bar"))
+        section.fragments.add(Fragment("Foo", source="foo.md"))
+        section.fragments.add(Fragment("Bar"))
 
         expected = cleandoc(
             """
@@ -273,14 +273,14 @@ class TestSection:
         assert section.compile() == expected
 
     def test_is_empty_simple(self):
-        """A section with neither entries nor subsections is empty."""
+        """A section with neither fragments nor subsections is empty."""
         section = Section()
         assert section.is_empty()
 
-    def test_is_empty_contains_entries(self):
-        """A section with entries is not empty."""
+    def test_is_empty_contains_fragments(self):
+        """A section with fragments is not empty."""
         section = Section()
-        section.entries.add(Entry("Foo"))
+        section.fragments.add(Fragment("Foo"))
         assert not section.is_empty()
 
     def test_is_empty_with_empty_subsections(self):
@@ -294,7 +294,7 @@ class TestSection:
     def test_is_empty_with_nonempty_subsections(self):
         """A section with non-empty subsections is not empty."""
         subsection = Section()
-        subsection.entries.add(Entry("Hello"))
+        subsection.fragments.add(Fragment("Hello"))
         section = Section()
         section.subsections.add(subsection)
         assert not subsection.is_empty()
@@ -315,8 +315,8 @@ class TestSection:
             section.attrs.title  # pylint: disable=no-member
             == "${version} - ${date}"
         )
-        assert len(section.entries) == 1
-        announcement = next(iter(section.entries))
+        assert len(section.fragments) == 1
+        announcement = next(iter(section.fragments))
         assert announcement.text == "Hello, world!"
         assert (
             announcement.source == project_dir / "changelog.d/announcement.md"
@@ -325,8 +325,8 @@ class TestSection:
         subsection = next(iter(section.subsections))
         assert subsection.attrs.level == 3
         assert subsection.attrs.title == "Features"
-        assert len(subsection.entries) == 1
-        feature = next(iter(subsection.entries))
+        assert len(subsection.fragments) == 1
+        feature = next(iter(subsection.fragments))
         assert feature.text == "- Added feature."
         assert (
             feature.source == project_dir / "changelog.d/feature/feature_1.md"
@@ -419,15 +419,15 @@ class TestSection:
         )
 
 
-class TestEntry:
-    """Collect all tests for Entry."""
+class TestFragment:
+    """Collect all tests for Fragment."""
 
     def test_compile_simple(self):
-        """Compile a simple entry."""
-        entry = Entry("Hello, world!")
-        assert entry.compile() == "Hello, world!"
+        """Compile a simple fragment."""
+        fragment = Fragment("Hello, world!")
+        assert fragment.compile() == "Hello, world!"
 
     def test_compile_newlines(self):
-        """Strip newlines from entry."""
-        entry = Entry("\n\n\nFoo\n\n\n\n\n")
-        assert entry.compile() == "Foo"
+        """Strip newlines from fragment."""
+        fragment = Fragment("\n\n\nFoo\n\n\n\n\n")
+        assert fragment.compile() == "Foo"

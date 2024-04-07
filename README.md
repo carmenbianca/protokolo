@@ -13,8 +13,9 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 
 Protokolo is a change log generator.
 
-Protokolo allows you to maintain your change log entries in separate files, and
-then finally aggregate them into a new section in CHANGELOG just before release.
+Protokolo allows you to maintain your change log fragments in separate files,
+and then finally aggregate them into a new section in CHANGELOG just before
+release.
 
 ## Table of contents
 
@@ -121,9 +122,9 @@ commands.
 If a `CHANGELOG.md` file already existed, make sure to add a line containing
 `<!-- protokolo-section-tag -->` just before the heading of the latest release.
 
-### Adding entries
+### Adding fragments
 
-To add a change log entry, create the file `changelog.d/added/my_feature.md`,
+To add a change log fragment, create the file `changelog.d/added/my_feature.md`,
 and write something like:
 
 ```markdown
@@ -133,18 +134,18 @@ and write something like:
 Note the item dash at the start; Protokolo does not add them for you. What you
 write is exactly what you get.
 
-You can add more files. Change log entries in the same section (read: directory)
-are sorted alphabetically by their file name. If you want to make certain that
-some change log entries go first or last, prefix the file with `000_` or `zzz_`.
-For example, you can create `changelog.d/added/000_important_feature.md` to make
-it appear first.
+You can add more files. Change log fragments in the same section (read:
+directory) are sorted alphabetically by their file name. If you want to make
+certain that some change log fragments go first or last, prefix the file with
+`000_` or `zzz_`. For example, you can create
+`changelog.d/added/000_important_feature.md` to make it appear first.
 
 ### Compiling your change log
 
 You compile your change log with `protokolo compile`. This will take all change
-log entries from `changelog.d` and put them in your `CHANGELOG.md`. If we run it
-now, the following section is added after the `<!-- protokolo-section-tag -->`
-comment:
+log fragments from `changelog.d` and put them in your `CHANGELOG.md`. If we run
+it now, the following section is added after the
+`<!-- protokolo-section-tag -->` comment:
 
 ```markdown
 ## ${version} - 2023-11-08

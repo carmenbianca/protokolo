@@ -432,17 +432,17 @@ class TestCompile:
                     protokolo-section-tag
 
                 ${version} - 2023-11-08
-                =======================
+                -----------------------
 
                 Foo
 
                 Features
-                --------
+                ~~~~~~~~
 
                 Bar
 
                 0.1.0 - 2020-01-01
-                ==================
+                ------------------
                 """
             )
             in changelog
@@ -549,10 +549,7 @@ class TestInit:
             main, ["init", "--markup", "restructuredtext"]
         )
         assert result.exit_code == 0
-        assert (
-            "==========\nChange log\n=========="
-            in Path("CHANGELOG.md").read_text()
-        )
+        assert "Change log\n==========" in Path("CHANGELOG.md").read_text()
         assert (
             'markup = "restructuredtext"' in Path(".protokolo.toml").read_text()
         )

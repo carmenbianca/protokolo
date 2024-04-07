@@ -37,7 +37,6 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
     (directory / "CHANGELOG.rst").write_text(
         cleandoc(
             """
-            ==========
             Change log
             ==========
 
@@ -47,7 +46,7 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
                 protokolo-section-tag
 
             0.1.0 - 2020-01-01
-            ==================
+            ------------------
 
             First release.
             """

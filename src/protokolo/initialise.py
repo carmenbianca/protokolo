@@ -23,8 +23,7 @@ recommendations. Every release contains the following sections:
 
 <!-- protokolo-section-tag -->
 """
-CHANGELOG_RST = """==========
-Change log
+CHANGELOG_RST = """Change log
 ==========
 
 This change log follows the `Keep a Changelog <http://keepachangelog.com/>`_

@@ -11,8 +11,8 @@ from pathlib import Path
 from freezegun import freeze_time
 
 import protokolo
-from protokolo import cli as cli_module
-from protokolo.cli import cli
+from protokolo import cli
+from protokolo.cli import main
 from protokolo.config import GlobalConfig, SectionAttributes
 
 # pylint: disable=unspecified-encoding
@@ -29,20 +29,20 @@ def raise_permission(filename):
     return inner
 
 
-class TestCli:
-    """Collect all tests for cli."""
+class TestMain:
+    """Collect all tests for main."""
 
     def test_help_is_default(self, runner):
         """--help is optional."""
-        without_help = runner.invoke(cli, [])
-        with_help = runner.invoke(cli, ["--help"])
+        without_help = runner.invoke(main, [])
+        with_help = runner.invoke(main, ["--help"])
         assert without_help.output == with_help.output
         assert without_help.exit_code == with_help.exit_code == 0
         assert with_help.output.startswith("Usage: protokolo")
 
     def test_version(self, runner):
         """--version returns the correct version."""
-        result = runner.invoke(cli, ["--version"])
+        result = runner.invoke(main, ["--version"])
         assert result.output == f"protokolo, version {protokolo.__version__}\n"
 
 
@@ -51,8 +51,8 @@ class TestCompile:
 
     def test_help_is_not_default(self, runner):
         """--help is not the default action."""
-        without_help = runner.invoke(cli, ["compile"])
-        with_help = runner.invoke(cli, ["compile", "--help"])
+        without_help = runner.invoke(main, ["compile"])
+        with_help = runner.invoke(main, ["compile", "--help"])
         assert without_help.output != with_help.output
         assert without_help.exit_code != 0
         assert with_help.exit_code == 0
@@ -62,7 +62,7 @@ class TestCompile:
         """The absolute simplest case without any configuration."""
         Path("changelog.d/foo.md").write_text("Foo")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -98,7 +98,7 @@ class TestCompile:
         """The simple case, but using --format."""
         Path("changelog.d/foo.md").write_text("Foo")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -136,7 +136,7 @@ class TestCompile:
         """.protokolo.toml cannot be parsed."""
         Path(".protokolo.toml").write_text("{'Foo")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -160,7 +160,7 @@ class TestCompile:
             )
         )
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -183,7 +183,7 @@ class TestCompile:
             GlobalConfig, "from_file", raise_permission(".protokolo.toml")
         )
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -200,7 +200,7 @@ class TestCompile:
         """.protokolo.toml cannot be parsed."""
         Path("changelog.d/.protokolo.toml").write_text("{'Foo")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -227,7 +227,7 @@ class TestCompile:
             )
         )
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -254,7 +254,7 @@ class TestCompile:
             )
         )
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -279,7 +279,7 @@ class TestCompile:
             raise_permission("changelog.d/.protokolo.toml"),
         )
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -304,7 +304,7 @@ class TestCompile:
         )
         Path("changelog.d/foo.rst").write_text("Foo")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -324,7 +324,7 @@ class TestCompile:
         """There are no change log entries."""
         changelog = Path("CHANGELOG.md").read_text()
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -343,7 +343,7 @@ class TestCompile:
         Path("CHANGELOG.md").write_text("Hello, world!")
         Path("changelog.d/foo.md").write_text("Foo")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -367,7 +367,7 @@ class TestCompile:
         Path("changelog.d/feature/foo.md").write_text("Foo")
         Path("changelog.d/feature/bar.txt").write_text("Bar")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -407,7 +407,7 @@ class TestCompile:
         Path("changelog.d/foo.rst").write_text("Foo")
         Path("changelog.d/feature/bar.rst").write_text("Bar")
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -454,7 +454,7 @@ class TestCompile:
         changelog_text = Path("CHANGELOG.md").read_text()
 
         result = runner.invoke(
-            cli,
+            main,
             [
                 "compile",
                 "--changelog",
@@ -493,15 +493,15 @@ class TestInit:
 
     def test_help_is_not_default(self, runner):
         """--help is not the default action."""
-        without_help = runner.invoke(cli, ["init"])
-        with_help = runner.invoke(cli, ["init", "--help"])
+        without_help = runner.invoke(main, ["init"])
+        with_help = runner.invoke(main, ["init", "--help"])
         assert without_help.output != with_help.output
         assert without_help.exit_code == 0
         assert with_help.exit_code == 0
 
     def test_simple(self, empty_runner):
         """Use without any parameters; correctly set up files."""
-        result = empty_runner.invoke(cli, ["init"])
+        result = empty_runner.invoke(main, ["init"])
         assert result.exit_code == 0
         assert "# Change log" in Path("CHANGELOG.md").read_text()
         main_section_toml = Path("changelog.d/.protokolo.toml").read_text()
@@ -532,7 +532,7 @@ class TestInit:
 
     def test_changelog_option(self, empty_runner):
         """Use with --changelog option."""
-        result = empty_runner.invoke(cli, ["init", "--changelog", "CHANGELOG"])
+        result = empty_runner.invoke(main, ["init", "--changelog", "CHANGELOG"])
         assert result.exit_code == 0
         assert "# Change log" in Path("CHANGELOG").read_text()
         assert not Path("CHANGELOG.md").exists()
@@ -543,7 +543,7 @@ class TestInit:
     def test_markup_option(self, empty_runner):
         """Use with --markup option."""
         result = empty_runner.invoke(
-            cli, ["init", "--markup", "restructuredtext"]
+            main, ["init", "--markup", "restructuredtext"]
         )
         assert result.exit_code == 0
         assert (
@@ -556,7 +556,7 @@ class TestInit:
 
     def test_directory_option(self, empty_runner):
         """Use with --directory option."""
-        result = empty_runner.invoke(cli, ["init", "--directory", "foo"])
+        result = empty_runner.invoke(main, ["init", "--directory", "foo"])
         assert result.exit_code == 0
         assert Path("foo").is_dir()
         assert Path("foo/.protokolo.toml").exists()
@@ -565,17 +565,17 @@ class TestInit:
 
     def test_run_twice(self, empty_runner):
         """Invoke twice without problems."""
-        empty_runner.invoke(cli, ["init"])
-        result = empty_runner.invoke(cli, ["init"])
+        empty_runner.invoke(main, ["init"])
+        result = empty_runner.invoke(main, ["init"])
         assert result.exit_code == 0
 
     def test_do_not_override(self, empty_runner):
         """Do not override contents of files."""
-        empty_runner.invoke(cli, ["init"])
+        empty_runner.invoke(main, ["init"])
         Path("CHANGELOG.md").write_text("foo")
         Path("changelog.d/.protokolo.toml").write_text("foo")
         Path("changelog.d/added/.protokolo.toml").write_text("foo")
-        result = empty_runner.invoke(cli, ["init"])
+        result = empty_runner.invoke(main, ["init"])
         assert result.exit_code == 0
         assert Path("CHANGELOG.md").read_text() == "foo"
         assert Path("changelog.d/.protokolo.toml").read_text() == "foo"
@@ -583,12 +583,12 @@ class TestInit:
 
     def test_oserror(self, empty_runner, monkeypatch):
         """Handle OSErrors"""
-        empty_runner.invoke(cli, ["init"])
+        empty_runner.invoke(main, ["init"])
         monkeypatch.setattr(
-            cli_module,
+            cli,
             "create_keep_a_changelog",
             raise_permission("changelog.d"),
         )
-        result = empty_runner.invoke(cli, ["init"])
+        result = empty_runner.invoke(main, ["init"])
         assert result.exit_code != 0
         assert "Permission denied" in result.output

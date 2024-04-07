@@ -31,7 +31,7 @@ from .types import SupportedMarkup
 @click.group(name="protokolo")
 @click.version_option(package_name="protokolo")
 @click.pass_context
-def cli(ctx: click.Context) -> None:
+def main(ctx: click.Context) -> None:
     """Protokolo is a change log generator."""
     ctx.ensure_object(dict)
     if ctx.default_map is None:
@@ -61,7 +61,7 @@ def cli(ctx: click.Context) -> None:
             }
 
 
-@cli.command(name="compile")
+@main.command(name="compile")
 @click.option(
     "--changelog",
     show_default="determined by config",
@@ -196,7 +196,7 @@ def compile_(
                     path.unlink()
 
 
-@cli.command(name="init")
+@main.command(name="init")
 @click.option(
     "--changelog",
     default="CHANGELOG.md",

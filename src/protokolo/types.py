@@ -31,7 +31,7 @@ TOMLValue: TypeAlias = (
     | TOMLType
     | list["TOMLType"]
 )
-#: Like :ref:`TOMLValue`, but using only Python primitives.
+#: Like :data:`TOMLValue`, but using only Python primitives.
 TOMLValueType: UnionType = (
     str | int | float | bool | datetime | date | None | dict | list
 )

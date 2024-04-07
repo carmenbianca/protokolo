@@ -9,7 +9,9 @@ from typing import Any
 
 
 class ProtokoloError(Exception):
-    """Common exception class for all custom errors raised by protokolo."""
+    """Common exception class for all custom errors raised by the
+    :mod:`protokolo` module.
+    """
 
 
 class DictTypeError(TypeError, ProtokoloError):
@@ -72,8 +74,8 @@ class DictTypeError(TypeError, ProtokoloError):
 
 
 class DictTypeListError(DictTypeError):
-    """Like DictTypeError, but the item is in a list (inside of a dictionary)
-    instead of in a dictionary.
+    """Like :class:`DictTypeError`, but the item is in a list (inside of a
+    dictionary) instead of in a dictionary.
     """
 
     def _key_text(self) -> str:
@@ -81,19 +83,21 @@ class DictTypeListError(DictTypeError):
 
 
 class ProtokoloTOMLError(ProtokoloError):
-    """An exception that pertains to .protokolo.toml."""
+    """An exception that pertains to ``.protokolo.toml.``"""
 
 
 class AttributeNotPositiveError(ValueError, ProtokoloTOMLError):
-    """A value in AttributeSections is expected to be a positive integer."""
+    """A value in :class:`.config.SectionAttributes` is expected to be a
+    positive integer.
+    """
 
 
 class ProtokoloTOMLNotFoundError(FileNotFoundError, ProtokoloTOMLError):
-    """Couldn't find a .protokolo.toml file."""
+    """Couldn't find a ``.protokolo.toml`` file."""
 
 
 class ProtokoloTOMLIsADirectoryError(IsADirectoryError, ProtokoloTOMLError):
-    """.protokolo.toml is not a file."""
+    """``.protokolo.toml`` is not a file."""
 
 
 class HeadingFormatError(ValueError, ProtokoloError):

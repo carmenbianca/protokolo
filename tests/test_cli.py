@@ -93,6 +93,45 @@ class TestCompile:
         )
         assert not Path("changelog.d/foo.md").exists()
 
+    @freeze_time("2023-11-08")
+    def test_with_format(self, runner):
+        """The simple case, but using --format."""
+        Path("changelog.d/foo.md").write_text("Foo")
+        result = runner.invoke(
+            cli,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--markup",
+                "markdown",
+                "--format",
+                "version",
+                "0.2.0",
+                "changelog.d",
+            ],
+        )
+        assert result.exit_code == 0
+        changelog = Path("CHANGELOG.md").read_text()
+
+        assert (
+            cleandoc(
+                """
+                Lorem ipsum.
+
+                <!-- protokolo-section-tag -->
+
+                ## 0.2.0 - 2023-11-08
+
+                Foo
+
+                ## 0.1.0 - 2020-01-01
+                """
+            )
+            in changelog
+        )
+        assert not Path("changelog.d/foo.md").exists()
+
     def test_global_config_parse_error(self, runner):
         """.protokolo.toml cannot be parsed."""
         Path(".protokolo.toml").write_text("{'Foo")

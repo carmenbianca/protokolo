@@ -113,8 +113,8 @@ run it now, the following section is added after the
 
 The Markdown files in `changelog.d/added/` are deleted. You can manually replace
 `${version}` with a release version, or you can pass the option
-`--format version=1.0.0` to `protokolo compile` to format the heading at compile
-time (TODO: not implemented yet).
+`--format version 1.0.0` to `protokolo compile` to format the heading at compile
+time.
 
 For more documentation and options, read the documentation at TODO.
 

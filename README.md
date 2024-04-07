@@ -6,6 +6,11 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 
 # Protokolo
 
+[![Latest Protokolo version](https://img.shields.io/pypi/v/protokolo.svg)](https://pypi.python.org/pypi/protokolo)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/protokolo.svg)](https://pypi.python.org/pypi/protokolo)
+[![REUSE status](https://api.reuse.software/badge/codeberg.org/carmenbianca/protokolo)](https://api.reuse.software/info/codeberg.org/carmenbianca/protokolo)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)
+
 Protokolo is a change log generator.
 
 Protokolo allows you to maintain your change log entries in separate files, and

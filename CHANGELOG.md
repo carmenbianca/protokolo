@@ -18,6 +18,20 @@ recommendations. Every release contains the following sections:
 
 <!-- protokolo-section-tag -->
 
+## 0.3.0 - 2024-04-07
+
+### Added
+
+- Added `--dry-run` to `compile`.
+
+- Added `--format` to `compile`. This is primarily useful for doing something
+  like `protokolo compile --format version 1.0.0` to format the correct version
+  into the section heading.
+
+### Changed
+
+- Re-wrote the internals to use the `attrs` library for easier validation.
+
 ## 0.2.0 - 2023-11-07
 
 This is the prototype release of Protokolo. It contains the most basic

@@ -4,7 +4,7 @@
 
 [tool.poetry]
 name = "protokolo"
-version = "0.2.0"
+version = "0.3.0"
 description = "Protokolo is a change log generator."
 authors = [
     "Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
@@ -42,7 +42,7 @@ freezegun = "^1.0"
 black = ">=20"
 isort = "^5.0.0"
 pre-commit = "^2.9.0"
-bump2version = "^1.0.0"
+bumpver = ">=2023.1129"
 pylint = "^3.0"
 mypy = "^1.0"
 reuse = "^3.0"
@@ -65,14 +65,35 @@ pylsp-mypy = "*"
 pyls-isort = "*"
 python-lsp-black = "*"
 
+[build-system]
+requires = ["poetry-core>=1.1.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.protokolo]
 changelog = "CHANGELOG.md"
 markup = "markdown"
 directory = "changelog.d"
 
-[build-system]
-requires = ["poetry-core>=1.1.0"]
-build-backend = "poetry.core.masonry.api"
+[bumpver]
+current_version = "0.3.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version to {new_version}"
+tag_message = "{new_version}"
+tag_scope = "default"
+pre_commit_hook = ""
+post_commit_hook = ""
+commit = true
+tag = false
+push = false
+
+[bumpver.file_patterns]
+"pyproject.toml" = [
+    '^version = "{version}"$',
+    '^current_version = "{version}"$',
+]
+"src/protokolo/__init__.py" = [
+    '^__version__ = "{version}"$',
+]
 
 [tool.black]
 line-length = 80

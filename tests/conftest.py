@@ -32,6 +32,7 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
             First release.
             """
         )
+        + "\n"
     )
     (directory / "CHANGELOG.rst").write_text(
         cleandoc(
@@ -51,6 +52,7 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
             First release.
             """
         )
+        + "\n"
     )
 
     changelog_d = directory / "changelog.d"

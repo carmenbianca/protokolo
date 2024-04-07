@@ -91,6 +91,7 @@ class TestCompile:
             )
             in changelog
         )
+        assert changelog.endswith("\n")
         assert not Path("changelog.d/foo.md").exists()
 
     @freeze_time("2023-11-08")

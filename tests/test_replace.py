@@ -64,7 +64,7 @@ class TestInsertIntoStr:
     def test_insert_into_str_target_empty(self):
         """Insert into an empty target."""
         target = ""
-        expected = "Foo"
+        expected = "Foo\n"
         assert insert_into_str("Foo", target, 0) == expected
 
     def test_insert_into_str_text_empty(self):
@@ -86,12 +86,15 @@ class TestInsertIntoStr:
             Line 2
             """
         )
-        expected = cleandoc(
-            """
-            Line 1
-            Line 2
-            Foo
-            """
+        expected = (
+            cleandoc(
+                """
+                Line 1
+                Line 2
+                Foo
+                """
+            )
+            + "\n"
         )
         assert insert_into_str("Foo", target, 2) == expected
 
@@ -109,6 +112,29 @@ class TestInsertIntoStr:
             Line 1
             Line 2
             """
+        )
+        assert insert_into_str("Foo", target, 0) == expected
+
+    def test_insert_into_str_keep_newline_at_end(self):
+        """The newline at the end is preserved."""
+        target = (
+            cleandoc(
+                """
+                Line 1
+                Line 2
+                """
+            )
+            + "\n"
+        )
+        expected = (
+            cleandoc(
+                """
+                Foo
+                Line 1
+                Line 2
+                """
+            )
+            + "\n"
         )
         assert insert_into_str("Foo", target, 0) == expected
 

@@ -36,10 +36,10 @@ Unfortunately, they are also a bit of a pain when combined with version control:
 - Just after you make a release, you need to create a new section in CHANGELOG
   for your next release. If you forget this busywork, new feature branches will
   need to create this section, which increases the chance of merge conflicts.
-- If a feature branch adds a change log entry to the section for the next v1.2.3
-  release, and v1.2.3 subsequently releases without merging that feature branch,
+- If a feature branch adds a change log entry to the section for the next v2.0
+  release, and v2.0 subsequently releases without merging that feature branch,
   then merging that feature branch afterwards would still add the change log
-  entry to the v1.2.3 section, even though it should now go to the v1.3.0
+  entry to the v2.0 section, even though it should now go to the unreleased v3.0
   section.
 
 Life would be a lot easier if you didn't have to deal with these problems.

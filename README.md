@@ -16,7 +16,7 @@ Protokolo is a change log generator.
 Protokolo allows you to maintain your change log entries in separate files, and
 then finally aggregate them into a new section in CHANGELOG just before release.
 
-## Table of Contents
+## Table of contents
 
 - [Background](#background)
 - [Install](#install)
@@ -43,9 +43,34 @@ Unfortunately, they are also a bit of a pain when combined with version control:
 
 Life would be a lot easier if you didn't have to deal with these problems.
 
-Enter Protokolo. The idea is very simple: For every change log entry, create a
-new file. Finally, just before release, compile the contents of those files into
-a new section in CHANGELOG, and delete the files.
+Enter Protokolo
+([Esperanto for 'report' or 'minutes'](https://vortaro.net/#protokolo_kd)). The
+idea is very simple: For every change log entry, create a new file. Finally,
+just before release, compile the contents of those files into a new section in
+CHANGELOG, and delete the files.
+
+### See also
+
+[Towncrier](https://github.com/twisted/towncrier) is an older and more widely
+used implementation of the same idea. Protokolo is distinct in that it uses a
+directory hierarchy instead of putting all metadata in the file name of each
+change log fragment. Furthermore, Protokolo does no fancy formatting of
+fragments---what you write is what you get.
+
+There are four main reasons I wrote Protokolo:
+
+- When using Towncrier, I would always forget which fragment types are available
+  to me and had to look them up. These fragment types can also differ per
+  repository.
+- Because (some) Towncrier workflows put the PR number in the file name as
+  metadata, I would have to open the PR before I could create the change log
+  fragment.
+- Towncrier fragments are sorted by their ID, which is typically an issue or PR
+  number. This wasn't always what I wanted.
+- I didn't really like the additional formatting applied to the fragments.
+
+A much younger version of me also tried her hand at writing a program like this
+in [changelogdir](https://pypi.org/project/changelogdir/).
 
 ## Install
 

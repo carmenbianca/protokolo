@@ -31,15 +31,15 @@ from .types import StrPath, SupportedMarkup
 
 
 @attrs_.define(frozen=True)
-class Entry:
-    """An entry, analogous to a file."""
+class Fragment:
+    """A fragment, analogous to a file."""
 
     text: str
     source: Path | None = attrs_.field(default=None, converter=optional(Path))
 
     def compile(self) -> str:
-        """Compile the entry. For the time being, this just means stripping the
-        newline characters around the text.
+        """Compile the fragment. For the time being, this just means stripping
+        the newline characters around the text.
         """
         return self.text.strip("\n")
 
@@ -52,7 +52,7 @@ class Section:
     markup: SupportedMarkup = "markdown"
     source: Path | None = attrs_.field(default=None, converter=optional(Path))
 
-    entries: set[Entry] = attrs_.field(factory=set, init=False)
+    fragments: set[Fragment] = attrs_.field(factory=set, init=False)
     subsections: set[Self] = attrs_.field(factory=set, init=False)
 
     @classmethod
@@ -90,7 +90,7 @@ class Section:
         section = cls(markup=markup, source=directory)
 
         section._load_section_attributes(directory, level, section_format_pairs)
-        section._load_subsections_and_entries(
+        section._load_subsections_and_fragments(
             directory, section.attrs.level, section_format_pairs
         )
 
@@ -138,10 +138,10 @@ class Section:
             attrs[key] = val
         self.attrs = attrs
 
-    def _load_subsections_and_entries(
+    def _load_subsections_and_fragments(
         self, directory: Path, level: int, section_format_pairs: dict[str, str]
     ) -> None:
-        """Locate subsections and entries. Load entries onto self, and
+        """Locate subsections and fragments. Load fragments onto self, and
         recursively create subsections to also load them onto self.
 
         Raises:
@@ -154,7 +154,7 @@ class Section:
                 positive integer.
         """
         subsections = set()
-        entries = set()
+        fragments = set()
         for path in directory.iterdir():
             if path.is_dir():
                 subsections.add(
@@ -171,13 +171,13 @@ class Section:
             ):
                 with path.open("r", encoding="utf-8") as fp_:
                     content = fp_.read()
-                    entries.add(Entry(text=content, source=path))
+                    fragments.add(Fragment(text=content, source=path))
         self.subsections = cast(set[Self], subsections)
-        self.entries = entries
+        self.fragments = fragments
 
     def compile(self) -> str:
-        """Compile the entire section recursively, first printing the entries in
-        order, then the subsections.
+        """Compile the entire section recursively, first printing the fragments
+        in order, then the subsections.
 
         Empty sections are not compiled.
 
@@ -210,9 +210,9 @@ class Section:
             ) from error
         buffer.write(heading)
 
-        for entry in self.sorted_entries():
+        for fragment in self.sorted_fragments():
             buffer.write("\n\n")
-            buffer.write(entry.compile())
+            buffer.write(fragment.compile())
 
         for subsection in self.sorted_subsections():
             if not subsection.is_empty():
@@ -222,11 +222,11 @@ class Section:
         return buffer
 
     def is_empty(self) -> bool:
-        """A :class:`Section` is empty if it contains neither entries nor
-        subsections. If it contains no entries, and its subsections are empty,
+        """A :class:`Section` is empty if it contains neither fragments nor
+        subsections. If it contains no fragments, and its subsections are empty,
         then it is also considered empty.
         """
-        if self.entries:
+        if self.fragments:
             return False
         if not self.subsections:
             return True
@@ -235,18 +235,20 @@ class Section:
                 return False
         return True
 
-    def sorted_entries(self) -> Iterator[Entry]:
-        """Yield the entries, ordered by their source. Entries that do not have
-        a source are sorted afterwards by their text.
+    def sorted_fragments(self) -> Iterator[Fragment]:
+        """Yield the fragments, ordered by their source. Fragments that do not
+        have a source are sorted afterwards by their text.
         """
         with_source = {
-            entry for entry in self.entries if entry.source is not None
+            fragment
+            for fragment in self.fragments
+            if fragment.source is not None
         }
         source_sorted = sorted(
-            with_source, key=lambda entry: cast(Path, entry.source).name
+            with_source, key=lambda fragment: cast(Path, fragment.source).name
         )
         alphabetical_sorted = sorted(
-            self.entries - with_source, key=attrgetter("text")
+            self.fragments - with_source, key=attrgetter("text")
         )
         return chain(source_sorted, alphabetical_sorted)
 

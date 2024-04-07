@@ -109,7 +109,7 @@ def compile_(
     dry_run: bool,
     directory: Path,
 ) -> None:
-    """Aggregate all change log entries from files in a directory into a
+    """Aggregate all change log fragments from files in a directory into a
     CHANGELOG file.
 
     A change log directory should contain a '.protokolo.toml' file that defines
@@ -125,7 +125,7 @@ def compile_(
     ## 1.0.0 - 2023-11-08
 
     The heading is followed by the contents of files in the section's directory.
-    If a section is empty (no change log entries), it is not compiled.
+    If a section is empty (no change log fragments), it is not compiled.
 
     The CHANGELOG file should contain the following comment, which is the
     location in the file after which the compiled section will be pasted:
@@ -159,7 +159,7 @@ def compile_(
         raise click.UsageError(str(error)) from error
 
     if not new_section:
-        click.echo("There are no change log entries to compile.")
+        click.echo("There are no change log fragments to compile.")
         return
 
     # Write to CHANGELOG
@@ -187,7 +187,7 @@ def compile_(
         # changelog isn't readable/writable.
         raise click.UsageError(str(error)) from error
 
-    # Delete change log entries
+    # Delete change log fragments
     if not dry_run:
         for dirpath, _, filenames in os.walk(directory):
             for filename in filenames:
@@ -214,7 +214,7 @@ def compile_(
         readable=True,
         path_type=Path,
     ),
-    help="Directory of change log sections and entries.",
+    help="Directory of change log sections and fragments.",
 )
 @click.option(
     "--markup",

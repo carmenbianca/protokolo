@@ -321,7 +321,7 @@ class TestCompile:
         )
 
     def test_nothing_to_compile(self, runner):
-        """There are no change log entries."""
+        """There are no change log fragments."""
         changelog = Path("CHANGELOG.md").read_text()
         result = runner.invoke(
             main,
@@ -335,7 +335,9 @@ class TestCompile:
             ],
         )
         assert result.exit_code == 0
-        assert result.output == "There are no change log entries to compile.\n"
+        assert (
+            result.output == "There are no change log fragments to compile.\n"
+        )
         assert Path("CHANGELOG.md").read_text() == changelog
 
     def test_no_replacement_tag(self, runner):
@@ -360,8 +362,8 @@ class TestCompile:
         )
 
     @freeze_time("2023-11-08")
-    def test_nested_entries_deleted(self, runner):
-        """Entries in nested sections are also deleted, but other files are
+    def test_nested_fragments_deleted(self, runner):
+        """Fragments in nested sections are also deleted, but other files are
         not.
         """
         Path("changelog.d/feature/foo.md").write_text("Foo")

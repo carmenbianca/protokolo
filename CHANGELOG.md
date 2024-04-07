@@ -16,6 +16,10 @@ recommendations. Every release contains the following sections:
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+The versions follow [semantic versioning](https://semver.org) for the
+`protokolo` CLI command and its behaviour. There are no guarantees of stability
+for the `protokolo` Python library.
+
 <!-- protokolo-section-tag -->
 
 ## 0.3.0 - 2024-04-07

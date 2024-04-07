@@ -44,7 +44,7 @@ Unfortunately, they are also a bit of a pain when combined with version control:
 Life would be a lot easier if you didn't have to deal with these problems.
 
 Enter Protokolo
-([Esperanto for 'report' or 'minutes'](https://vortaro.net/#protokolo_kd)). The
+([Esperanto for 'report' or 'minutes'](https://vortaro.net/#protokolo)). The
 idea is very simple: For every change log entry, create a new file. Finally,
 just before release, compile the contents of those files into a new section in
 CHANGELOG, and delete the files.

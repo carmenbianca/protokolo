@@ -85,8 +85,16 @@ like this:
 └── .protokolo.toml
 ```
 
-The `.protokolo.toml` files contain metadata for their respective sections; the
-section title, heading level, and order. Their inclusion is mandatory.
+The `.protokolo.toml` files in `changelog.d` contain metadata for their
+respective sections; the section title, heading level, and order. Their
+inclusion is mandatory.
+
+The `.protokolo.toml` file in the root of the project contains configurations
+for Protokolo that reduce the amount of typing you need to do when running
+commands.
+
+If a `CHANGELOG.md` file already existed, make sure to add a line containing
+`<!-- protokolo-section-tag -->` just before the heading of the latest release.
 
 ### Adding entries
 
@@ -108,11 +116,10 @@ it appear first.
 
 ### Compiling your change log
 
-You compile your change log with
-`protokolo compile --changelog CHANGELOG.md changelog.d`. This will take all
-change log entries from `changelog.d` and put them in your `CHANGELOG.md`. If we
-run it now, the following section is added after the
-`<!-- protokolo-section-tag -->` comment:
+You compile your change log with `protokolo compile`. This will take all change
+log entries from `changelog.d` and put them in your `CHANGELOG.md`. If we run it
+now, the following section is added after the `<!-- protokolo-section-tag -->`
+comment:
 
 ```markdown
 ## ${version} - 2023-11-08

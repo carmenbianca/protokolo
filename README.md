@@ -57,7 +57,8 @@ directory hierarchy instead of putting all metadata in the file name of each
 change log fragment. Furthermore, Protokolo does no fancy formatting of
 fragments---what you write is what you get.
 
-There are four main reasons I wrote Protokolo:
+There are three main problems I encountered in Towncrier that Protokolo attempts
+to address:
 
 - When using Towncrier, I would always forget which fragment types are available
   to me and had to look them up. These fragment types can also differ per
@@ -67,7 +68,6 @@ There are four main reasons I wrote Protokolo:
   fragment.
 - Towncrier fragments are sorted by their ID, which is typically an issue or PR
   number. This wasn't always what I wanted.
-- I didn't really like the additional formatting applied to the fragments.
 
 A much younger version of me also tried her hand at writing a program like this
 in [changelogdir](https://pypi.org/project/changelogdir/).

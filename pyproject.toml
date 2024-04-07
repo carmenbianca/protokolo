@@ -69,11 +69,6 @@ python-lsp-black = "*"
 requires = ["poetry-core>=1.1.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.protokolo]
-changelog = "CHANGELOG.md"
-markup = "markdown"
-directory = "changelog.d"
-
 [bumpver]
 current_version = "0.3.0"
 version_pattern = "MAJOR.MINOR.PATCH"

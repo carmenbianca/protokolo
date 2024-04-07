@@ -185,7 +185,7 @@ def compile_(
     except OSError as error:
         # TODO: This is a little tricky to test. click already exits early if
         # changelog isn't readable/writable.
-        raise click.UsageError(str(error))
+        raise click.UsageError(str(error)) from error
 
     # Delete change log entries
     if not dry_run:
@@ -260,4 +260,4 @@ def init(
         create_keep_a_changelog(directory)
         create_root_toml(changelog.name, markup, directory)
     except OSError as error:
-        raise click.UsageError(str(error))
+        raise click.UsageError(str(error)) from error

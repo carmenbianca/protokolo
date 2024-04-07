@@ -50,6 +50,10 @@ with `pipx ensurepath`.
 
 ## Usage
 
+For full documentation and options, read the documentation at TODO.
+
+### Initial set-up
+
 To set up your project for use with Protokolo, run `protokolo init`. This will
 create a `CHANGELOG.md` file (if one did not already exist) and a directory
 structure under `changelog.d`. The directory structure uses the
@@ -79,6 +83,8 @@ like this:
 The `.protokolo.toml` files contain metadata for their respective sections; the
 section title, heading level, and order. Their inclusion is mandatory.
 
+### Adding entries
+
 To add a change log entry, create the file `changelog.d/added/my_feature.md`,
 and write something like:
 
@@ -95,7 +101,9 @@ some change log entries go first or last, prefix the file with `000_` or `zzz_`.
 For example, you can create `changelog.d/added/000_important_feature.md` to make
 it appear first.
 
-Finally, compile your change log with
+### Compiling your change log
+
+You compile your change log with
 `protokolo compile --changelog CHANGELOG.md changelog.d`. This will take all
 change log entries from `changelog.d` and put them in your `CHANGELOG.md`. If we
 run it now, the following section is added after the
@@ -115,8 +123,6 @@ The Markdown files in `changelog.d/added/` are deleted. You can manually replace
 `${version}` with a release version, or you can pass the option
 `--format version 1.0.0` to `protokolo compile` to format the heading at compile
 time.
-
-For more documentation and options, read the documentation at TODO.
 
 ## Maintainers
 

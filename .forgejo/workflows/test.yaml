@@ -52,6 +52,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
-        run: poetry install --no-interaction --only dev
+        run: pip install reuse==3.0.1
       - name: Run reuse
-        run: poetry run reuse
+        run: reuse lint

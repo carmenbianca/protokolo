@@ -6,8 +6,8 @@
 
 """Main entry into the program."""
 
-from .cli import cli
+from .cli import main
 
 if __name__ == "__main__":
     # pylint: disable=no-value-for-parameter
-    cli()
+    main()

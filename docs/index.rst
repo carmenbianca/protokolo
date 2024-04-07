@@ -17,7 +17,7 @@ Welcome to Protokolo's documentation!
    :caption: Contents:
 
    Overview<readme>
-   usage
+   reference
    history
    API<api/modules>
 

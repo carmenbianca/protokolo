@@ -122,6 +122,6 @@ MARKUP_FORMATTER_MAPPING = {
 }
 
 MARKUP_EXTENSION_MAPPING = {
-    "markdown": {".md", ".markdown", ""},
+    "markdown": {".md", ".markdown"},
     "restructuredtext": {".rst"},
 }

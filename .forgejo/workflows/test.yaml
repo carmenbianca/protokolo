@@ -18,7 +18,7 @@ jobs:
       - name: Run tests
         run: poetry run pytest --cov=protokolo
 
-  pylint:
+  pylint-mypy:
     runs-on: docker
     container: nikolaik/python-nodejs:python3.11-nodejs21
     steps:
@@ -27,37 +27,24 @@ jobs:
         run: poetry install --no-interaction --only main,dev,test
       - name: Run pylint
         run: poetry run pylint src/ tests/
-
-  black-isort:
-    runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs21
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: poetry install --no-interaction --only dev
-      - name: Run black and isort
-        run: |
-          poetry run black .
-          poetry run isort --check src/ tests/
-
-  mypy:
-    runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs21
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: poetry install --no-interaction --only main,dev,test
       - name: Run mypy
         run: poetry run mypy
 
-  prettier:
+  black-prettier-isort:
     runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
-        run: npm install prettier@3.0.3
+        run: |
+          poetry install --no-interaction --only dev
+          npm install prettier@3.0.3
+      - name: Run black
+        run: poetry run black .
       - name: Run prettier
         run: npx prettier --check .
+      - name: Run isort
+        run: poetry run isort --check src/ tests/
 
   reuse:
     runs-on: docker

@@ -61,12 +61,18 @@ class Section:
         directory: StrPath,
         level: int = 1,
         markup: SupportedMarkup = "markdown",
+        section_format_pairs: dict[str, str] | None = None,
     ) -> Self:
         """Factory method to recursively create a :class:`Section` from a
         directory.
 
-        The *level* keyword argument is overridden by the level value in
-        ``.protokolo.toml``.
+        Args:
+            directory: The changelog.d directory.
+            level: The level of the root :class:`Section`. This is overridden by
+                the level value in ``.protokolo.toml``, if any.
+            markup: The markup language.
+            section_format_pairs: Additional key-value pairs used to format the
+                section headings, applied recursively to all subsections.
 
         Raises:
             OSError: input/output error.
@@ -77,15 +83,22 @@ class Section:
             AttributeNotPositiveError: value in ``.protokolo.toml`` should be a
                 positive integer.
         """
+        if section_format_pairs is None:
+            section_format_pairs = {}
+
         directory = Path(directory)
         section = cls(markup=markup, source=directory)
 
-        section._load_section_attributes(directory, level)
-        section._load_subsections_and_entries(directory, section.attrs.level)
+        section._load_section_attributes(directory, level, section_format_pairs)
+        section._load_subsections_and_entries(
+            directory, section.attrs.level, section_format_pairs
+        )
 
         return section
 
-    def _load_section_attributes(self, directory: Path, level: int) -> None:
+    def _load_section_attributes(
+        self, directory: Path, level: int, section_format_pairs: dict[str, str]
+    ) -> None:
         """Locate ``.protokolo.toml`` and create a :class:`SectionAttributes`
         object from it, then set that object on self.
 
@@ -121,10 +134,12 @@ class Section:
         # in the toml, second by the level value.
         level = values.get("level") or level
         attrs.level = level
+        for key, val in section_format_pairs.items():
+            attrs[key] = val
         self.attrs = attrs
 
     def _load_subsections_and_entries(
-        self, directory: Path, level: int
+        self, directory: Path, level: int, section_format_pairs: dict[str, str]
     ) -> None:
         """Locate subsections and entries. Load entries onto self, and
         recursively create subsections to also load them onto self.
@@ -144,7 +159,10 @@ class Section:
             if path.is_dir():
                 subsections.add(
                     self.from_directory(
-                        path, level=level + 1, markup=self.markup
+                        path,
+                        level=level + 1,
+                        markup=self.markup,
+                        section_format_pairs=section_format_pairs,
                     )
                 )
             elif (

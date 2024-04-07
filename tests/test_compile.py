@@ -332,6 +332,18 @@ class TestSection:
             feature.source == project_dir / "changelog.d/feature/feature_1.md"
         )
 
+    def test_from_directory_additional_format_pairs(self, project_dir):
+        """Provide additional section format pairs to Section, and make sure
+        they are set on the SectionAttributes.
+        """
+        section = Section.from_directory(
+            project_dir / "changelog.d",
+            section_format_pairs={"version": "0.2.0"},
+        )
+        assert section.attrs["version"] == "0.2.0"
+        for subsection in section.subsections:
+            assert subsection.attrs["version"] == "0.2.0"
+
     def test_from_directory_decode_error(self, project_dir):
         """Raise TOMLDecodeError if there is invalid TOML."""
         (project_dir / "changelog.d/.protokolo.toml").write_text(

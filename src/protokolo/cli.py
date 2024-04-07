@@ -77,6 +77,15 @@ def cli(ctx: click.Context) -> None:
     help="Markup language.",
 )
 @click.option(
+    "--format",
+    "-f",
+    "format_",
+    type=(str, str),
+    metavar="<KEY VALUE>...",
+    multiple=True,
+    help="Use key-value pairs to string-format section headers.",
+)
+@click.option(
     "--dry-run",
     "-n",
     is_flag=True,
@@ -96,6 +105,7 @@ def cli(ctx: click.Context) -> None:
 def compile_(
     changelog: click.File,
     markup: SupportedMarkup,
+    format_: tuple[tuple[str, str], ...],
     dry_run: bool,
     directory: Path,
 ) -> None:
@@ -125,9 +135,15 @@ def compile_(
 
     For more documentation and options, read the documentation at TODO.
     """
+    # TODO: Maybe split this up.
+    # pylint: disable=too-many-locals
+    format_pairs: dict[str, str] = dict(format_)
+
     # Create Section
     try:
-        section = Section.from_directory(directory, markup=markup)
+        section = Section.from_directory(
+            directory, markup=markup, section_format_pairs=format_pairs
+        )
     except (
         tomllib.TOMLDecodeError,
         DictTypeError,
@@ -245,4 +261,3 @@ def init(
         create_root_toml(changelog.name, markup, directory)
     except OSError as error:
         raise click.UsageError(str(error))
-    # TODO: create .protokolo.toml in project dir.

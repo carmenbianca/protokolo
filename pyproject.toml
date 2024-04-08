@@ -70,9 +70,9 @@ requires = ["poetry-core>=1.1.0"]
 build-backend = "poetry.core.masonry.api"
 
 [bumpver]
-current_version = "0.3.0"
-version_pattern = "MAJOR.MINOR.PATCH"
-commit_message = "Bump version to {new_version}"
+current_version = "v0.3.0"
+version_pattern = "vMAJOR.MINOR.PATCH"
+commit_message = "Bump version: {old_version} → {new_version}"
 tag_message = "{new_version}"
 tag_scope = "default"
 pre_commit_hook = ""
@@ -83,11 +83,11 @@ push = false
 
 [bumpver.file_patterns]
 "pyproject.toml" = [
-    '^version = "{version}"$',
+    '^version = "{pep440_version}"$',
     '^current_version = "{version}"$',
 ]
 "src/protokolo/__init__.py" = [
-    '^__version__ = "{version}"$',
+    '^__version__ = "{pep440_version}"$',
 ]
 
 [tool.black]

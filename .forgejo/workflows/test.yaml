@@ -40,7 +40,7 @@ jobs:
           poetry install --no-interaction --only dev
           npm install prettier@3.0.3
       - name: Run black
-        run: poetry run black .
+        run: poetry run black --check .
       - name: Run prettier
         run: npx prettier --check .
       - name: Run isort

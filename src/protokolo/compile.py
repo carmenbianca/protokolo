@@ -38,10 +38,12 @@ class Fragment:
     source: Path | None = attrs_.field(default=None, converter=optional(Path))
 
     def compile(self) -> str:
-        """Compile the fragment. For the time being, this just means stripping
-        the newline characters around the text.
+        """Compile the fragment. For the time being, this just means adding a
+        newline at the end if one does not exist.
         """
-        return self.text.strip("\n")
+        if not self.text.endswith("\n"):
+            return f"{self.text}\n"
+        return self.text
 
 
 @attrs_.define(eq=False)
@@ -209,14 +211,16 @@ class Section:
                 f" {str(error)}"
             ) from error
         buffer.write(heading)
+        buffer.write("\n")
 
+        if self.fragments:
+            buffer.write("\n")
         for fragment in self.sorted_fragments():
-            buffer.write("\n\n")
             buffer.write(fragment.compile())
 
         for subsection in self.sorted_subsections():
             if not subsection.is_empty():
-                buffer.write("\n\n")
+                buffer.write("\n")
             subsection.write_to_buffer(buffer=buffer)
 
         return buffer

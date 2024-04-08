@@ -29,6 +29,8 @@ class TestInsertIntoStr:
             Line 3
             """
         )
+        # The newline is implicit.
+        assert insert_into_str("Foo\n", target, 2) == expected
         assert insert_into_str("Foo", target, 2) == expected
 
     def test_insert_into_str_multiple_lines(self):
@@ -97,6 +99,7 @@ class TestInsertIntoStr:
             + "\n"
         )
         assert insert_into_str("Foo", target, 2) == expected
+        assert insert_into_str("Foo\n", target, 2) == expected
 
     def test_insert_into_str_start(self):
         """Insert at the start of the target."""

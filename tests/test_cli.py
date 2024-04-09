@@ -67,9 +67,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
@@ -104,12 +105,13 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
                 "--format",
                 "version",
                 "0.2.0",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
@@ -142,9 +144,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -166,9 +169,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -189,9 +193,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -206,9 +211,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -233,9 +239,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -260,9 +267,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -285,9 +293,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -310,9 +319,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.rst",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "restructuredtext",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -330,9 +340,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
@@ -351,9 +362,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -375,9 +387,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
@@ -415,9 +428,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.rst",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "restructuredtext",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
@@ -462,8 +476,9 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
-                "--dry-run",
+                "--directory",
                 "changelog.d",
+                "--dry-run",
             ],
         )
         assert result.exit_code == 0

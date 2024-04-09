@@ -64,13 +64,28 @@ def main(ctx: click.Context) -> None:
 @main.command(name="compile")
 @click.option(
     "--changelog",
+    "-c",
     show_default="determined by config",
     type=click.File("r+", encoding="utf-8", lazy=True),
     required=True,
     help="File into which to compile.",
 )
 @click.option(
+    "--directory",
+    "-d",
+    show_default="determined by config",
+    type=click.Path(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        path_type=Path,
+    ),
+    required=True,
+)
+@click.option(
     "--markup",
+    "-m",
     default="markdown",
     show_default="determined by config, or markdown",
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
@@ -90,17 +105,6 @@ def main(ctx: click.Context) -> None:
     "-n",
     is_flag=True,
     help="Do not write to file system; print to STDOUT.",
-)
-@click.argument(
-    "directory",
-    type=click.Path(
-        exists=True,
-        file_okay=False,
-        dir_okay=True,
-        readable=True,
-        path_type=Path,
-    ),
-    required=True,
 )
 def compile_(
     changelog: click.File,
@@ -199,6 +203,7 @@ def compile_(
 @main.command(name="init")
 @click.option(
     "--changelog",
+    "-c",
     default="CHANGELOG.md",
     show_default="determined by config, or CHANGELOG.md",
     type=click.File("w", encoding="utf-8", lazy=True),
@@ -206,6 +211,7 @@ def compile_(
 )
 @click.option(
     "--directory",
+    "-d",
     default="changelog.d",
     show_default="determined by config, or changelog.d",
     type=click.Path(
@@ -218,6 +224,7 @@ def compile_(
 )
 @click.option(
     "--markup",
+    "-m",
     default="markdown",
     show_default="determined by config, or markdown",
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore

@@ -24,7 +24,7 @@ release.
 - [Usage](#usage)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
-- [License](#license)
+- [Licensing](#licensing)
 
 ## Background
 
@@ -174,7 +174,7 @@ The code and issue tracker is hosted at
 issues. For pull requests, bug fixes are always welcome, but new features should
 probably be discussed in any issue first.
 
-## License
+## Licensing
 
 All code is licensed under GPL-3.0-or-later.
 

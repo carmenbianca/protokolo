@@ -29,6 +29,7 @@ packages = [
     { include = "protokolo", from = "src" }
 ]
 include = [
+    { path = "docs", format = "sdist" },
     { path = "tests", format = "sdist" },
     { path = "README.md", format = "sdist" },
     { path = "CHANGELOG.md", format = "sdist" },

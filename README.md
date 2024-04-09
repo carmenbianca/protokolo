@@ -81,7 +81,8 @@ with `pipx ensurepath`.
 
 ## Usage
 
-For full documentation and options, read the documentation at TODO.
+For full documentation and options, read the documentation at
+<https://protokolo.readthedocs.io>.
 
 ### Initial set-up
 

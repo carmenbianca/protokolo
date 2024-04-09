@@ -10,7 +10,15 @@ on:
 jobs:
   pytest:
     runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs21
+    strategy:
+      matrix:
+        # Test both oldest and latest Python.
+        container:
+          [
+            "nikolaik/python-nodejs:python3.11-nodejs21",
+            "nikolaik/python-nodejs:python3.12-nodejs21",
+          ]
+    container: ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies

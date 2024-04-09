@@ -4,27 +4,40 @@
   SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 
 
-.. Protokolo documentation master file, created by
-   sphinx-quickstart on Tue Nov  7 11:38:45 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Protokolo documentation
+=======================
 
-Welcome to Protokolo's documentation!
-=====================================
+Protokolo is a change log generator.
+
+Protokolo allows you to maintain your change log fragments in separate files,
+and then finally aggregate them into a new section in CHANGELOG just before
+release.
+
+Table of contents
+-----------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    Overview<readme>
    reference
-   history
+
+API reference
+-------------
+.. toctree::
+   :maxdepth: 4
+
    API<api/modules>
 
+Change log
+----------
+.. toctree::
+   :maxdepth: 2
 
+   history
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

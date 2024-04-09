@@ -25,9 +25,9 @@ Table of contents
 API reference
 -------------
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
 
-   API<api/modules>
+   API<api/protokolo>
 
 Change log
 ----------

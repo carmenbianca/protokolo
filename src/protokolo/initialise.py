@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-"""Code related to `protokolo init`."""
+"""Code related to ``protokolo init``."""
 
 from pathlib import Path
 
@@ -23,8 +23,7 @@ recommendations. Every release contains the following sections:
 
 <!-- protokolo-section-tag -->
 """
-CHANGELOG_RST = """==========
-Change log
+CHANGELOG_RST = """Change log
 ==========
 
 This change log follows the `Keep a Changelog <http://keepachangelog.com/>`_
@@ -99,7 +98,7 @@ def create_keep_a_changelog(directory: StrPath) -> None:
 def create_root_toml(
     changelog: StrPath, markup: SupportedMarkup | None, directory: StrPath
 ) -> None:
-    """Create a .protokolo.toml file in the current working directory."""
+    """Create a ``.protokolo.toml`` file in the current working directory."""
     if markup is None:
         markup = "markdown"
 

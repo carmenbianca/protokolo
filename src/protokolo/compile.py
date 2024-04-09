@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-"""Code to combine the files in protokolo/ into a single text block."""
+"""Code to combine the files in ``changelog.d/`` into a single text block."""
 
 import errno
 import tomllib

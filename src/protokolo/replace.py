@@ -35,7 +35,7 @@ def find_first_occurrence(text: str, source: str) -> int | None:
     """Return the line number (1-indexed) of the first occurrence of *text* in
     *source*.
 
-    Return None if no occurrence was found.
+    Return :const:`None` if no occurrence was found.
     """
     for lineno, line in enumerate(source.splitlines(), 1):
         if text in line:

@@ -86,13 +86,14 @@ class ReStructuredTextFormatter(MarkupFormatter):
     # it would take to achieve that is beyond the scope of what I want to do.
     # What were the designers of reST thinking when they didn't define the
     # heading hierarchy?
+    #
+    # These are borrowed from Pandoc.
     _levels = {
-        1: "=",  # Special case.
-        2: "=",
-        3: "-",
-        4: "~",
-        5: "^",
-        6: "'",
+        1: "=",
+        2: "-",
+        3: "~",
+        4: "^",
+        5: "'",
     }
 
     @classmethod
@@ -109,7 +110,6 @@ class ReStructuredTextFormatter(MarkupFormatter):
         length = len(title)
         return cleandoc(
             f"""
-            {sign * length if attrs.level == 1 else ''}
             {title}
             {sign * length}
             """
@@ -122,6 +122,6 @@ MARKUP_FORMATTER_MAPPING = {
 }
 
 MARKUP_EXTENSION_MAPPING = {
-    "markdown": {".md", ".markdown", ""},
+    "markdown": {".md", ".markdown"},
     "restructuredtext": {".rst"},
 }

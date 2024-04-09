@@ -149,7 +149,6 @@ class TestReStructuredTextFormatter:
             SectionAttributes(title="Foo", level=1)
         ) == cleandoc(
             """
-            ===
             Foo
             ===
             """
@@ -162,7 +161,7 @@ class TestReStructuredTextFormatter:
         ) == cleandoc(
             """
             Foo Bar Baz
-            ===========
+            -----------
             """
         )
 
@@ -173,7 +172,7 @@ class TestReStructuredTextFormatter:
         ) == cleandoc(
             """
             Hello, world
-            ------------
+            ~~~~~~~~~~~~
             """
         )
 
@@ -190,7 +189,6 @@ class TestReStructuredTextFormatter:
             SectionAttributes(title="Foo $bar", level=1, values={"bar": "bar"})
         ) == cleandoc(
             """
-            =======
             Foo bar
             =======
             """

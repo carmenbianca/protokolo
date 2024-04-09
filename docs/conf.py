@@ -43,3 +43,27 @@ intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
 html_theme = "furo"
 html_static_path = ["_static"]
+
+man_pages = [
+    (
+        "man/protokolo",
+        "protokolo",
+        "A change log generator",
+        "Carmen Bianca BAKKER",
+        1,
+    ),
+    (
+        "man/protokolo-compile",
+        "protokolo-compile",
+        "Compile the contents of the change log directory into a change log file.",
+        "Carmen Bianca BAKKER",
+        1,
+    ),
+    (
+        "man/protokolo-init",
+        "protokolo-init",
+        "Set up your project for use with protokolo",
+        "Carmen Bianca BAKKER",
+        1,
+    ),
+]

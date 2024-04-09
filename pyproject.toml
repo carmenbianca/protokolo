@@ -4,7 +4,7 @@
 
 [tool.poetry]
 name = "protokolo"
-version = "0.3.0"
+version = "1.0.0"
 description = "Protokolo is a change log generator."
 authors = [
     "Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
@@ -80,7 +80,7 @@ requires = ["poetry-core>=1.1.0"]
 build-backend = "poetry.core.masonry.api"
 
 [bumpver]
-current_version = "v0.3.0"
+current_version = "v1.0.0"
 version_pattern = "vMAJOR.MINOR.PATCH"
 commit_message = "Bump version: {old_version} → {new_version}"
 tag_message = "{new_version}"

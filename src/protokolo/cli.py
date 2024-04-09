@@ -98,7 +98,7 @@ def main(ctx: click.Context) -> None:
     type=(str, str),
     metavar="<KEY VALUE>...",
     multiple=True,
-    help="Use key-value pairs to string-format section headers.",
+    help="Use key-value pairs to string-format section headings.",
 )
 @click.option(
     "--dry-run",
@@ -114,7 +114,7 @@ def compile_(
     directory: Path,
 ) -> None:
     """Aggregate all change log fragments from files in a directory into a
-    CHANGELOG file.
+    CHANGELOG file, then delete the fragment files.
 
     A change log directory should contain a '.protokolo.toml' file that defines
     some attributes of the section. This is an example file:

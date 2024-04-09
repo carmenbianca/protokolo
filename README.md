@@ -153,7 +153,6 @@ it now, the following section is added after the
 ### Added
 
 - Added important feature.
-
 - Added `--my-new-feature` option.
 ```
 

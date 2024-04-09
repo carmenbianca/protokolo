@@ -4,16 +4,20 @@
 
 """Code to find-and-insert in CHANGELOG."""
 
+# TODO: This code should probably be refactored to not rely on line count, but
+# on character count.
+
 
 def insert_into_str(text: str, target: str, lineno: int) -> str:
     """Insert *text* into *target* after *lineno*. *lineno* is 1-indexed.
     *lineno* 0 means inserting at the very start of *target*.
 
-    A newline is automatically inserted after *text*.
+    A newline is automatically inserted after *text* if one is missing.
     """
     target_lines = target.splitlines(keepends=True)
     text_lines = [*text.splitlines(keepends=True)]
-    if text_lines:
+    # If the inserted text does not end with a newline, add one.
+    if text_lines and not text_lines[-1].endswith("\n"):
         text_lines.append("\n")
     # Corner case for when inserting at the end, but the last character is not a
     # newline.

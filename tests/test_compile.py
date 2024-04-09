@@ -37,16 +37,54 @@ class TestSection:
         section.fragments.add(Fragment("- hello"))
         section.subsections.add(subsection)
 
-        expected = cleandoc(
-            """
-            # Section
+        expected = (
+            cleandoc(
+                """
+                # Section
 
-            - hello
+                - hello
 
-            ## Subsection
+                ## Subsection
 
-            - world
-            """
+                - world
+                """
+            )
+            + "\n"
+        )
+        assert section.compile() == expected
+
+    def test_compile_multiple_fragments(self):
+        """Test the compilation of a single section with multiple fragments.
+
+        In this test, there are three types of newline configurations for
+        fragments:
+
+        - None
+        - One newline
+        - More newlines
+        """
+        section = Section(attrs=SectionAttributes(title="Section", level=1))
+        section.fragments.add(Fragment("- A", source="a"))
+        section.fragments.add(Fragment("- B\n", source="b"))
+        section.fragments.add(Fragment("- C\n\n", source="c"))
+        section.fragments.add(Fragment("- D", source="d"))
+        section.fragments.add(Fragment("\n- E", source="e"))
+
+        expected = (
+            cleandoc(
+                """
+                # Section
+
+                - A
+                - B
+                - C
+
+                - D
+
+                - E
+                """
+            )
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -81,14 +119,17 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc(
-            """
-            # Section
+        expected = (
+            cleandoc(
+                """
+                # Section
 
-            ## Subsection Foo
+                ## Subsection Foo
 
-            Foo
-            """
+                Foo
+                """
+            )
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -106,18 +147,21 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc(
-            """
-            # Section
+        expected = (
+            cleandoc(
+                """
+                # Section
 
-            ## Subsection Foo
+                ## Subsection Foo
 
-            Foo
+                Foo
 
-            ## Subsection Bar
+                ## Subsection Bar
 
-            Bar
-            """
+                Bar
+                """
+            )
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -135,18 +179,21 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc(
-            """
-            # Section
+        expected = (
+            cleandoc(
+                """
+                # Section
 
-            ## Subsection Bar
+                ## Subsection Bar
 
-            Bar
+                Bar
 
-            ## Subsection Foo
+                ## Subsection Foo
 
-            Foo
-            """
+                Foo
+                """
+            )
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -174,26 +221,29 @@ class TestSection:
         section.subsections.update(
             {subsection_1, subsection_2, subsection_3, subsection_4}
         )
-        expected = cleandoc(
-            """
-            # Section
+        expected = (
+            cleandoc(
+                """
+                # Section
 
-            ## Subsection Foo
+                ## Subsection Foo
 
-            Foo
+                Foo
 
-            ## Subsection Bar
+                ## Subsection Bar
 
-            Bar
+                Bar
 
-            ## Subsection Baz
+                ## Subsection Baz
 
-            Baz
+                Baz
 
-            ## Subsection Quz
+                ## Subsection Quz
 
-            Quz
-            """
+                Quz
+                """
+            )
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -211,18 +261,21 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc(
-            """
-            # Section
+        expected = (
+            cleandoc(
+                """
+                # Section
 
-            ## Subsection Bar
+                ## Subsection Bar
 
-            Bar
+                Bar
 
-            ## Subsection Foo
+                ## Subsection Foo
 
-            Foo
-            """
+                Foo
+                """
+            )
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -236,8 +289,10 @@ class TestSection:
         for source, text in fragments.items():
             section.fragments.add(Fragment(text, source=source))
 
-        expected = "# Section\n\n" + "\n\n".join(
-            item[1] for item in sorted(fragments.items())
+        expected = (
+            "# Section\n\n"
+            + "\n".join(item[1] for item in sorted(fragments.items()))
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -250,7 +305,7 @@ class TestSection:
         for text in fragments:
             section.fragments.add(Fragment(text))
 
-        expected = "# Section\n\n" + "\n\n".join(sorted(fragments))
+        expected = "# Section\n\n" + "\n".join(sorted(fragments)) + "\n"
         assert section.compile() == expected
 
     def test_compile_fragments_sorted_mixed(self):
@@ -258,17 +313,19 @@ class TestSection:
         don't.
         """
         section = Section(attrs=SectionAttributes(title="Section"))
-        section.fragments.add(Fragment("Foo", source="foo.md"))
-        section.fragments.add(Fragment("Bar"))
+        section.fragments.add(Fragment("- Foo", source="foo.md"))
+        section.fragments.add(Fragment("- Bar"))
 
-        expected = cleandoc(
-            """
-            # Section
+        expected = (
+            cleandoc(
+                """
+                # Section
 
-            Foo
-
-            Bar
-            """
+                - Foo
+                - Bar
+                """
+            )
+            + "\n"
         )
         assert section.compile() == expected
 
@@ -424,10 +481,10 @@ class TestFragment:
 
     def test_compile_simple(self):
         """Compile a simple fragment."""
-        fragment = Fragment("Hello, world!")
-        assert fragment.compile() == "Hello, world!"
+        fragment = Fragment("Hello, world!\n")
+        assert fragment.compile() == "Hello, world!\n"
 
-    def test_compile_newlines(self):
-        """Strip newlines from fragment."""
-        fragment = Fragment("\n\n\nFoo\n\n\n\n\n")
-        assert fragment.compile() == "Foo"
+    def test_compile_no_newline_at_end(self):
+        """Add missing newline to fragment."""
+        fragment = Fragment("Foo")
+        assert fragment.compile() == "Foo\n"

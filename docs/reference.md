@@ -7,8 +7,8 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 # Reference
 
 This document aims to provide a full reference of the usage and behaviour of
-Protokolo. For basic usage, please read the
-[Usage section of the overview](project:./readme.md#usage).
+Protokolo. For basic usage, please read the [Usage](project:./readme.md#usage)
+section of the [overview](project:./readme.md).
 
 (global-configuration)=
 
@@ -126,7 +126,7 @@ Words that are prefixed by `$` (e.g. `$version`) or surrounded with `${}` (e.g.
 `${version}`) can be replaced during compile time with `--format key value`
 (e.g. `--format version 1.0.0`). Alternatively, they can be replaced by the
 values of other keys in the `.protokolo.toml` file. See the
-[Miscellaneous keys](#miscellaneous-keys) section.
+<project:#miscellaneous-keys> section.
 
 `${date}` is a special case. If its value is not defined anywhere, the value of
 `${date}` is today's date in the format `YYYY-MM-DD`.
@@ -209,8 +209,8 @@ The main command of Protokolo is `protokolo compile`. It gathers all your change
 log fragment files and aggregates them into a new section in your change log
 file, after which the change log fragment files are deleted.
 
-The fragments are sorted alphabetically as described in [Fragments](#fragments),
-and the section sorting is described in [order](#order).
+The fragments are sorted alphabetically as described in <project:#fragments>,
+and the section sorting is described in <project:#order>.
 
 The section is inserted into the change log after the line containing the first
 instance of `protokolo-section-tag`. You typically want to comment that out. The

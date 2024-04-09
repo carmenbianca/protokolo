@@ -22,6 +22,12 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 1.0.1 - 2024-04-09
+
+### Fixed
+
+- Include `docs/` in the sdist.
+
 ## 1.0.0 - 2024-04-09
 
 ### Changed

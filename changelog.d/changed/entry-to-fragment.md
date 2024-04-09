@@ -1,1 +1,0 @@
-- Renamed the concept of 'entry' to 'fragment'.

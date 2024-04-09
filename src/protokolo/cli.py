@@ -137,7 +137,8 @@ def compile_(
     \b
     <!-- protokolo-section-tag -->
 
-    For more documentation and options, read the documentation at TODO.
+    For more documentation and options, read the documentation at
+    <https://protokolo.readthedocs.io>.
     """
     # TODO: Maybe split this up.
     # pylint: disable=too-many-locals

@@ -7,8 +7,10 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 # Reference
 
 This document aims to provide a full reference of the usage and behaviour of
-Protokolo. For basic usage, please read the [Usage](project:./readme.md#usage)
-section of the [overview](project:./readme.md).
+Protokolo. For a full reference of the command-line options, see
+<project:./man/index.rst>. For basic usage, please read the
+[Usage](project:./readme.md#usage) section of the
+[overview](project:./readme.md).
 
 (global-configuration)=
 

@@ -1,0 +1,1 @@
+- Include `docs/` in the sdist.

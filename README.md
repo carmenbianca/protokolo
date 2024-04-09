@@ -63,12 +63,13 @@ to address:
 
 - When using Towncrier, I would always forget which fragment types are available
   to me and had to look them up. These fragment types can also differ per
-  repository.
+  repository. In Protokolo, the types are always visible because they are
+  directories.
+- Towncrier fragments are sorted by their ID, which is typically an issue or PR
+  number. This isn't always what I want.
 - Because (some) Towncrier workflows put the PR number in the file name as
   metadata, I would have to open the PR before I could create the change log
   fragment.
-- Towncrier fragments are sorted by their ID, which is typically an issue or PR
-  number. This wasn't always what I wanted.
 
 A much younger version of me also tried her hand at writing a program like this
 in [changelogdir](https://pypi.org/project/changelogdir/).

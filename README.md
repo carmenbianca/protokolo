@@ -46,7 +46,7 @@ Life would be a lot easier if you didn't have to deal with these problems.
 
 Enter Protokolo
 ([Esperanto for 'report' or 'minutes'](https://vortaro.net/#protokolo)). The
-idea is very simple: For every change log entry, create a new file. Finally,
+idea is very simple: for every change log entry, create a new file. Finally,
 just before release, compile the contents of those files into a new section in
 CHANGELOG, and delete the files.
 
@@ -114,7 +114,7 @@ like this:
 ```
 
 The `.protokolo.toml` files in `changelog.d` contain metadata for their
-respective sections; the section title, heading level, and order. Their
+respective sections: the section title, heading level, and order. Their
 inclusion is mandatory.
 
 The `.protokolo.toml` file in the root of the project contains configurations
@@ -133,7 +133,7 @@ and write something like:
 - Added `--my-new-feature` option.
 ```
 
-Note the item dash at the start; Protokolo does not add them for you. What you
+Note the item dash at the start---Protokolo does not add them for you. What you
 write is exactly what you get.
 
 You can add more files. Change log fragments in the same section (read:

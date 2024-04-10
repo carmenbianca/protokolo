@@ -22,6 +22,31 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 2.0.0 - 2024-04-10
+
+### Added
+
+- Wrote man pages, improved documentation.
+- The options `--changelog`, `--directory`, and `--markup` now also take the
+  short options `-c`, `-d`, and `-m` respectively.
+- The option `--format` now also has the short option `-f`.
+
+### Changed
+
+- `protokolo compile` now takes the change log directory as a `--directory`
+  option instead of as an argument. This makes it consistent with
+  `protokolo init`.
+
+### Fixed
+
+- Fixed a bug where, if a subdirectory in `changelog.d` did not contain a
+  `.protokolo.toml` file, the program would crash.
+- Made sure that `changelog.d` subdirectories that do not contain a
+  `.protokolo.toml` file retain all their files after `protokolo compile` is
+  run.
+- In `protokolo compile --help`, there was a `TODO` where a link to the
+  documentation should have been.
+
 ## 1.0.1 - 2024-04-09
 
 ### Fixed

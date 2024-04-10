@@ -1,1 +1,0 @@
-- `--directory` in `protokolo compile` now has a help text.

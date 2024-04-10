@@ -21,6 +21,7 @@ Table of contents
 
    Overview<readme>
    reference
+   man/index
 
 API reference
 -------------

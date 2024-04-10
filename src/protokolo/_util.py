@@ -5,7 +5,7 @@
 """Some miscellaneous utilities."""
 
 from collections.abc import Callable, Mapping
-from inspect import cleandoc as _cleandoc
+from inspect import cleandoc
 from types import UnionType
 from typing import Any
 
@@ -45,6 +45,6 @@ def nested_itemgetter(*path: Any) -> Callable[[Mapping[Any, Any]], Any]:
     return browse
 
 
-def cleandoc(text: str) -> str:
+def cleandoc_nl(text: str) -> str:
     """Like :func:`inspect.cleandoc`, but with a newline at the end."""
-    return _cleandoc(text) + "\n"
+    return cleandoc(text) + "\n"

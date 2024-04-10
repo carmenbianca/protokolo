@@ -64,13 +64,28 @@ def main(ctx: click.Context) -> None:
 @main.command(name="compile")
 @click.option(
     "--changelog",
+    "-c",
     show_default="determined by config",
     type=click.File("r+", encoding="utf-8", lazy=True),
     required=True,
     help="File into which to compile.",
 )
 @click.option(
+    "--directory",
+    "-d",
+    show_default="determined by config",
+    type=click.Path(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        path_type=Path,
+    ),
+    required=True,
+)
+@click.option(
     "--markup",
+    "-m",
     default="markdown",
     show_default="determined by config, or markdown",
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
@@ -83,24 +98,13 @@ def main(ctx: click.Context) -> None:
     type=(str, str),
     metavar="<KEY VALUE>...",
     multiple=True,
-    help="Use key-value pairs to string-format section headers.",
+    help="Use key-value pairs to string-format section headings.",
 )
 @click.option(
     "--dry-run",
     "-n",
     is_flag=True,
     help="Do not write to file system; print to STDOUT.",
-)
-@click.argument(
-    "directory",
-    type=click.Path(
-        exists=True,
-        file_okay=False,
-        dir_okay=True,
-        readable=True,
-        path_type=Path,
-    ),
-    required=True,
 )
 def compile_(
     changelog: click.File,
@@ -110,7 +114,7 @@ def compile_(
     directory: Path,
 ) -> None:
     """Aggregate all change log fragments from files in a directory into a
-    CHANGELOG file.
+    CHANGELOG file, then delete the fragment files.
 
     A change log directory should contain a '.protokolo.toml' file that defines
     some attributes of the section. This is an example file:
@@ -133,7 +137,8 @@ def compile_(
     \b
     <!-- protokolo-section-tag -->
 
-    For more documentation and options, read the documentation at TODO.
+    For more documentation and options, read the documentation at
+    <https://protokolo.readthedocs.io>.
     """
     # TODO: Maybe split this up.
     # pylint: disable=too-many-locals
@@ -177,7 +182,7 @@ def compile_(
                 )
             new_contents = insert_into_str(f"\n{new_section}", contents, lineno)
             if dry_run:
-                click.echo(new_contents)
+                click.echo(new_contents, nl=False)
             else:
                 fp.seek(0)
                 fp.write(new_contents)
@@ -199,6 +204,7 @@ def compile_(
 @main.command(name="init")
 @click.option(
     "--changelog",
+    "-c",
     default="CHANGELOG.md",
     show_default="determined by config, or CHANGELOG.md",
     type=click.File("w", encoding="utf-8", lazy=True),
@@ -206,6 +212,7 @@ def compile_(
 )
 @click.option(
     "--directory",
+    "-d",
     default="changelog.d",
     show_default="determined by config, or changelog.d",
     type=click.Path(
@@ -218,6 +225,7 @@ def compile_(
 )
 @click.option(
     "--markup",
+    "-m",
     default="markdown",
     show_default="determined by config, or markdown",
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore

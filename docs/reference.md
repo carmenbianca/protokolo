@@ -7,8 +7,10 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 # Reference
 
 This document aims to provide a full reference of the usage and behaviour of
-Protokolo. For basic usage, please read the [Usage](project:./readme.md#usage)
-section of the [overview](project:./readme.md).
+Protokolo. For a full reference of the command-line options, see
+<project:./man/index.rst>. For basic usage, please read the
+[Usage](project:./readme.md#usage) section of the
+[overview](project:./readme.md).
 
 (global-configuration)=
 
@@ -21,8 +23,8 @@ first match of the following files in your current working directory:
 - `pyproject.toml`
 
 The configuration values go in the `[protokolo]` table, or the
-`[tool.protokolo]` table for `pyproject.toml`. An example section looks like
-this:
+`[tool.protokolo]` table for `pyproject.toml`. An example configuration looks
+like this:
 
 ```toml
 [protokolo]
@@ -61,7 +63,8 @@ section of a version release in your change log file.
 
 The change log directory and all its subdirectories must contain a
 `.protokolo.toml` [section configuration](#section-configuration) file. If a
-directory does not contain such a file, it is not a section.
+directory does not contain such a file, it is not a section, and is consequently
+ignored.
 
 The [fragments](#fragments) must have a file extension corresponding to their
 markup language. If a file does not have such a file extension, it is not a
@@ -103,7 +106,7 @@ a little like this:
 
 The `.protokolo.toml` file in each directory configures options of the
 corresponding section. The file format is TOML. The configuration values go in
-the `[protokolo.section]` table. An example section looks like this:
+the `[protokolo.section]` table. An example configuration looks like this:
 
 ```toml
 [protokolo.section]
@@ -143,7 +146,7 @@ section title defined".
 #### level
 
 The level of the heading as an integer. This defaults to 1, or the value of the
-parent section plus 1. This effectively means you really only need to define it
+parent level plus 1. This effectively means you really only need to define it
 once in the top section; the levels of the subsections are increased as the
 subdirectories are nested. You typically set this value to '2' in
 `changelog.d/.protokolo.toml`.
@@ -197,7 +200,7 @@ Because of how the compilation works, you typically want to follow a few rules:
 - Do not start the fragment with a newline.
 - Do not include headings.
 - If the fragment represents a list item:
-  - Start with a bullet point, typically `- ` or `* `.
+  - Start with a bullet, typically `- ` or `* `.
   - End the fragment with zero or one newline.
 - If the fragment represents a paragraph:
   - Adjust its file name to make it appear exactly where you want it to appear.
@@ -231,20 +234,23 @@ The latest release.
 ```
 
 The compilation of the change log directory makes sure that after each section,
-there are two newlines before the next section or fragment. Before each
-subsection there are also two newlines after the preceding section or fragment.
-These newlines can overlap. They are indicated below using `<--` arrows.
+there are at least two newlines before the next section heading or fragment.
+Before each subsection there are also at least two newlines after the preceding
+section heading or fragment. These newlines can overlap, and are indicated below
+using `←`. Newlines that belong to fragments are indicated using `↵`.
 
-```text
-# Top section<--
-<--
-## Subsection 1<--
-<--
-- A fragment.<--
-<--
-## Subsection 2<--
-<--
-- Another fragment
+<!-- prettier-ignore -->
+```markdown
+# Top section←
+←
+## Subsection 1←
+←
+- A fragment.↵
+- Another fragment.↵
+←
+## Subsection 2←
+←
+- Last fragment.↵
 ```
 
 Empty sections are not compiled.

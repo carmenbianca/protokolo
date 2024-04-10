@@ -6,10 +6,10 @@
 
 import random
 import tomllib
-from inspect import cleandoc
 
 import pytest
 
+from protokolo._util import cleandoc_nl
 from protokolo.compile import Fragment, Section
 from protokolo.config import SectionAttributes
 from protokolo.exceptions import (
@@ -37,19 +37,16 @@ class TestSection:
         section.fragments.add(Fragment("- hello"))
         section.subsections.add(subsection)
 
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                - hello
+            - hello
 
-                ## Subsection
+            ## Subsection
 
-                - world
-                """
-            )
-            + "\n"
+            - world
+            """
         )
         assert section.compile() == expected
 
@@ -70,21 +67,18 @@ class TestSection:
         section.fragments.add(Fragment("- D", source="d"))
         section.fragments.add(Fragment("\n- E", source="e"))
 
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                - A
-                - B
-                - C
+            - A
+            - B
+            - C
 
-                - D
+            - D
 
-                - E
-                """
-            )
-            + "\n"
+            - E
+            """
         )
         assert section.compile() == expected
 
@@ -119,17 +113,14 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                ## Subsection Foo
+            ## Subsection Foo
 
-                Foo
-                """
-            )
-            + "\n"
+            Foo
+            """
         )
         assert section.compile() == expected
 
@@ -147,21 +138,18 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                ## Subsection Foo
+            ## Subsection Foo
 
-                Foo
+            Foo
 
-                ## Subsection Bar
+            ## Subsection Bar
 
-                Bar
-                """
-            )
-            + "\n"
+            Bar
+            """
         )
         assert section.compile() == expected
 
@@ -179,21 +167,18 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                ## Subsection Bar
+            ## Subsection Bar
 
-                Bar
+            Bar
 
-                ## Subsection Foo
+            ## Subsection Foo
 
-                Foo
-                """
-            )
-            + "\n"
+            Foo
+            """
         )
         assert section.compile() == expected
 
@@ -221,29 +206,26 @@ class TestSection:
         section.subsections.update(
             {subsection_1, subsection_2, subsection_3, subsection_4}
         )
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                ## Subsection Foo
+            ## Subsection Foo
 
-                Foo
+            Foo
 
-                ## Subsection Bar
+            ## Subsection Bar
 
-                Bar
+            Bar
 
-                ## Subsection Baz
+            ## Subsection Baz
 
-                Baz
+            Baz
 
-                ## Subsection Quz
+            ## Subsection Quz
 
-                Quz
-                """
-            )
-            + "\n"
+            Quz
+            """
         )
         assert section.compile() == expected
 
@@ -261,21 +243,18 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                ## Subsection Bar
+            ## Subsection Bar
 
-                Bar
+            Bar
 
-                ## Subsection Foo
+            ## Subsection Foo
 
-                Foo
-                """
-            )
-            + "\n"
+            Foo
+            """
         )
         assert section.compile() == expected
 
@@ -316,16 +295,13 @@ class TestSection:
         section.fragments.add(Fragment("- Foo", source="foo.md"))
         section.fragments.add(Fragment("- Bar"))
 
-        expected = (
-            cleandoc(
-                """
-                # Section
+        expected = cleandoc_nl(
+            """
+            # Section
 
-                - Foo
-                - Bar
-                """
-            )
-            + "\n"
+            - Foo
+            - Bar
+            """
         )
         assert section.compile() == expected
 
@@ -419,7 +395,7 @@ class TestSection:
         DictTypeError.
         """
         (project_dir / "changelog.d/.protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo.section]
                 level = "foo"
@@ -436,7 +412,7 @@ class TestSection:
         AttributeNotPositiveError.
         """
         (project_dir / "changelog.d/.protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo.section]
                 level = 0

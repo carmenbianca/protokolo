@@ -5,13 +5,13 @@
 """Test the formatting code."""
 
 import errno
-from inspect import cleandoc
 from pathlib import Path
 
 from freezegun import freeze_time
 
 import protokolo
 from protokolo import cli
+from protokolo._util import cleandoc_nl
 from protokolo.cli import main
 from protokolo.config import GlobalConfig, SectionAttributes
 
@@ -67,16 +67,17 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.md").read_text()
 
         assert (
-            cleandoc(
+            cleandoc_nl(
                 """
                 Lorem ipsum.
 
@@ -104,19 +105,20 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
                 "--format",
                 "version",
                 "0.2.0",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.md").read_text()
 
         assert (
-            cleandoc(
+            cleandoc_nl(
                 """
                 Lorem ipsum.
 
@@ -142,9 +144,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -153,7 +156,7 @@ class TestCompile:
     def test_global_config_wrong_type(self, runner):
         """An element has the wrong type."""
         Path(".protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo]
                 changelog = 1
@@ -166,9 +169,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -189,9 +193,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -206,9 +211,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -220,7 +226,7 @@ class TestCompile:
     def test_section_config_wrong_type(self, runner):
         """An element has the wrong type."""
         Path("changelog.d/.protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo.section]
                 title = 1
@@ -233,9 +239,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -247,7 +254,7 @@ class TestCompile:
     def test_section_config_not_positive(self, runner):
         """An element has should be positive."""
         Path("changelog.d/.protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo.section]
                 level = -1
@@ -260,9 +267,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -285,9 +293,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -296,7 +305,7 @@ class TestCompile:
     def test_heading_format_error(self, runner):
         """Could not format a heading."""
         Path("changelog.d/.protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo.section]
                 level = 10
@@ -310,9 +319,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.rst",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "restructuredtext",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -330,9 +340,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
@@ -351,9 +362,10 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code != 0
@@ -375,16 +387,17 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "markdown",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.md").read_text()
 
         assert (
-            cleandoc(
+            cleandoc_nl(
                 """
                 Lorem ipsum.
 
@@ -415,16 +428,17 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.rst",
+                "--directory",
+                "changelog.d",
                 "--markup",
                 "restructuredtext",
-                "changelog.d",
             ],
         )
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.rst").read_text()
 
         assert (
-            cleandoc(
+            cleandoc_nl(
                 """
                 Lorem ipsum.
 
@@ -462,8 +476,9 @@ class TestCompile:
                 "compile",
                 "--changelog",
                 "CHANGELOG.md",
-                "--dry-run",
+                "--directory",
                 "changelog.d",
+                "--dry-run",
             ],
         )
         assert result.exit_code == 0
@@ -471,7 +486,7 @@ class TestCompile:
         assert Path("changelog.d/foo.md").exists()
         assert Path("changelog.d/foo.md").read_text() == "Foo"
 
-        assert result.stdout.strip() == cleandoc(
+        assert result.stdout == cleandoc_nl(
             """
             # Change log
 
@@ -488,7 +503,6 @@ class TestCompile:
             First release.
             """
         )
-        assert result.stdout.endswith("\n")
 
 
 class TestInit:

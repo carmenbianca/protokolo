@@ -4,7 +4,6 @@
 
 """Main entry of program."""
 
-import os
 import tomllib
 from io import TextIOWrapper
 from pathlib import Path
@@ -141,7 +140,6 @@ def compile_(
     <https://protokolo.readthedocs.io>.
     """
     # TODO: Maybe split this up.
-    # pylint: disable=too-many-locals
     format_pairs: dict[str, str] = dict(format_)
 
     # Create Section
@@ -194,11 +192,7 @@ def compile_(
 
     # Delete change log fragments
     if not dry_run:
-        for dirpath, _, filenames in os.walk(directory):
-            for filename in filenames:
-                path = Path(dirpath) / filename
-                if path.suffix in _MARKUP_EXTENSION_MAPPING[markup]:
-                    path.unlink()
+        _delete_fragments(section)
 
 
 @main.command(name="init")
@@ -269,3 +263,12 @@ def init(
         create_root_toml(changelog.name, markup, directory)
     except OSError as error:
         raise click.UsageError(str(error)) from error
+
+
+def _delete_fragments(section: Section) -> None:
+    """Delete :class:`.compile.Fragment`s' source files recursively."""
+    for fragment in section.fragments:
+        if fragment.source:
+            fragment.source.unlink(missing_ok=True)
+    for subsection in section.subsections:
+        _delete_fragments(subsection)

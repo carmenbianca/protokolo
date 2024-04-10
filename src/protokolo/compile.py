@@ -158,7 +158,7 @@ class Section:
         subsections = set()
         fragments = set()
         for path in directory.iterdir():
-            if path.is_dir():
+            if path.is_dir() and (path / ".protokolo.toml").is_file():
                 subsections.add(
                     self.from_directory(
                         path,

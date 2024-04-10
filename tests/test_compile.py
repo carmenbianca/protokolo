@@ -438,6 +438,14 @@ class TestSection:
             project_dir / "changelog.d/.protokolo.toml"
         )
 
+    def test_from_directory_no_protokolo_toml_in_subdir(self, project_dir):
+        """If there is no .protokolo.toml in the subdirectory, don't count it as
+        a section.
+        """
+        (project_dir / "changelog.d/feature/.protokolo.toml").unlink()
+        section = Section.from_directory(project_dir / "changelog.d")
+        assert not section.subsections
+
     def test_from_directory_is_a_directory_error(self, project_dir):
         """If .protokolo.toml is not a file, raise
         ProtokoloTOMLIsADirectoryError.

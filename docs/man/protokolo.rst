@@ -20,7 +20,7 @@ just before release.
 
 For more information on how to use Protokolo beyond a reference of the
 command-line options, see the accompanying documentation or read it at
-<https://protokolo.readthedocs.io>.
+`<https://protokolo.readthedocs.io>`_.
 
 Options
 -------

@@ -22,6 +22,13 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 2.0.1 - 2024-04-10
+
+### Fixed
+
+- `--directory` in `protokolo compile` now has a help text.
+- `protokolo --version` now also prints the GPLv3+ blurb.
+
 ## 2.0.0 - 2024-04-10
 
 ### Added

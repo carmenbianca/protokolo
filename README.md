@@ -133,7 +133,7 @@ and write something like:
 - Added `--my-new-feature` option.
 ```
 
-Note the item dash at the start---Protokolo does not add them for you. What you
+Note the bullet at the start---Protokolo does not add them for you. What you
 write is exactly what you get.
 
 You can add more files. Change log fragments in the same section (read:

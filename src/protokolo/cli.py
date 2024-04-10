@@ -111,6 +111,7 @@ def main(ctx: click.Context) -> None:
         path_type=Path,
     ),
     required=True,
+    help="Change log directory to compile.",
 )
 @click.option(
     "--markup",
@@ -133,17 +134,17 @@ def main(ctx: click.Context) -> None:
     "--dry-run",
     "-n",
     is_flag=True,
-    help="Do not write to file system; print to STDOUT.",
+    help="Do not write to file system; print result to STDOUT.",
 )
 def compile_(
     changelog: click.File,
+    directory: Path,
     markup: SupportedMarkup,
     format_: tuple[tuple[str, str], ...],
     dry_run: bool,
-    directory: Path,
 ) -> None:
-    """Aggregate all change log fragments from files in a directory into a
-    CHANGELOG file, then delete the fragment files.
+    """Aggregate all change log fragments into a change log file. The fragments
+    are gathered from a change log directory, and subsequently deleted.
 
     A change log directory should contain a '.protokolo.toml' file that defines
     some attributes of the section. This is an example file:
@@ -160,7 +161,7 @@ def compile_(
     The heading is followed by the contents of files in the section's directory.
     If a section is empty (no change log fragments), it is not compiled.
 
-    The CHANGELOG file should contain the following comment, which is the
+    The change log file should contain the following comment, which is the
     location in the file after which the compiled section will be pasted:
 
     \b
@@ -234,7 +235,7 @@ def compile_(
     default="CHANGELOG.md",
     show_default="determined by config, or CHANGELOG.md",
     type=click.File("w", encoding="utf-8", lazy=True),
-    help="CHANGELOG file to create.",
+    help="Change log file to create.",
 )
 @click.option(
     "--directory",
@@ -247,7 +248,7 @@ def compile_(
         readable=True,
         path_type=Path,
     ),
-    help="Directory of change log sections and fragments.",
+    help="Change log directory to create.",
 )
 @click.option(
     "--markup",
@@ -262,10 +263,11 @@ def init(
     directory: Path,
     markup: SupportedMarkup,
 ) -> None:
-    """Set up your project to be ready to use Protokolo. It creates a
-    CHANGELOG.md file, a changelog.d directory with subsections that match the
-    Keep a Changelog recommendations, and .protokolo.toml files with metadata
-    for those (sub)sections. The end result looks a little like this:
+    """Set up your project to be ready to use Protokolo. It creates a change log
+    file, a change log directory with subsections that match the Keep a
+    Changelog recommendations, .protokolo.toml files with metadata for those
+    (sub)sections, and a root .protokolo.toml file with defaults for subsequent
+    Protokolo commands. Assuming defaults, the end result looks like this:
 
     \b
     .

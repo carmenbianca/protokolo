@@ -323,7 +323,7 @@ class GlobalConfig(TOMLConfig):
 
     @property
     def changelog(self) -> str | None:
-        """The path to CHANGELOG."""
+        """The path to the change log file."""
         return cast(str | None, self["changelog"])
 
     @changelog.setter

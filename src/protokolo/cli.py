@@ -5,6 +5,7 @@
 """Main entry of program."""
 
 import tomllib
+from inspect import cleandoc
 from io import TextIOWrapper
 from pathlib import Path
 
@@ -30,7 +31,29 @@ from .types import SupportedMarkup
 
 
 @click.group(name="protokolo")
-@click.version_option(package_name="protokolo")
+@click.version_option(
+    package_name="protokolo",
+    message=cleandoc(
+        """
+        %(prog)s, version %(version)s
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+        Written by Carmen Bianca BAKKER.
+        """
+    ),
+)
 @click.pass_context
 def main(ctx: click.Context) -> None:
     """Protokolo is a change log generator."""

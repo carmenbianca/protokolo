@@ -1,0 +1,1 @@
+- `protokolo --version` now also prints the GPLv3+ blurb.

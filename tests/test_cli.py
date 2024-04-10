@@ -43,7 +43,12 @@ class TestMain:
     def test_version(self, runner):
         """--version returns the correct version."""
         result = runner.invoke(main, ["--version"])
-        assert result.output == f"protokolo, version {protokolo.__version__}\n"
+        assert result.output.startswith(
+            f"protokolo, version {protokolo.__version__}\n"
+        )
+        assert "This program is free software:" in result.output
+        assert "GNU General Public License" in result.output
+        assert result.output.endswith("Written by Carmen Bianca BAKKER.\n")
 
 
 class TestCompile:

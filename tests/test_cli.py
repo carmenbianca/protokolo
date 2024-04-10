@@ -417,6 +417,51 @@ class TestCompile:
         assert not Path("changelog.d/feature/foo.md").exists()
         assert Path("changelog.d/feature/bar.txt").exists()
 
+    def test_no_protokolo_toml_in_changelog_d(self, runner):
+        """If changelog.d does not contain a .protokolo.toml file, TODO"""
+        Path("changelog.d/.protokolo.toml").unlink()
+        Path("changelog.d/foo.md").write_text("Foo")
+        result = runner.invoke(
+            main,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
+                "--markup",
+                "markdown",
+            ],
+        )
+        assert result.exit_code != 0
+        assert (
+            "No such file or directory: 'changelog.d/.protokolo.toml'"
+            in result.stdout
+        )
+
+    def test_files_in_ignored_subdirs_not_deleted(self, runner):
+        """'Fragment' files in subdirectories that do not contain a
+        .protokolo.toml file are not deleted.
+        """
+        Path("changelog.d/feature/.protokolo.toml").unlink()
+        Path("changelog.d/feature/hello.md").write_text("Hello, world!")
+        Path("changelog.d/foo.md").write_text("Foo")
+        result = runner.invoke(
+            main,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
+                "--markup",
+                "markdown",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "Hello, world!" not in Path("CHANGELOG.md").read_text()
+        assert Path("changelog.d/feature/hello.md").is_file()
+
     @freeze_time("2023-11-08")
     def test_restructuredtext(self, runner):
         """A simple test, but for restructuredtext."""

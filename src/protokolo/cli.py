@@ -10,6 +10,7 @@ from io import TextIOWrapper
 from pathlib import Path
 
 import click
+from click.formatting import wrap_text
 
 from ._formatter import MARKUP_EXTENSION_MAPPING as _MARKUP_EXTENSION_MAPPING
 from .compile import Section
@@ -33,25 +34,29 @@ from .types import SupportedMarkup
 @click.group(name="protokolo")
 @click.version_option(
     package_name="protokolo",
-    message=cleandoc(
+    message=wrap_text(
+        cleandoc(
+            """
+            %(prog)s, version %(version)s
+
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
+
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+            GNU General Public License for more details.
+
+            You should have received a copy of the GNU General Public License
+            along with this program. If not, see
+            <https://www.gnu.org/licenses/>.
+
+            Written by Carmen Bianca BAKKER.
         """
-        %(prog)s, version %(version)s
-
-        This program is free software: you can redistribute it and/or modify
-        it under the terms of the GNU General Public License as published by
-        the Free Software Foundation, either version 3 of the License, or
-        (at your option) any later version.
-
-        This program is distributed in the hope that it will be useful,
-        but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-        GNU General Public License for more details.
-
-        You should have received a copy of the GNU General Public License
-        along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-        Written by Carmen Bianca BAKKER.
-        """
+        ),
+        preserve_paragraphs=True,
     ),
 )
 @click.pass_context

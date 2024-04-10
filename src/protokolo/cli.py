@@ -54,7 +54,7 @@ from .types import SupportedMarkup
             <https://www.gnu.org/licenses/>.
 
             Written by Carmen Bianca BAKKER.
-        """
+            """
         ),
         preserve_paragraphs=True,
     ),

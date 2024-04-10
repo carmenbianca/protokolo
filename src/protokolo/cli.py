@@ -17,6 +17,8 @@ from .exceptions import (
     AttributeNotPositiveError,
     DictTypeError,
     HeadingFormatError,
+    ProtokoloTOMLIsADirectoryError,
+    ProtokoloTOMLNotFoundError,
 )
 from .initialise import (
     create_changelog,
@@ -148,6 +150,8 @@ def compile_(
             directory, markup=markup, section_format_pairs=format_pairs
         )
     except (
+        ProtokoloTOMLNotFoundError,
+        ProtokoloTOMLIsADirectoryError,
         tomllib.TOMLDecodeError,
         DictTypeError,
         AttributeNotPositiveError,

@@ -417,6 +417,28 @@ class TestCompile:
         assert not Path("changelog.d/feature/foo.md").exists()
         assert Path("changelog.d/feature/bar.txt").exists()
 
+    def test_no_protokolo_toml_in_changelog_d(self, runner):
+        """If changelog.d does not contain a .protokolo.toml file, TODO"""
+        Path("changelog.d/.protokolo.toml").unlink()
+        Path("changelog.d/foo.md").write_text("Foo")
+        result = runner.invoke(
+            main,
+            [
+                "compile",
+                "--changelog",
+                "CHANGELOG.md",
+                "--directory",
+                "changelog.d",
+                "--markup",
+                "markdown",
+            ],
+        )
+        assert result.exit_code != 0
+        assert (
+            "No such file or directory: 'changelog.d/.protokolo.toml'"
+            in result.stdout
+        )
+
     def test_files_in_ignored_subdirs_not_deleted(self, runner):
         """'Fragment' files in subdirectories that do not contain a
         .protokolo.toml file are not deleted.

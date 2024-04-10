@@ -18,6 +18,10 @@ Description
 separate files, and then finally aggregate them into a new section in CHANGELOG
 just before release.
 
+For more information on how to use Protokolo beyond a reference of the
+command-line options, see the accompanying documentation or read it at
+<https://protokolo.readthedocs.io>.
+
 Options
 -------
 

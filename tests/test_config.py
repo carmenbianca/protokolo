@@ -6,11 +6,11 @@
 
 import tomllib
 from datetime import date, datetime
-from inspect import cleandoc
 from io import BytesIO
 
 import pytest
 
+from protokolo._util import cleandoc_nl
 from protokolo.config import (
     GlobalConfig,
     SectionAttributes,
@@ -30,7 +30,7 @@ class TestParseToml:
 
     def test_parse_toml_simple(self):
         """Provide all values in a toml string."""
-        toml = cleandoc(
+        toml = cleandoc_nl(
             """
             [protokolo.section]
             title = "Title"
@@ -49,7 +49,7 @@ class TestParseToml:
 
     def test_parse_toml_no_values(self):
         """If there are no values, return an empty dictionary."""
-        toml = cleandoc(
+        toml = cleandoc_nl(
             """
             [protokolo.section]
             """
@@ -59,7 +59,7 @@ class TestParseToml:
 
     def test_parse_toml_no_table(self):
         """If there is no [protokolo.section] table, return an empty dict."""
-        toml = cleandoc(
+        toml = cleandoc_nl(
             """
             title = "Title"
             """
@@ -69,7 +69,7 @@ class TestParseToml:
 
     def test_parse_toml_decode_error(self):
         """Raise TOMLDecodeError when TOML can't be parsed."""
-        yaml = cleandoc(
+        yaml = cleandoc_nl(
             """
             hello:
               - world
@@ -297,7 +297,7 @@ class TestGlobalConfig:
     def test_from_file_protokolo_toml(self, project_dir):
         """Load from .protokolo.toml."""
         (project_dir / ".protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo]
                 changelog = "CHANGELOG"
@@ -314,7 +314,7 @@ class TestGlobalConfig:
     def test_from_file_pyproject_toml(self, project_dir):
         """Load from pyproject.toml."""
         (project_dir / "pyproject.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [tool.protokolo]
                 changelog = "CHANGELOG"

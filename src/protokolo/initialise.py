@@ -6,7 +6,7 @@
 
 from pathlib import Path
 
-from ._util import cleandoc
+from ._util import cleandoc_nl
 from .types import StrPath, SupportedMarkup
 
 CHANGELOG_MD = """# Change log
@@ -62,7 +62,7 @@ def create_keep_a_changelog(directory: StrPath) -> None:
     directory.mkdir(parents=True, exist_ok=True)
     if not (directory / ".protokolo.toml").exists():
         (directory / ".protokolo.toml").write_text(
-            cleandoc(
+            cleandoc_nl(
                 """
                 [protokolo.section]
                 title = "${version} - ${date}"
@@ -84,7 +84,7 @@ def create_keep_a_changelog(directory: StrPath) -> None:
         protokolo_toml = directory / str(subdir["dirname"]) / ".protokolo.toml"
         if not protokolo_toml.exists():
             protokolo_toml.write_text(
-                cleandoc(
+                cleandoc_nl(
                     """
                     [protokolo.section]
                     title = "{title}"
@@ -103,7 +103,7 @@ def create_root_toml(
         markup = "markdown"
 
     Path(".protokolo.toml").write_text(
-        cleandoc(
+        cleandoc_nl(
             """
             [protokolo]
             changelog = "{changelog}"

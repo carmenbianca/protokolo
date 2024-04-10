@@ -182,7 +182,7 @@ def compile_(
                 )
             new_contents = insert_into_str(f"\n{new_section}", contents, lineno)
             if dry_run:
-                click.echo(new_contents)
+                click.echo(new_contents, nl=False)
             else:
                 fp.seek(0)
                 fp.write(new_contents)

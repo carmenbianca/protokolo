@@ -6,7 +6,6 @@
 
 from datetime import date, datetime
 from os import PathLike
-from types import UnionType
 from typing import Literal, Mapping, TypeAlias
 
 # pylint: disable=invalid-name
@@ -32,6 +31,6 @@ TOMLValue: TypeAlias = (
     | list["TOMLType"]
 )
 #: Like :data:`TOMLValue`, but using only Python primitives.
-TOMLValueType: UnionType = (
+TOMLValueType: TypeAlias = (
     str | int | float | bool | datetime | date | None | dict | list
 )

@@ -129,7 +129,7 @@ class TOMLConfig:
         self,
         item: Any,
         name: str,
-        expected_type: type | UnionType = TOMLValueType,
+        expected_type: type | UnionType = cast(UnionType, TOMLValueType),
     ) -> None:
         # Because `isinstance(False, int)` is True, but we want it to be False,
         # we do some custom magic here to achieve that effect.

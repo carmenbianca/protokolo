@@ -5,7 +5,6 @@
 """Main entry of program."""
 
 import tomllib
-from gettext import gettext as _
 from io import TextIOWrapper
 from pathlib import Path
 
@@ -22,6 +21,7 @@ from .exceptions import (
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
 )
+from .i18n import _
 from .initialise import (
     create_changelog,
     create_keep_a_changelog,

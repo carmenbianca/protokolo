@@ -6,7 +6,6 @@
 
 import errno
 import tomllib
-from gettext import gettext as _
 from io import StringIO
 from itertools import chain
 from operator import attrgetter
@@ -26,6 +25,7 @@ from .exceptions import (
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
 )
+from .i18n import _
 from .types import StrPath, SupportedMarkup
 
 # pylint: disable=too-few-public-methods

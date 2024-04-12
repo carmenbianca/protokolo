@@ -4,9 +4,10 @@
 
 """Exception classes."""
 
-from gettext import gettext as _
 from operator import attrgetter
 from typing import Any
+
+from .i18n import _
 
 
 class ProtokoloError(Exception):

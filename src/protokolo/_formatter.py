@@ -6,13 +6,13 @@
 
 from abc import ABC, abstractmethod
 from datetime import date
-from gettext import gettext as _
 from inspect import cleandoc
 from string import Template
 from typing import cast
 
 from .config import SectionAttributes
 from .exceptions import HeadingFormatError
+from .i18n import _
 
 # pylint: disable=too-few-public-methods
 

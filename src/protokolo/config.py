@@ -7,7 +7,6 @@
 import tomllib
 from collections.abc import Sequence
 from copy import deepcopy
-from gettext import gettext as _
 from pathlib import Path
 from types import UnionType
 from typing import IO, Any, Self, cast
@@ -20,6 +19,7 @@ from .exceptions import (
     DictTypeError,
     DictTypeListError,
 )
+from .i18n import _
 from .types import StrPath, TOMLValue, TOMLValueType
 
 

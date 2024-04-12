@@ -12,6 +12,7 @@ from typing import cast
 
 from .config import SectionAttributes
 from .exceptions import HeadingFormatError
+from .i18n import _
 
 # pylint: disable=too-few-public-methods
 
@@ -48,9 +49,11 @@ class MarkupFormatter(ABC):
         # This is technically invalid. Valid attrs do not have a non-positive
         # level.
         if attrs.level <= 0:
-            raise HeadingFormatError(f"Level {attrs.level} must be positive.")
+            raise HeadingFormatError(
+                _("Level {level} must be positive.").format(level=attrs.level)
+            )
         if not attrs.title:
-            raise HeadingFormatError("title cannot be empty.")
+            raise HeadingFormatError(_("title cannot be empty."))
 
     @classmethod
     @abstractmethod
@@ -101,7 +104,9 @@ class ReStructuredTextFormatter(MarkupFormatter):
         super()._validate(attrs)
         if attrs.level > len(cls._levels):
             raise HeadingFormatError(
-                f"Heading level {attrs.level} is too deep."
+                _("Heading level {level} is too deep.").format(
+                    level=attrs.level
+                )
             )
 
     @classmethod

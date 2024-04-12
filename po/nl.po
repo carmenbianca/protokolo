@@ -1,0 +1,510 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-12 21:00+0200\n"
+"PO-Revision-Date: 2024-04-12 12:46+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/protokolo/_formatter.py:53
+#, python-brace-format
+msgid "Level {level} must be positive."
+msgstr ""
+
+#: src/protokolo/_formatter.py:56
+msgid "title cannot be empty."
+msgstr ""
+
+#: src/protokolo/_formatter.py:107
+#, python-brace-format
+msgid "Heading level {level} is too deep."
+msgstr ""
+
+#: src/protokolo/cli.py:37
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/decorators.py:465
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr "%(prog)s, versie %(version)s"
+
+#: src/protokolo/cli.py:40
+msgid ""
+"This program is free software: you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version."
+msgstr ""
+
+#: src/protokolo/cli.py:46
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details."
+msgstr ""
+
+#: src/protokolo/cli.py:53
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"this program. If not, see <https://www.gnu.org/licenses/>."
+msgstr ""
+
+#: src/protokolo/cli.py:58
+msgid "Written by Carmen Bianca BAKKER."
+msgstr ""
+
+#: src/protokolo/cli.py:61
+msgid "Protokolo is a change log generator."
+msgstr ""
+
+#: src/protokolo/cli.py:101
+msgid ""
+"Aggregate all change log fragments into a change log file. The fragments are "
+"gathered from a change log directory, and subsequently deleted."
+msgstr ""
+
+#: src/protokolo/cli.py:107
+msgid ""
+"A change log directory should contain a '.protokolo.toml' file that defines "
+"some attributes of the section. This is an example file:"
+msgstr ""
+
+#: src/protokolo/cli.py:120
+msgid "When the section is compiled, it looks a little like this:"
+msgstr ""
+
+#: src/protokolo/cli.py:125
+msgid ""
+"The heading is followed by the contents of files in the section's directory. "
+"If a section is empty (no change log fragments), it is not compiled."
+msgstr ""
+
+#: src/protokolo/cli.py:138
+msgid ""
+"For more documentation and options, read the documentation at <https://"
+"protokolo.readthedocs.io>."
+msgstr ""
+
+#: src/protokolo/cli.py:148 src/protokolo/cli.py:156
+msgid "determined by config"
+msgstr ""
+
+#: src/protokolo/cli.py:151
+msgid "File into which to compile."
+msgstr ""
+
+#: src/protokolo/cli.py:165
+msgid "Change log directory to compile."
+msgstr ""
+
+#. : TRANSLATORS: do not translate markdown.
+#: src/protokolo/cli.py:172 src/protokolo/cli.py:326
+msgid "determined by config, or markdown"
+msgstr ""
+
+#. type: ignore
+#: src/protokolo/cli.py:174 src/protokolo/cli.py:328
+msgid "Markup language."
+msgstr ""
+
+#. : TRANSLATORS: string-format is a verb.
+#: src/protokolo/cli.py:184
+msgid "Use key-value pairs to string-format section headings."
+msgstr ""
+
+#. : TRANSLATORS: do not translate STDOUT.
+#: src/protokolo/cli.py:191
+msgid "Do not write to file system; print result to STDOUT."
+msgstr ""
+
+#: src/protokolo/cli.py:225
+msgid "There are no change log fragments to compile."
+msgstr ""
+
+#: src/protokolo/cli.py:238
+#, python-brace-format
+msgid "There is no 'protokolo-section-tag' in {path}"
+msgstr ""
+
+#: src/protokolo/cli.py:259
+msgid ""
+"Set up your project to be ready to use Protokolo. It creates a change log "
+"file, a change log directory with subsections that match the Keep a "
+"Changelog recommendations, .protokolo.toml files with metadata for those "
+"(sub)sections, and a root .protokolo.toml file with defaults for subsequent "
+"Protokolo commands. Assuming defaults, the end result looks like this:"
+msgstr ""
+
+#: src/protokolo/cli.py:291
+msgid ""
+"Files that already exist are never overwritten, except the root .protokolo."
+"toml file, which is always (re-)generated."
+msgstr ""
+
+#. : TRANSLATORS: do not translate CHANGELOG.md.
+#: src/protokolo/cli.py:303
+msgid "determined by config, or CHANGELOG.md"
+msgstr ""
+
+#: src/protokolo/cli.py:305
+msgid "Change log file to create."
+msgstr ""
+
+#. : TRANSLATORS: do not translate changelog.d.
+#: src/protokolo/cli.py:312
+msgid "determined by config, or changelog.d"
+msgstr ""
+
+#: src/protokolo/cli.py:319
+msgid "Change log directory to create."
+msgstr ""
+
+#: src/protokolo/compile.py:128 src/protokolo/config.py:308
+#, python-brace-format
+msgid "Invalid TOML in {file_name}: {error}"
+msgstr ""
+
+#: src/protokolo/compile.py:136
+#, python-brace-format
+msgid "Wrong value in {file_name}: {error}"
+msgstr ""
+
+#: src/protokolo/compile.py:216
+#, python-brace-format
+msgid "Failed to format section heading of {source}: {error}"
+msgstr ""
+
+#: src/protokolo/config.py:49
+msgid "toml must be a str or IO[bytes]"
+msgstr ""
+
+#: src/protokolo/config.py:216
+#, python-brace-format
+msgid "level must be a positive integer, got {level}"
+msgstr ""
+
+#: src/protokolo/config.py:223
+#, python-brace-format
+msgid "order must be None or a positive integer, got {order}"
+msgstr ""
+
+#: src/protokolo/exceptions.py:26
+#, python-brace-format
+msgid "Function takes no more than 4 arguments ({args_count} given)"
+msgstr ""
+
+#: src/protokolo/exceptions.py:59
+#, python-brace-format
+msgid "Expected a type, got {type}"
+msgstr ""
+
+#: src/protokolo/exceptions.py:64
+#, python-brace-format
+msgid "Expected {name}."
+msgstr ""
+
+#: src/protokolo/exceptions.py:67
+#, python-brace-format
+msgid "Got {value}."
+msgstr ""
+
+#: src/protokolo/exceptions.py:69
+#, python-brace-format
+msgid "{source}: {text}"
+msgstr ""
+
+#: src/protokolo/exceptions.py:73
+#, python-brace-format
+msgid "'{key}' does not have the correct type."
+msgstr ""
+
+#: src/protokolo/exceptions.py:92
+#, python-brace-format
+msgid "List '{key}' contains an element with the wrong type."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:518
+#, python-brace-format
+msgid "{editor}: Editing failed"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:522
+#, python-brace-format
+msgid "{editor}: Editing failed: {e}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1120
+msgid "Aborted!"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1309
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/decorators.py:559
+msgid "Show this message and exit."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1340
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1370
+#, python-brace-format
+msgid "(Deprecated) {text}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1387
+msgid "Options"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1413
+#, python-brace-format
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1429
+msgid "DeprecationWarning: The command {name!r} is deprecated."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1636
+msgid "Commands"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1668
+msgid "Missing command."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:1746
+msgid "No such command {name!r}."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:2310
+msgid "Value must be an iterable."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:2331
+#, python-brace-format
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:2778
+#, python-brace-format
+msgid "env var: {var}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:2808
+msgid "(dynamic)"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:2821
+#, python-brace-format
+msgid "default: {default}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/core.py:2834
+msgid "required"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/decorators.py:528
+msgid "Show the version and exit."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:44
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:80
+#, python-brace-format
+msgid "Error: {message}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:72
+#, python-brace-format
+msgid "Try '{command} {option}' for help."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:121
+#, python-brace-format
+msgid "Invalid value: {message}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:123
+#, python-brace-format
+msgid "Invalid value for {param_hint}: {message}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:179
+msgid "Missing argument"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:181
+msgid "Missing option"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:183
+msgid "Missing parameter"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:185
+#, python-brace-format
+msgid "Missing {param_type}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:192
+#, python-brace-format
+msgid "Missing parameter: {param_name}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:212
+#, python-brace-format
+msgid "No such option: {name}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:224
+#, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:262
+msgid "unknown error"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/exceptions.py:269
+msgid "Could not open file {filename!r}: {message}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/parser.py:231
+msgid "Argument {name!r} takes {nargs} values."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/parser.py:413
+msgid "Option {name!r} does not take a value."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/parser.py:474
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/shell_completion.py:319
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/shell_completion.py:326
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/termui.py:158
+msgid "Repeat for confirmation"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/termui.py:174
+msgid "Error: The value you entered was invalid."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/termui.py:176
+#, python-brace-format
+msgid "Error: {e.message}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/termui.py:187
+msgid "Error: The two entered values do not match."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/termui.py:243
+msgid "Error: invalid input"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/termui.py:773
+msgid "Press any key to continue..."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:266
+#, python-brace-format
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:298
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:392
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:414
+msgid "{value!r} is not a valid {number_type}."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:470
+#, python-brace-format
+msgid "{value} is not in the range {range}."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:611
+msgid "{value!r} is not a valid boolean."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:635
+msgid "{value!r} is not a valid UUID."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:822
+msgid "file"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:824
+msgid "directory"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:826
+msgid "path"
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:877
+msgid "{name} {filename!r} does not exist."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:886
+msgid "{name} {filename!r} is a file."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:894
+#, python-brace-format
+msgid "{name} '{filename}' is a directory."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:903
+msgid "{name} {filename!r} is not readable."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:912
+msgid "{name} {filename!r} is not writable."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:921
+msgid "{name} {filename!r} is not executable."
+msgstr ""
+
+#: /home/carmenbianca/.cache/pypoetry/virtualenvs/protokolo-Gp8COqWt-py3.11/lib/python3.11/site-packages/click/types.py:988
+#, python-brace-format
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] ""
+msgstr[1] ""

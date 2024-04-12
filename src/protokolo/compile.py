@@ -25,6 +25,7 @@ from .exceptions import (
     ProtokoloTOMLIsADirectoryError,
     ProtokoloTOMLNotFoundError,
 )
+from .i18n import _
 from .types import StrPath, SupportedMarkup
 
 # pylint: disable=too-few-public-methods
@@ -124,13 +125,17 @@ class Section:
                 values = parse_toml(fp, section=["protokolo", "section"])
             except tomllib.TOMLDecodeError as error:
                 raise tomllib.TOMLDecodeError(
-                    f"Invalid TOML in '{fp.name}': {error}"
+                    _("Invalid TOML in {file_name}: {error}").format(
+                        file_name=repr(fp.name), error=error
+                    )
                 ) from error
         try:
             attrs = SectionAttributes.from_dict(values, source=fp.name)
         except AttributeNotPositiveError as error:
             raise AttributeNotPositiveError(
-                f"Wrong value in '{fp.name}': {error}"
+                _("Wrong value in {file_name}: {error}").format(
+                    file_name=repr(fp.name), error=error
+                )
             ) from error
         # The level of the current section is determined first by the value
         # in the toml, second by the level value.
@@ -207,8 +212,9 @@ class Section:
             )
         except HeadingFormatError as error:
             raise HeadingFormatError(
-                f"Failed to format section heading of {repr(str(self.source))}:"
-                f" {str(error)}"
+                _(
+                    "Failed to format section heading of {source}: {error}"
+                ).format(source=repr(str(self.source)), error=str(error))
             ) from error
         buffer.write(heading)
         buffer.write("\n")

@@ -7,6 +7,8 @@
 from operator import attrgetter
 from typing import Any
 
+from .i18n import _
+
 
 class ProtokoloError(Exception):
     """Common exception class for all custom errors raised by the
@@ -20,13 +22,16 @@ class DictTypeError(TypeError, ProtokoloError):
     def __init__(self, *args: Any):
         if (args_count := len(args)) > 4:
             raise TypeError(
-                f"Function takes no more than 4 arguments ({args_count} given)"
+                _(
+                    "Function takes no more than 4 arguments ({args_count}"
+                    " given)"
+                ).format(args_count=args_count)
             )
         super().__init__(*args)
-        self.key = self._get_item_default(args, 0)
-        self.expected_type = self._get_item_default(args, 1)
-        self.got = self._get_item_default(args, 2)
-        self.source = self._get_item_default(args, 3)
+        self.key: str = self._get_item_default(args, 0)
+        self.expected_type: type = self._get_item_default(args, 1)
+        self.got: Any = self._get_item_default(args, 2)
+        self.source: str = self._get_item_default(args, 3)
 
     def __str__(self) -> str:
         """Custom str output."""
@@ -51,17 +56,21 @@ class DictTypeError(TypeError, ProtokoloError):
                     continue
             else:
                 raise TypeError(
-                    f"Expected a type, got {repr(self.expected_type)}"
+                    _("Expected a type, got {type}").format(
+                        type=repr(self.expected_type)
+                    )
                 )
-            text += f" Expected {name}."
+            text += " "
+            text += _("Expected {name}.").format(name=name)
         if amount >= 3:
-            text += f" Got {repr(self.got)}."
+            text += " "
+            text += _("Got {value}.").format(value=repr(self.got))
         if amount >= 4:
-            text = f"{self.source}: {text}"
+            text = _("{source}: {text}").format(source=self.source, text=text)
         return text
 
     def _key_text(self) -> str:
-        return f"{repr(self.key)} does not have the correct type."
+        return _("'{key}' does not have the correct type.").format(key=self.key)
 
     @staticmethod
     def _get_item_default(
@@ -79,7 +88,9 @@ class DictTypeListError(DictTypeError):
     """
 
     def _key_text(self) -> str:
-        return f"List {repr(self.key)} contains an element with the wrong type."
+        return _(
+            "List '{key}' contains an element with the wrong type."
+        ).format(key=self.key)
 
 
 class ProtokoloTOMLError(ProtokoloError):

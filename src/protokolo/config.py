@@ -19,6 +19,7 @@ from .exceptions import (
     DictTypeError,
     DictTypeListError,
 )
+from .i18n import _
 from .types import StrPath, TOMLValue, TOMLValueType
 
 
@@ -45,7 +46,7 @@ def parse_toml(
         except tomllib.TOMLDecodeError:
             raise
         except Exception as error:
-            raise TypeError("toml must be a str or IO[bytes]") from error
+            raise TypeError(_("toml must be a str or IO[bytes]")) from error
     if not section:
         return values
     try:
@@ -212,12 +213,15 @@ class SectionAttributes(TOMLConfig):
         super().validate()
         if self.level <= 0:
             raise AttributeNotPositiveError(
-                f"level must be a positive integer, got {repr(self.level)}"
+                _("level must be a positive integer, got {level}").format(
+                    level=repr(self.level)
+                )
             )
         if self.order is not None and self.order <= 0:
             raise AttributeNotPositiveError(
-                f"order must be None or a positive integer, got"
-                f" {repr(self.order)}"
+                _(
+                    "order must be None or a positive integer, got {order}"
+                ).format(order=repr(self.order))
             )
 
     @property
@@ -301,7 +305,9 @@ class GlobalConfig(TOMLConfig):
                 values = parse_toml(fp, section=section)
             except tomllib.TOMLDecodeError as error:
                 raise tomllib.TOMLDecodeError(
-                    f"Invalid TOML in '{fp.name}': {error}"
+                    _("Invalid TOML in {file_name}: {error}").format(
+                        file_name=repr(fp.name), error=error
+                    )
                 ) from error
         return cls.from_dict(values, source=path)
 

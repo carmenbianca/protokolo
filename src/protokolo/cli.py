@@ -5,6 +5,7 @@
 """Main entry of program."""
 
 import tomllib
+from inspect import cleandoc
 from io import TextIOWrapper
 from pathlib import Path
 
@@ -29,6 +30,8 @@ from .initialise import (
 )
 from .replace import find_first_occurrence, insert_into_str
 from .types import SupportedMarkup
+
+# pylint: disable=missing-function-docstring
 
 _VERSION_TEXT = (
     _("%(prog)s, version %(version)s")
@@ -55,15 +58,16 @@ _VERSION_TEXT = (
     + _("Written by Carmen Bianca BAKKER.")
 )
 
+_MAIN_HELP = _("Protokolo is a change log generator.")
 
-@click.group(name="protokolo")
+
+@click.group(name="protokolo", help=_MAIN_HELP)
 @click.version_option(
     package_name="protokolo",
     message=wrap_text(_VERSION_TEXT, preserve_paragraphs=True),
 )
 @click.pass_context
 def main(ctx: click.Context) -> None:
-    """Protokolo is a change log generator."""
     ctx.ensure_object(dict)
     if ctx.default_map is None:
         ctx.default_map = {}
@@ -92,7 +96,52 @@ def main(ctx: click.Context) -> None:
             }
 
 
-@main.command(name="compile")
+_COMPILE_HELP = (
+    _(
+        "Aggregate all change log fragments into a change log file. The"
+        " fragments are gathered from a change log directory, and subsequently"
+        " deleted."
+    )
+    + "\n\n"
+    + _(
+        "A change log directory should contain a '.protokolo.toml' file that"
+        " defines some attributes of the section. This is an example file:"
+    )
+    + "\n\n"
+    + cleandoc(
+        """
+        \b
+        [protokolo.section]
+        title = "${version} - ${date}"
+        level = 2
+        """
+    )
+    + "\n\n"
+    + _("When the section is compiled, it looks a little like this:")
+    + "\n\n"
+    + "## 1.0.0 - 2023-11-08"
+    + "\n\n"
+    + _(
+        "The heading is followed by the contents of files in the section's"
+        " directory. If a section is empty (no change log fragments), it is not"
+        " compiled."
+    )
+    + "\n\n"
+    + cleandoc(
+        """
+        \b
+        <!-- protokolo-section-tag -->
+        """
+    )
+    + "\n\n"
+    + _(
+        "For more documentation and options, read the documentation at"
+        " <https://protokolo.readthedocs.io>."
+    )
+)
+
+
+@main.command(name="compile", help=_COMPILE_HELP)
 @click.option(
     "--changelog",
     "-c",
@@ -148,33 +197,6 @@ def compile_(
     format_: tuple[tuple[str, str], ...],
     dry_run: bool,
 ) -> None:
-    """Aggregate all change log fragments into a change log file. The fragments
-    are gathered from a change log directory, and subsequently deleted.
-
-    A change log directory should contain a '.protokolo.toml' file that defines
-    some attributes of the section. This is an example file:
-
-    \b
-    [protokolo.section]
-    title = "${version} - ${date}"
-    level = 2
-
-    When the section is compiled, it looks a little like this:
-
-    ## 1.0.0 - 2023-11-08
-
-    The heading is followed by the contents of files in the section's directory.
-    If a section is empty (no change log fragments), it is not compiled.
-
-    The change log file should contain the following comment, which is the
-    location in the file after which the compiled section will be pasted:
-
-    \b
-    <!-- protokolo-section-tag -->
-
-    For more documentation and options, read the documentation at
-    <https://protokolo.readthedocs.io>.
-    """
     # TODO: Maybe split this up.
     format_pairs: dict[str, str] = dict(format_)
 
@@ -232,7 +254,47 @@ def compile_(
         _delete_fragments(section)
 
 
-@main.command(name="init")
+_INIT_HELP = (
+    _(
+        "Set up your project to be ready to use Protokolo. It creates a change"
+        " log file, a change log directory with subsections that match the Keep"
+        " a Changelog recommendations, .protokolo.toml files with metadata for"
+        " those (sub)sections, and a root .protokolo.toml file with defaults"
+        " for subsequent Protokolo commands. Assuming defaults, the end result"
+        " looks like this:"
+    )
+    + "\n\n"
+    + cleandoc(
+        """
+        \b
+        .
+        ├── changelog.d
+        │   ├── added
+        │   │   └── .protokolo.toml
+        │   ├── changed
+        │   │   └── .protokolo.toml
+        │   ├── deprecated
+        │   │   └── .protokolo.toml
+        │   ├── fixed
+        │   │   └── .protokolo.toml
+        │   ├── removed
+        │   │   └── .protokolo.toml
+        │   ├── security
+        │   │   └── .protokolo.toml
+        │   └── .protokolo.toml
+        ├── CHANGELOG.md
+        └── .protokolo.toml
+        """
+    )
+    + "\n\n"
+    + _(
+        "Files that already exist are never overwritten, except the root"
+        " .protokolo.toml file, which is always (re-)generated."
+    )
+)
+
+
+@main.command(name="init", help=_INIT_HELP)
 @click.option(
     "--changelog",
     "-c",
@@ -270,34 +332,6 @@ def init(
     directory: Path,
     markup: SupportedMarkup,
 ) -> None:
-    """Set up your project to be ready to use Protokolo. It creates a change log
-    file, a change log directory with subsections that match the Keep a
-    Changelog recommendations, .protokolo.toml files with metadata for those
-    (sub)sections, and a root .protokolo.toml file with defaults for subsequent
-    Protokolo commands. Assuming defaults, the end result looks like this:
-
-    \b
-    .
-    ├── changelog.d
-    │   ├── added
-    │   │   └── .protokolo.toml
-    │   ├── changed
-    │   │   └── .protokolo.toml
-    │   ├── deprecated
-    │   │   └── .protokolo.toml
-    │   ├── fixed
-    │   │   └── .protokolo.toml
-    │   ├── removed
-    │   │   └── .protokolo.toml
-    │   ├── security
-    │   │   └── .protokolo.toml
-    │   └── .protokolo.toml
-    ├── CHANGELOG.md
-    └── .protokolo.toml
-
-    Files that already exist are never overwritten, except the root
-    .protokolo.toml file, which is always (re-)generated.
-    """
     try:
         create_changelog(changelog.name, markup)
         create_keep_a_changelog(directory)

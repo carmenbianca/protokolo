@@ -5,7 +5,7 @@
 """Main entry of program."""
 
 import tomllib
-from inspect import cleandoc
+from gettext import gettext as _
 from io import TextIOWrapper
 from pathlib import Path
 
@@ -30,34 +30,36 @@ from .initialise import (
 from .replace import find_first_occurrence, insert_into_str
 from .types import SupportedMarkup
 
+_VERSION_TEXT = (
+    _("%(prog)s, version %(version)s")
+    + "\n\n"
+    + _(
+        "This program is free software: you can redistribute it and/or modify"
+        " it under the terms of the GNU General Public License as published by"
+        " the Free Software Foundation, either version 3 of the License, or"
+        " (at your option) any later version."
+    )
+    + _(
+        "This program is distributed in the hope that it will be useful,"
+        " but WITHOUT ANY WARRANTY; without even the implied warranty of"
+        " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the"
+        " GNU General Public License for more details."
+    )
+    + "\n\n"
+    + _(
+        "You should have received a copy of the GNU General Public License"
+        " along with this program. If not, see"
+        " <https://www.gnu.org/licenses/>."
+    )
+    + "\n\n"
+    + _("Written by Carmen Bianca BAKKER.")
+)
+
 
 @click.group(name="protokolo")
 @click.version_option(
     package_name="protokolo",
-    message=wrap_text(
-        cleandoc(
-            """
-            %(prog)s, version %(version)s
-
-            This program is free software: you can redistribute it and/or modify
-            it under the terms of the GNU General Public License as published by
-            the Free Software Foundation, either version 3 of the License, or
-            (at your option) any later version.
-
-            This program is distributed in the hope that it will be useful,
-            but WITHOUT ANY WARRANTY; without even the implied warranty of
-            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-            GNU General Public License for more details.
-
-            You should have received a copy of the GNU General Public License
-            along with this program. If not, see
-            <https://www.gnu.org/licenses/>.
-
-            Written by Carmen Bianca BAKKER.
-            """
-        ),
-        preserve_paragraphs=True,
-    ),
+    message=wrap_text(_VERSION_TEXT, preserve_paragraphs=True),
 )
 @click.pass_context
 def main(ctx: click.Context) -> None:
@@ -94,15 +96,15 @@ def main(ctx: click.Context) -> None:
 @click.option(
     "--changelog",
     "-c",
-    show_default="determined by config",
+    show_default=_("determined by config"),
     type=click.File("r+", encoding="utf-8", lazy=True),
     required=True,
-    help="File into which to compile.",
+    help=_("File into which to compile."),
 )
 @click.option(
     "--directory",
     "-d",
-    show_default="determined by config",
+    show_default=_("determined by config"),
     type=click.Path(
         exists=True,
         file_okay=False,
@@ -111,15 +113,16 @@ def main(ctx: click.Context) -> None:
         path_type=Path,
     ),
     required=True,
-    help="Change log directory to compile.",
+    help=_("Change log directory to compile."),
 )
 @click.option(
     "--markup",
     "-m",
     default="markdown",
-    show_default="determined by config, or markdown",
+    #: TRANSLATORS: do not translate markdown.
+    show_default=_("determined by config, or markdown"),
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
-    help="Markup language.",
+    help=_("Markup language."),
 )
 @click.option(
     "--format",
@@ -128,13 +131,15 @@ def main(ctx: click.Context) -> None:
     type=(str, str),
     metavar="<KEY VALUE>...",
     multiple=True,
-    help="Use key-value pairs to string-format section headings.",
+    #: TRANSLATORS: string-format is a verb.
+    help=_("Use key-value pairs to string-format section headings."),
 )
 @click.option(
     "--dry-run",
     "-n",
     is_flag=True,
-    help="Do not write to file system; print result to STDOUT.",
+    #: TRANSLATORS: do not translate STDOUT.
+    help=_("Do not write to file system; print result to STDOUT."),
 )
 def compile_(
     changelog: click.File,
@@ -195,7 +200,7 @@ def compile_(
         raise click.UsageError(str(error)) from error
 
     if not new_section:
-        click.echo("There are no change log fragments to compile.")
+        click.echo(_("There are no change log fragments to compile."))
         return
 
     # Write to CHANGELOG
@@ -208,8 +213,9 @@ def compile_(
             lineno = find_first_occurrence("protokolo-section-tag", contents)
             if lineno is None:
                 raise click.UsageError(
-                    f"There is no 'protokolo-section-tag' in"
-                    f" {repr(changelog.name)}."
+                    _("There is no 'protokolo-section-tag' in {path}").format(
+                        path=repr(changelog.name)
+                    )
                 )
             new_contents = insert_into_str(f"\n{new_section}", contents, lineno)
             if dry_run:
@@ -219,8 +225,6 @@ def compile_(
                 fp.write(new_contents)
                 fp.truncate()
     except OSError as error:
-        # TODO: This is a little tricky to test. click already exits early if
-        # changelog isn't readable/writable.
         raise click.UsageError(str(error)) from error
 
     # Delete change log fragments
@@ -233,30 +237,33 @@ def compile_(
     "--changelog",
     "-c",
     default="CHANGELOG.md",
-    show_default="determined by config, or CHANGELOG.md",
+    #: TRANSLATORS: do not translate CHANGELOG.md.
+    show_default=_("determined by config, or CHANGELOG.md"),
     type=click.File("w", encoding="utf-8", lazy=True),
-    help="Change log file to create.",
+    help=_("Change log file to create."),
 )
 @click.option(
     "--directory",
     "-d",
     default="changelog.d",
-    show_default="determined by config, or changelog.d",
+    #: TRANSLATORS: do not translate changelog.d.
+    show_default=_("determined by config, or changelog.d"),
     type=click.Path(
         file_okay=False,
         dir_okay=True,
         readable=True,
         path_type=Path,
     ),
-    help="Change log directory to create.",
+    help=_("Change log directory to create."),
 )
 @click.option(
     "--markup",
     "-m",
     default="markdown",
-    show_default="determined by config, or markdown",
+    #: TRANSLATORS: do not translate markdown.
+    show_default=_("determined by config, or markdown"),
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
-    help="Markup language.",
+    help=_("Markup language."),
 )
 def init(
     changelog: click.File,

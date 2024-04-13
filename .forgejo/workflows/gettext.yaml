@@ -24,7 +24,7 @@ jobs:
       - name: Install protokolo
         run: poetry install --no-interaction --only main
       - name: Install wlc
-        run: pipx install wlc
+        run: pip install wlc
       - name: Lock Weblate
         run: wlc --key ${{ secrets.WEBLATE_KEY }} lock protokolo/protokolo
       - name: Push changes from Weblate to upstream repository

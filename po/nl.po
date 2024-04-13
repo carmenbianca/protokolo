@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-13 14:19+0000\n"
+"POT-Creation-Date: 2024-04-13 14:49+0000\n"
 "PO-Revision-Date: 2024-04-13 11:46+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
@@ -137,7 +137,7 @@ msgstr ""
 #. TRANSLATORS: do not translate protokolo-section-tag.
 #: src/protokolo/cli.py:237
 #, python-brace-format
-msgid "There is no 'protokolo-section-tag' in {path}"
+msgid "There is no 'protokolo-section-tag' in {path}."
 msgstr ""
 
 #: src/protokolo/cli.py:258

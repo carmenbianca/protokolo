@@ -4,6 +4,7 @@
 
 """Fixtures and stuff."""
 
+import os
 from pathlib import Path
 
 import pytest
@@ -12,6 +13,8 @@ from click.testing import CliRunner
 from protokolo._util import cleandoc_nl
 
 # pylint: disable=unused-argument
+
+os.environ["LC_ALL"] = "C"
 
 
 @pytest.fixture()

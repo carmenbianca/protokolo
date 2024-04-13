@@ -10,6 +10,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/protokolo.svg)](https://pypi.python.org/pypi/protokolo)
 [![REUSE status](https://api.reuse.software/badge/codeberg.org/carmenbianca/protokolo)](https://api.reuse.software/info/codeberg.org/carmenbianca/protokolo)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)
+[![Translation status](https://hosted.weblate.org/widget/protokolo/protokolo/svg-badge.svg)](https://hosted.weblate.org/engage/protokolo/)
 
 Protokolo is a change log generator.
 
@@ -173,6 +174,10 @@ The code and issue tracker is hosted at
 <https://codeberg.org/carmenbianca/protokolo>. You are welcome to open any
 issues. For pull requests, bug fixes are always welcome, but new features should
 probably be discussed in any issue first.
+
+Translations are done at
+[Weblate](https://hosted.weblate.org/projects/protokolo/protokolo/). If there
+are issues with translation, feel free to open an issue at Codeberg.
 
 ## Licensing
 

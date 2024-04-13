@@ -176,8 +176,8 @@ issues. For pull requests, bug fixes are always welcome, but new features should
 probably be discussed in any issue first.
 
 Translations are done at
-[Weblate](https://hosted.weblate.org/projects/protokolo/protokolo/). If there
-are issues with translation, feel free to open an issue at Codeberg.
+<https://hosted.weblate.org/projects/protokolo/protokolo/> using Weblate. If
+there are issues with translation, feel free to open an issue at Codeberg.
 
 ## Licensing
 

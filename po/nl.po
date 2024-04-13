@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-13 14:49+0000\n"
-"PO-Revision-Date: 2024-04-13 11:46+0000\n"
+"POT-Creation-Date: 2024-04-12 21:00+0200\n"
+"PO-Revision-Date: 2024-04-13 14:45+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
 "protokolo/nl/>\n"
@@ -25,14 +25,14 @@ msgstr ""
 msgid "Level {level} must be positive."
 msgstr "Niveau {level} moet positief zijn."
 
-#: src/protokolo/_formatter.py:57
+#: src/protokolo/_formatter.py:56
 msgid "Title cannot be empty."
-msgstr ""
+msgstr "title kan niet leeg zijn."
 
 #: src/protokolo/_formatter.py:108
 #, python-brace-format
 msgid "Heading level {level} is too deep."
-msgstr ""
+msgstr "Kopniveau {level} is te diep."
 
 #: src/protokolo/cli.py:37
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:465
@@ -47,6 +47,10 @@ msgid ""
 "Software Foundation, either version 3 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Dit programma is vrije software: je mag het herdistribueren en/of wijzigen "
+"onder de voorwaarden van de GNU Algemene Publieke Licentie zoals "
+"gepubliceerd door de Free Software Foundation, onder versie 3 van de "
+"Licentie of (naar jouw keuze) elke latere versie."
 
 #: src/protokolo/cli.py:46
 msgid ""
@@ -55,90 +59,106 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
 "more details."
 msgstr ""
+"Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar "
+"ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die GEBRUIKELIJK "
+"ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL. Zie de GNU "
+"Algemene Publieke Licentie voor meer details."
 
 #: src/protokolo/cli.py:53
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program. If not, see <https://www.gnu.org/licenses/>."
 msgstr ""
+"Je hoort een kopie van de GNU Algemene Publieke Licentie te hebben ontvangen "
+"samen met dit programma. Als dat niet het geval is, zie <http://www.gnu.org/"
+"licenses/>."
 
 #: src/protokolo/cli.py:58
 msgid "Written by Carmen Bianca BAKKER."
-msgstr ""
+msgstr "Geschreven door Carmen Bianca BAKKER."
 
 #: src/protokolo/cli.py:61
 msgid "Protokolo is a change log generator."
-msgstr ""
+msgstr "Protokolo is een changelog-generator."
 
 #: src/protokolo/cli.py:100
 msgid ""
 "Aggregate all change log fragments into a change log file. The fragments are "
 "gathered from a change log directory, and subsequently deleted."
 msgstr ""
+"Voeg alle changelogfragmenten samen in een changelogbestand. De fragmenten "
+"worden verzameld in een changelogmap en vervolgens verwijderd."
 
 #: src/protokolo/cli.py:106
 msgid ""
 "A change log directory should contain a '.protokolo.toml' file that defines "
 "some attributes of the section. This is an example file:"
 msgstr ""
+"Een changelogmap moet een '.protokolo.toml'-bestand bevatten dat sommige "
+"attributen van de sectie definieert. Dit is een voorbeeldbestand:"
 
 #: src/protokolo/cli.py:119
 msgid "When the section is compiled, it looks a little like this:"
-msgstr ""
+msgstr "Wanneer de sectie gecompileerd is, ziet het er een beetje zo uit:"
 
 #: src/protokolo/cli.py:124
 msgid ""
 "The heading is followed by the contents of files in the section's directory. "
 "If a section is empty (no change log fragments), it is not compiled."
 msgstr ""
+"De kop wordt gevolgd door de inhoud van de bestanden in de sectiemap. Als "
+"een sectie leeg is (geen changelogfragmenten), dan wordt die niet "
+"gecompileerd."
 
 #: src/protokolo/cli.py:137
 msgid ""
 "For more documentation and options, read the documentation at <https://"
 "protokolo.readthedocs.io>."
 msgstr ""
+"Voor meer documentatie en opties, lees de documentatie op <https://protokolo."
+"readthedocs.io>."
 
 #: src/protokolo/cli.py:147 src/protokolo/cli.py:155
 msgid "determined by config"
-msgstr ""
+msgstr "bepaald door configuratie"
 
 #: src/protokolo/cli.py:150
 msgid "File into which to compile."
-msgstr ""
+msgstr "Bestand waarnaar gecompileerd moet worden."
 
 #: src/protokolo/cli.py:164
 msgid "Change log directory to compile."
-msgstr ""
+msgstr "Changelogmap om te compileren."
 
 #. TRANSLATORS: do not translate markdown.
 #: src/protokolo/cli.py:171 src/protokolo/cli.py:325
 msgid "determined by config, or markdown"
-msgstr ""
+msgstr "bepaald door configuratie, of markdown"
 
 #. type: ignore
 #: src/protokolo/cli.py:173 src/protokolo/cli.py:327
 msgid "Markup language."
-msgstr ""
+msgstr "Markup-taal."
 
 #. TRANSLATORS: string-format is a verb.
 #: src/protokolo/cli.py:183
 msgid "Use key-value pairs to string-format section headings."
-msgstr ""
+msgstr "Gebruik sleutel/waarde-paren om sectiekoppen te string-formatteren."
 
 #. TRANSLATORS: do not translate STDOUT.
 #: src/protokolo/cli.py:190
 msgid "Do not write to file system; print result to STDOUT."
-msgstr ""
+msgstr "Schrijf niet naar bestandssysteem; print resultaat naar STDOUT."
 
 #: src/protokolo/cli.py:223
 msgid "There are no change log fragments to compile."
-msgstr ""
+msgstr "Er zijn geen changelogfragmenten om te compileren."
 
 #. TRANSLATORS: do not translate protokolo-section-tag.
 #: src/protokolo/cli.py:237
 #, python-brace-format
 msgid "There is no 'protokolo-section-tag' in {path}."
-msgstr ""
+msgstr "Er is geen 'protokolo-section-tag' in {path}."
 
 #: src/protokolo/cli.py:258
 msgid ""
@@ -154,252 +174,254 @@ msgid ""
 "Files that already exist are never overwritten, except the root .protokolo."
 "toml file, which is always (re-)generated."
 msgstr ""
+"Bestanden die al bestaan worden nooit overschreven, behalve het root ."
+"protokolo.toml-bestand, die altijd (opnieuw) gegenereerd wordt."
 
 #. TRANSLATORS: do not translate CHANGELOG.md.
 #: src/protokolo/cli.py:302
 msgid "determined by config, or CHANGELOG.md"
-msgstr ""
+msgstr "bepaald door configuratie, of CHANGELOG.md"
 
 #: src/protokolo/cli.py:304
 msgid "Change log file to create."
-msgstr ""
+msgstr "Changelogbestand om aan te maken."
 
 #. TRANSLATORS: do not translate changelog.d.
 #: src/protokolo/cli.py:311
 msgid "determined by config, or changelog.d"
-msgstr ""
+msgstr "bepaald door configuratie, of changelog.d"
 
 #: src/protokolo/cli.py:318
 msgid "Change log directory to create."
-msgstr ""
+msgstr "Changelogmap om aan te maken."
 
 #: src/protokolo/compile.py:128 src/protokolo/config.py:311
 #, python-brace-format
 msgid "Invalid TOML in {file_name}: {error}"
-msgstr ""
+msgstr "Ongeldige TOML in {file_name}: {error}"
 
 #: src/protokolo/compile.py:136
 #, python-brace-format
 msgid "Wrong value in {file_name}: {error}"
-msgstr ""
+msgstr "Foute waarde in {file_name}: {error}"
 
 #: src/protokolo/compile.py:216
 #, python-brace-format
 msgid "Failed to format section heading of {source}: {error}"
-msgstr ""
+msgstr "Gefaald om sectiekop van {source} te formatteren: {error}"
 
 #. TRANSLATORS: do not translate TOML, str, or IO[bytes]
-#: src/protokolo/config.py:50
+#: src/protokolo/config.py:49
 msgid "TOML must be a str or IO[bytes]"
-msgstr ""
+msgstr "TOML moet een str of IO[bytes] zijn"
 
 #. TRANSLATORS: do not translate level.
 #: src/protokolo/config.py:218
 #, python-brace-format
 msgid "level must be a positive integer, got {level}"
-msgstr ""
+msgstr "level moet een positieve integer zijn, kreeg {level}"
 
 #: src/protokolo/config.py:226
 #, python-brace-format
 msgid "order must be None or a positive integer, got {order}"
-msgstr ""
+msgstr "order moet None of een positieve integer zijn, kreeg {order}"
 
 #: src/protokolo/exceptions.py:26
 #, python-brace-format
 msgid "Function takes no more than 4 arguments ({args_count} given)"
-msgstr ""
+msgstr "Functie neemt niet meer dan 4 argumenten ({args_count} gekregen)"
 
 #: src/protokolo/exceptions.py:59
 #, python-brace-format
 msgid "Expected a type, got {type}"
-msgstr ""
+msgstr "Verwachtte een type, kreeg {type}"
 
 #: src/protokolo/exceptions.py:64
 #, python-brace-format
 msgid "Expected {name}."
-msgstr ""
+msgstr "Verwachtte {name}."
 
 #: src/protokolo/exceptions.py:67
 #, python-brace-format
 msgid "Got {value}."
-msgstr ""
+msgstr "Kreeg {value}."
 
 #: src/protokolo/exceptions.py:69
 #, python-brace-format
 msgid "{source}: {text}"
-msgstr ""
+msgstr "{source}: {text}"
 
 #: src/protokolo/exceptions.py:73
 #, python-brace-format
 msgid "'{key}' does not have the correct type."
-msgstr ""
+msgstr "'{key}' heeft niet het juiste type."
 
 #: src/protokolo/exceptions.py:92
 #, python-brace-format
 msgid "List '{key}' contains an element with the wrong type."
-msgstr ""
+msgstr "Lijst '{key}' bevat een element met het verkeerde type."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:518
 #, python-brace-format
 msgid "{editor}: Editing failed"
-msgstr ""
+msgstr "{editor}: Tekstverwerking gefaald"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:522
 #, python-brace-format
 msgid "{editor}: Editing failed: {e}"
-msgstr ""
+msgstr "{editor}: Tekverwerking gefaald: {e}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1120
 msgid "Aborted!"
-msgstr ""
+msgstr "Afgebroken!"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1309
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:559
 msgid "Show this message and exit."
-msgstr ""
+msgstr "Laat dit bericht zien en sluit af."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1340
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1370
 #, python-brace-format
 msgid "(Deprecated) {text}"
-msgstr ""
+msgstr "(Afgeschreven) {text}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1387
 msgid "Options"
-msgstr ""
+msgstr "Opties"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1413
 #, python-brace-format
 msgid "Got unexpected extra argument ({args})"
 msgid_plural "Got unexpected extra arguments ({args})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Kreeg onverwacht extra argument ({args})"
+msgstr[1] "Kreeg onverwachte extra argumenten ({args})"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1429
 msgid "DeprecationWarning: The command {name!r} is deprecated."
-msgstr ""
+msgstr "DeprecationWarning: Het commando {name!r} is afgeschreven."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1636
 msgid "Commands"
-msgstr ""
+msgstr "Commando's"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1668
 msgid "Missing command."
-msgstr ""
+msgstr "Missend commando."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1746
 msgid "No such command {name!r}."
-msgstr ""
+msgstr "Geen commando {name!r}."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2310
 msgid "Value must be an iterable."
-msgstr ""
+msgstr "Waarde moet iterabel zijn."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2331
 #, python-brace-format
 msgid "Takes {nargs} values but 1 was given."
 msgid_plural "Takes {nargs} values but {len} were given."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Neemt {nargs} waardes, maar kreeg 1."
+msgstr[1] "Neemt {nargs} waardes, maar kreeg {len}."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2778
 #, python-brace-format
 msgid "env var: {var}"
-msgstr ""
+msgstr "env var: {var}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2808
 msgid "(dynamic)"
-msgstr ""
+msgstr "(dynamisch)"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2821
 #, python-brace-format
 msgid "default: {default}"
-msgstr ""
+msgstr "standaard: {default}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2834
 msgid "required"
-msgstr ""
+msgstr "verplicht"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:528
 msgid "Show the version and exit."
-msgstr ""
+msgstr "Laat de versie zien en sluit af."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:44
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:80
 #, python-brace-format
 msgid "Error: {message}"
-msgstr ""
+msgstr "Fout: {message}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:72
 #, python-brace-format
 msgid "Try '{command} {option}' for help."
-msgstr ""
+msgstr "Probeer '{command} {option}' voor hulp."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:121
 #, python-brace-format
 msgid "Invalid value: {message}"
-msgstr ""
+msgstr "Ongeldige waarde: {message}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:123
 #, python-brace-format
 msgid "Invalid value for {param_hint}: {message}"
-msgstr ""
+msgstr "Ongeldige waarde voor {param_hint}: {message}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:179
 msgid "Missing argument"
-msgstr ""
+msgstr "Missend argument"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:181
 msgid "Missing option"
-msgstr ""
+msgstr "Missende optie"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:183
 msgid "Missing parameter"
-msgstr ""
+msgstr "Missende parameter"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:185
 #, python-brace-format
 msgid "Missing {param_type}"
-msgstr ""
+msgstr "Missende {param_type}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:192
 #, python-brace-format
 msgid "Missing parameter: {param_name}"
-msgstr ""
+msgstr "Missende parameter: {param_name}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:212
 #, python-brace-format
 msgid "No such option: {name}"
-msgstr ""
+msgstr "Optie bestaat niet: {name}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:224
 #, python-brace-format
 msgid "Did you mean {possibility}?"
 msgid_plural "(Possible options: {possibilities})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Bedoelde je {possibility}?"
+msgstr[1] "(Mogelijke opties: {possibilities})"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:262
 msgid "unknown error"
-msgstr ""
+msgstr "onbekende fout"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:269
 msgid "Could not open file {filename!r}: {message}"
-msgstr ""
+msgstr "Kon {filename!r} niet openen: {message}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:231
 msgid "Argument {name!r} takes {nargs} values."
-msgstr ""
+msgstr "Argument {name!r} neemt {nargs} waardes."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:413
 msgid "Option {name!r} does not take a value."
-msgstr ""
+msgstr "Optie {name!r} neemt geen waarde."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:474
 msgid "Option {name!r} requires an argument."
 msgid_plural "Option {name!r} requires {nargs} arguments."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Optie {name!r} heeft een argument nodig."
+msgstr[1] "Optie {name!r} heeft {nargs} argumenten nodig."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/shell_completion.py:319
 msgid "Shell completion is not supported for Bash versions older than 4.4."
@@ -411,11 +433,11 @@ msgstr ""
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:158
 msgid "Repeat for confirmation"
-msgstr ""
+msgstr "Herhaal ter bevestiging"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:174
 msgid "Error: The value you entered was invalid."
-msgstr ""
+msgstr "Fout: De waarde die je invoerde was ongeldig."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:176
 #, python-brace-format

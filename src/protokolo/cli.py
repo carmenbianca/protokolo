@@ -167,7 +167,7 @@ _COMPILE_HELP = (
     "--markup",
     "-m",
     default="markdown",
-    #: TRANSLATORS: do not translate markdown.
+    # TRANSLATORS: do not translate markdown.
     show_default=_("determined by config, or markdown"),
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
     help=_("Markup language."),
@@ -179,14 +179,14 @@ _COMPILE_HELP = (
     type=(str, str),
     metavar="<KEY VALUE>...",
     multiple=True,
-    #: TRANSLATORS: string-format is a verb.
+    # TRANSLATORS: string-format is a verb.
     help=_("Use key-value pairs to string-format section headings."),
 )
 @click.option(
     "--dry-run",
     "-n",
     is_flag=True,
-    #: TRANSLATORS: do not translate STDOUT.
+    # TRANSLATORS: do not translate STDOUT.
     help=_("Do not write to file system; print result to STDOUT."),
 )
 def compile_(
@@ -297,7 +297,7 @@ _INIT_HELP = (
     "--changelog",
     "-c",
     default="CHANGELOG.md",
-    #: TRANSLATORS: do not translate CHANGELOG.md.
+    # TRANSLATORS: do not translate CHANGELOG.md.
     show_default=_("determined by config, or CHANGELOG.md"),
     type=click.File("w", encoding="utf-8", lazy=True),
     help=_("Change log file to create."),
@@ -306,7 +306,7 @@ _INIT_HELP = (
     "--directory",
     "-d",
     default="changelog.d",
-    #: TRANSLATORS: do not translate changelog.d.
+    # TRANSLATORS: do not translate changelog.d.
     show_default=_("determined by config, or changelog.d"),
     type=click.Path(
         file_okay=False,
@@ -320,7 +320,7 @@ _INIT_HELP = (
     "--markup",
     "-m",
     default="markdown",
-    #: TRANSLATORS: do not translate markdown.
+    # TRANSLATORS: do not translate markdown.
     show_default=_("determined by config, or markdown"),
     type=click.Choice(SupportedMarkup.__args__),  # type: ignore
     help=_("Markup language."),

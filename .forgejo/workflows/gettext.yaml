@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+name: Update .pot file
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/protokolo/**.py"
+
+jobs:
+  create-pot:
+    runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install gettext
+        run: |
+          apt-get update
+          apt-get install -y gettext
+      - name: Install protokolo
+        run: poetry install --no-interaction --only main
+      - name: Create .pot file
+        run: ./generate_pot.sh
+      # Normally, POT-Creation-Date changes in two locations. Check if the diff
+      # includes more than just those two lines.
+      - name: Check if sufficient lines were changed
+        id: diff
+        run:
+          echo "changed=$(git diff -U0 | grep '^[+|-][^+|-]' | grep -Ev
+          '^[+-]"POT-Creation-Date' | wc -l)" >> $GITHUB_OUTPUT
+      - name: Commit and push updated protokolo.pot
+        if: ${{ steps.diff.outputs.changed != '0' }}
+        run: |
+          git config --global user.name "protokolo-bot"
+          git config --global user.email "<>"
+          git add po/protokolo.pot po/*.po
+          git commit -m "Update protokolo.pot"
+          git push origin main

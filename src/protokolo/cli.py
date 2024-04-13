@@ -234,7 +234,7 @@ def compile_(
             if lineno is None:
                 raise click.UsageError(
                     # TRANSLATORS: do not translate protokolo-section-tag.
-                    _("There is no 'protokolo-section-tag' in {path}").format(
+                    _("There is no 'protokolo-section-tag' in {path}.").format(
                         path=repr(changelog.name)
                     )
                 )

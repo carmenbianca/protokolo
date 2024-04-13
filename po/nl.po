@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-13 13:50+0000\n"
+"POT-Creation-Date: 2024-04-13 14:08+0000\n"
 "PO-Revision-Date: 2024-04-13 11:46+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
@@ -109,7 +109,7 @@ msgstr ""
 msgid "Change log directory to compile."
 msgstr ""
 
-#. : TRANSLATORS: do not translate markdown.
+#. TRANSLATORS: do not translate markdown.
 #: src/protokolo/cli.py:171 src/protokolo/cli.py:324
 msgid "determined by config, or markdown"
 msgstr ""
@@ -119,12 +119,12 @@ msgstr ""
 msgid "Markup language."
 msgstr ""
 
-#. : TRANSLATORS: string-format is a verb.
+#. TRANSLATORS: string-format is a verb.
 #: src/protokolo/cli.py:183
 msgid "Use key-value pairs to string-format section headings."
 msgstr ""
 
-#. : TRANSLATORS: do not translate STDOUT.
+#. TRANSLATORS: do not translate STDOUT.
 #: src/protokolo/cli.py:190
 msgid "Do not write to file system; print result to STDOUT."
 msgstr ""
@@ -153,7 +153,7 @@ msgid ""
 "toml file, which is always (re-)generated."
 msgstr ""
 
-#. : TRANSLATORS: do not translate CHANGELOG.md.
+#. TRANSLATORS: do not translate CHANGELOG.md.
 #: src/protokolo/cli.py:301
 msgid "determined by config, or CHANGELOG.md"
 msgstr ""
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Change log file to create."
 msgstr ""
 
-#. : TRANSLATORS: do not translate changelog.d.
+#. TRANSLATORS: do not translate changelog.d.
 #: src/protokolo/cli.py:310
 msgid "determined by config, or changelog.d"
 msgstr ""

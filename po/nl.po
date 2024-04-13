@@ -8,20 +8,21 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-12 21:00+0200\n"
-"PO-Revision-Date: 2024-04-12 12:46+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"PO-Revision-Date: 2024-04-13 11:46+0000\n"
+"Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
+"protokolo/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.5-dev\n"
 
 #: src/protokolo/_formatter.py:53
 #, python-brace-format
 msgid "Level {level} must be positive."
-msgstr ""
+msgstr "Niveau {level} moet positief zijn."
 
 #: src/protokolo/_formatter.py:56
 msgid "title cannot be empty."

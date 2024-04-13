@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-13 14:08+0000\n"
+"POT-Creation-Date: 2024-04-13 14:19+0000\n"
 "PO-Revision-Date: 2024-04-12 14:30+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,16 +18,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: src/protokolo/_formatter.py:53
+#. TRANSLATORS: level refers to the depth of a heading.
+#: src/protokolo/_formatter.py:54
 #, python-brace-format
 msgid "Level {level} must be positive."
 msgstr ""
 
-#: src/protokolo/_formatter.py:56
-msgid "title cannot be empty."
+#: src/protokolo/_formatter.py:57
+msgid "Title cannot be empty."
 msgstr ""
 
-#: src/protokolo/_formatter.py:107
+#: src/protokolo/_formatter.py:108
 #, python-brace-format
 msgid "Heading level {level} is too deep."
 msgstr ""
@@ -109,12 +110,12 @@ msgid "Change log directory to compile."
 msgstr ""
 
 #. TRANSLATORS: do not translate markdown.
-#: src/protokolo/cli.py:171 src/protokolo/cli.py:324
+#: src/protokolo/cli.py:171 src/protokolo/cli.py:325
 msgid "determined by config, or markdown"
 msgstr ""
 
 #. type: ignore
-#: src/protokolo/cli.py:173 src/protokolo/cli.py:326
+#: src/protokolo/cli.py:173 src/protokolo/cli.py:327
 msgid "Markup language."
 msgstr ""
 
@@ -132,12 +133,13 @@ msgstr ""
 msgid "There are no change log fragments to compile."
 msgstr ""
 
-#: src/protokolo/cli.py:236
+#. TRANSLATORS: do not translate protokolo-section-tag.
+#: src/protokolo/cli.py:237
 #, python-brace-format
 msgid "There is no 'protokolo-section-tag' in {path}"
 msgstr ""
 
-#: src/protokolo/cli.py:257
+#: src/protokolo/cli.py:258
 msgid ""
 "Set up your project to be ready to use Protokolo. It creates a change log "
 "file, a change log directory with subsections that match the Keep a "
@@ -146,31 +148,31 @@ msgid ""
 "Protokolo commands. Assuming defaults, the end result looks like this:"
 msgstr ""
 
-#: src/protokolo/cli.py:289
+#: src/protokolo/cli.py:290
 msgid ""
 "Files that already exist are never overwritten, except the root .protokolo."
 "toml file, which is always (re-)generated."
 msgstr ""
 
 #. TRANSLATORS: do not translate CHANGELOG.md.
-#: src/protokolo/cli.py:301
+#: src/protokolo/cli.py:302
 msgid "determined by config, or CHANGELOG.md"
 msgstr ""
 
-#: src/protokolo/cli.py:303
+#: src/protokolo/cli.py:304
 msgid "Change log file to create."
 msgstr ""
 
 #. TRANSLATORS: do not translate changelog.d.
-#: src/protokolo/cli.py:310
+#: src/protokolo/cli.py:311
 msgid "determined by config, or changelog.d"
 msgstr ""
 
-#: src/protokolo/cli.py:317
+#: src/protokolo/cli.py:318
 msgid "Change log directory to create."
 msgstr ""
 
-#: src/protokolo/compile.py:128 src/protokolo/config.py:308
+#: src/protokolo/compile.py:128 src/protokolo/config.py:311
 #, python-brace-format
 msgid "Invalid TOML in {file_name}: {error}"
 msgstr ""
@@ -185,16 +187,18 @@ msgstr ""
 msgid "Failed to format section heading of {source}: {error}"
 msgstr ""
 
-#: src/protokolo/config.py:49
-msgid "toml must be a str or IO[bytes]"
+#. TRANSLATORS: do not translate TOML, str, or IO[bytes]
+#: src/protokolo/config.py:50
+msgid "TOML must be a str or IO[bytes]"
 msgstr ""
 
-#: src/protokolo/config.py:216
+#. TRANSLATORS: do not translate level.
+#: src/protokolo/config.py:218
 #, python-brace-format
 msgid "level must be a positive integer, got {level}"
 msgstr ""
 
-#: src/protokolo/config.py:223
+#: src/protokolo/config.py:226
 #, python-brace-format
 msgid "order must be None or a positive integer, got {order}"
 msgstr ""

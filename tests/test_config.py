@@ -7,6 +7,7 @@
 import tomllib
 from datetime import date, datetime
 from io import BytesIO
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -121,14 +122,13 @@ class TestTOMLConfig:
 
     def test_from_dict_unsupported_type(self):
         """Many complex types are not supported."""
-        value = object()
+        value = MagicMock()
         with pytest.raises(DictTypeError) as exc_info:
             TOMLConfig.from_dict({"foo": value})
         error = exc_info.value
         assert error.key == "foo"
         assert error.expected_type == TOMLValueType
-        # TODO: This is not true because error.got is a (deep)copy of value.
-        # assert error.got == value
+        assert error.got == value
 
     def test_setitem(self):
         """You can set an item on the TOMLConfig object."""

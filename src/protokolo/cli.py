@@ -74,7 +74,6 @@ def main(ctx: click.Context) -> None:
 
     # Only load the global config if the subcommand needs it.
     if ctx.invoked_subcommand in ["compile", "init"]:
-        # TODO: Make directory to search configurable.
         cwd = Path.cwd()
         config_path = GlobalConfig.find_config(Path.cwd())
         if config_path:
@@ -197,7 +196,6 @@ def compile_(
     format_: tuple[tuple[str, str], ...],
     dry_run: bool,
 ) -> None:
-    # TODO: Maybe split this up.
     format_pairs: dict[str, str] = dict(format_)
 
     # Create Section

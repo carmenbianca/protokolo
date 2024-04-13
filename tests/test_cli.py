@@ -423,7 +423,9 @@ class TestCompile:
         assert Path("changelog.d/feature/bar.txt").exists()
 
     def test_no_protokolo_toml_in_changelog_d(self, runner):
-        """If changelog.d does not contain a .protokolo.toml file, TODO"""
+        """If changelog.d does not contain a .protokolo.toml file, print an
+        error message.
+        """
         Path("changelog.d/.protokolo.toml").unlink()
         Path("changelog.d/foo.md").write_text("Foo")
         result = runner.invoke(

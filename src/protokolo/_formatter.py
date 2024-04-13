@@ -50,10 +50,11 @@ class MarkupFormatter(ABC):
         # level.
         if attrs.level <= 0:
             raise HeadingFormatError(
+                # TRANSLATORS: level refers to the depth of a heading.
                 _("Level {level} must be positive.").format(level=attrs.level)
             )
         if not attrs.title:
-            raise HeadingFormatError(_("title cannot be empty."))
+            raise HeadingFormatError(_("Title cannot be empty."))
 
     @classmethod
     @abstractmethod

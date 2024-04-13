@@ -46,7 +46,8 @@ def parse_toml(
         except tomllib.TOMLDecodeError:
             raise
         except Exception as error:
-            raise TypeError(_("toml must be a str or IO[bytes]")) from error
+            # TRANSLATORS: do not translate TOML, str, or IO[bytes]
+            raise TypeError(_("TOML must be a str or IO[bytes]")) from error
     if not section:
         return values
     try:
@@ -213,12 +214,14 @@ class SectionAttributes(TOMLConfig):
         super().validate()
         if self.level <= 0:
             raise AttributeNotPositiveError(
+                # TRANSLATORS: do not translate level.
                 _("level must be a positive integer, got {level}").format(
                     level=repr(self.level)
                 )
             )
         if self.order is not None and self.order <= 0:
             raise AttributeNotPositiveError(
+                # TRANSLATORS: do not translate order.
                 _(
                     "order must be None or a positive integer, got {order}"
                 ).format(order=repr(self.order))

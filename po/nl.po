@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-14 15:05+0000\n"
+"POT-Creation-Date: 2024-04-14 20:35+0000\n"
 "PO-Revision-Date: 2024-04-13 14:45+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
@@ -34,13 +34,13 @@ msgstr "title kan niet leeg zijn."
 msgid "Heading level {level} is too deep."
 msgstr "Kopniveau {level} is te diep."
 
-#: src/protokolo/cli.py:37
+#: src/protokolo/cli.py:48
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:465
 #, python-format
 msgid "%(prog)s, version %(version)s"
 msgstr "%(prog)s, versie %(version)s"
 
-#: src/protokolo/cli.py:40
+#: src/protokolo/cli.py:51
 msgid ""
 "This program is free software: you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -52,7 +52,7 @@ msgstr ""
 "gepubliceerd door de Free Software Foundation, onder versie 3 van de "
 "Licentie of (naar jouw keuze) elke latere versie."
 
-#: src/protokolo/cli.py:46
+#: src/protokolo/cli.py:57
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -64,7 +64,7 @@ msgstr ""
 "ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL. Zie de GNU "
 "Algemene Publieke Licentie voor meer details."
 
-#: src/protokolo/cli.py:53
+#: src/protokolo/cli.py:64
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program. If not, see <https://www.gnu.org/licenses/>."
@@ -73,15 +73,15 @@ msgstr ""
 "samen met dit programma. Als dat niet het geval is, zie <http://www.gnu.org/"
 "licenses/>."
 
-#: src/protokolo/cli.py:58
+#: src/protokolo/cli.py:69
 msgid "Written by Carmen Bianca BAKKER."
 msgstr "Geschreven door Carmen Bianca BAKKER."
 
-#: src/protokolo/cli.py:61
+#: src/protokolo/cli.py:72
 msgid "Protokolo is a change log generator."
 msgstr "Protokolo is een changelog-generator."
 
-#: src/protokolo/cli.py:100
+#: src/protokolo/cli.py:111
 msgid ""
 "Aggregate all change log fragments into a change log file. The fragments are "
 "gathered from a change log directory, and subsequently deleted."
@@ -89,7 +89,7 @@ msgstr ""
 "Voeg alle changelogfragmenten samen in een changelogbestand. De fragmenten "
 "worden verzameld in een changelogmap en vervolgens verwijderd."
 
-#: src/protokolo/cli.py:106
+#: src/protokolo/cli.py:117
 msgid ""
 "A change log directory should contain a '.protokolo.toml' file that defines "
 "some attributes of the section. This is an example file:"
@@ -97,11 +97,11 @@ msgstr ""
 "Een changelogmap moet een '.protokolo.toml'-bestand bevatten dat sommige "
 "attributen van de sectie definieert. Dit is een voorbeeldbestand:"
 
-#: src/protokolo/cli.py:119
+#: src/protokolo/cli.py:130
 msgid "When the section is compiled, it looks a little like this:"
 msgstr "Wanneer de sectie gecompileerd is, ziet het er een beetje zo uit:"
 
-#: src/protokolo/cli.py:124
+#: src/protokolo/cli.py:135
 msgid ""
 "The heading is followed by the contents of files in the section's directory. "
 "If a section is empty (no change log fragments), it is not compiled."
@@ -110,7 +110,7 @@ msgstr ""
 "een sectie leeg is (geen changelogfragmenten), dan wordt die niet "
 "gecompileerd."
 
-#: src/protokolo/cli.py:137
+#: src/protokolo/cli.py:148
 msgid ""
 "For more documentation and options, read the documentation at <https://"
 "protokolo.readthedocs.io>."
@@ -118,49 +118,49 @@ msgstr ""
 "Voor meer documentatie en opties, lees de documentatie op <https://protokolo."
 "readthedocs.io>."
 
-#: src/protokolo/cli.py:147 src/protokolo/cli.py:155
+#: src/protokolo/cli.py:158 src/protokolo/cli.py:166
 msgid "determined by config"
 msgstr "bepaald door configuratie"
 
-#: src/protokolo/cli.py:150
+#: src/protokolo/cli.py:161
 msgid "File into which to compile."
 msgstr "Bestand waarnaar gecompileerd moet worden."
 
-#: src/protokolo/cli.py:164
+#: src/protokolo/cli.py:175
 msgid "Change log directory to compile."
 msgstr "Changelogmap om te compileren."
 
 #. TRANSLATORS: do not translate markdown.
-#: src/protokolo/cli.py:171 src/protokolo/cli.py:325
+#: src/protokolo/cli.py:182 src/protokolo/cli.py:336
 msgid "determined by config, or markdown"
 msgstr "bepaald door configuratie, of markdown"
 
 #. type: ignore
-#: src/protokolo/cli.py:173 src/protokolo/cli.py:327
+#: src/protokolo/cli.py:184 src/protokolo/cli.py:338
 msgid "Markup language."
 msgstr "Markup-taal."
 
 #. TRANSLATORS: string-format is a verb.
-#: src/protokolo/cli.py:183
+#: src/protokolo/cli.py:194
 msgid "Use key-value pairs to string-format section headings."
 msgstr "Gebruik sleutel/waarde-paren om sectiekoppen te string-formatteren."
 
 #. TRANSLATORS: do not translate STDOUT.
-#: src/protokolo/cli.py:190
+#: src/protokolo/cli.py:201
 msgid "Do not write to file system; print result to STDOUT."
 msgstr "Schrijf niet naar bestandssysteem; print resultaat naar STDOUT."
 
-#: src/protokolo/cli.py:223
+#: src/protokolo/cli.py:234
 msgid "There are no change log fragments to compile."
 msgstr "Er zijn geen changelogfragmenten om te compileren."
 
 #. TRANSLATORS: do not translate protokolo-section-tag.
-#: src/protokolo/cli.py:237
+#: src/protokolo/cli.py:248
 #, python-brace-format
 msgid "There is no 'protokolo-section-tag' in {path}."
 msgstr "Er is geen 'protokolo-section-tag' in {path}."
 
-#: src/protokolo/cli.py:258
+#: src/protokolo/cli.py:269
 msgid ""
 "Set up your project to be ready to use Protokolo. It creates a change log "
 "file, a change log directory with subsections that match the Keep a "
@@ -169,7 +169,7 @@ msgid ""
 "Protokolo commands. Assuming defaults, the end result looks like this:"
 msgstr ""
 
-#: src/protokolo/cli.py:290
+#: src/protokolo/cli.py:301
 msgid ""
 "Files that already exist are never overwritten, except the root .protokolo."
 "toml file, which is always (re-)generated."
@@ -178,20 +178,20 @@ msgstr ""
 "protokolo.toml-bestand, die altijd (opnieuw) gegenereerd wordt."
 
 #. TRANSLATORS: do not translate CHANGELOG.md.
-#: src/protokolo/cli.py:302
+#: src/protokolo/cli.py:313
 msgid "determined by config, or CHANGELOG.md"
 msgstr "bepaald door configuratie, of CHANGELOG.md"
 
-#: src/protokolo/cli.py:304
+#: src/protokolo/cli.py:315
 msgid "Change log file to create."
 msgstr "Changelogbestand om aan te maken."
 
 #. TRANSLATORS: do not translate changelog.d.
-#: src/protokolo/cli.py:311
+#: src/protokolo/cli.py:322
 msgid "determined by config, or changelog.d"
 msgstr "bepaald door configuratie, of changelog.d"
 
-#: src/protokolo/cli.py:318
+#: src/protokolo/cli.py:329
 msgid "Change log directory to create."
 msgstr "Changelogmap om aan te maken."
 

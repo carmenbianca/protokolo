@@ -4,6 +4,8 @@
 
 """Main entry of program."""
 
+import gettext
+import os
 import tomllib
 from inspect import cleandoc
 from io import TextIOWrapper
@@ -32,6 +34,15 @@ from .replace import find_first_occurrence, insert_into_str
 from .types import SupportedMarkup
 
 # pylint: disable=missing-function-docstring
+
+_PACKAGE_PATH = os.path.dirname(__file__)
+_LOCALE_DIR = os.path.join(_PACKAGE_PATH, "locale")
+if gettext.find("protokolo", localedir=_LOCALE_DIR):
+    gettext.bindtextdomain("protokolo", _LOCALE_DIR)
+    # This is needed to make Click recognise our translations. Our own
+    # translations use the class-based API.
+    gettext.textdomain("protokolo")
+
 
 _VERSION_TEXT = (
     _("%(prog)s, version %(version)s")

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-14 07:53+0000\n"
+"POT-Creation-Date: 2024-04-14 15:05+0000\n"
 "PO-Revision-Date: 2024-04-13 14:45+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
@@ -20,16 +20,16 @@ msgstr ""
 "X-Generator: Weblate 5.5-dev\n"
 
 #. TRANSLATORS: level refers to the depth of a heading.
-#: src/protokolo/_formatter.py:54
+#: src/protokolo/_formatter.py:53
 #, python-brace-format
 msgid "Level {level} must be positive."
 msgstr "Niveau {level} moet positief zijn."
 
-#: src/protokolo/_formatter.py:57
+#: src/protokolo/_formatter.py:56
 msgid "Title cannot be empty."
 msgstr "title kan niet leeg zijn."
 
-#: src/protokolo/_formatter.py:108
+#: src/protokolo/_formatter.py:107
 #, python-brace-format
 msgid "Heading level {level} is too deep."
 msgstr "Kopniveau {level} is te diep."

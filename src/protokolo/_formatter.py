@@ -34,7 +34,6 @@ class MarkupFormatter(ABC):
 
         Raises:
             HeadingFormatError: could not format the heading as given.
-
         """
         cls._validate(attrs)
         title = cls._format_output(attrs)

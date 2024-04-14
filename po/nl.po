@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-12 21:00+0200\n"
+"POT-Creation-Date: 2024-04-14 07:53+0000\n"
 "PO-Revision-Date: 2024-04-13 14:45+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Level {level} must be positive."
 msgstr "Niveau {level} moet positief zijn."
 
-#: src/protokolo/_formatter.py:56
+#: src/protokolo/_formatter.py:57
 msgid "Title cannot be empty."
 msgstr "title kan niet leeg zijn."
 
@@ -211,7 +211,7 @@ msgid "Failed to format section heading of {source}: {error}"
 msgstr "Gefaald om sectiekop van {source} te formatteren: {error}"
 
 #. TRANSLATORS: do not translate TOML, str, or IO[bytes]
-#: src/protokolo/config.py:49
+#: src/protokolo/config.py:50
 msgid "TOML must be a str or IO[bytes]"
 msgstr "TOML moet een str of IO[bytes] zijn"
 

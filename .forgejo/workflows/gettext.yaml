@@ -26,9 +26,11 @@ jobs:
       - name: Install wlc
         run: pip install wlc
       - name: Lock Weblate
-        run: wlc --key ${{ secrets.WEBLATE_KEY }} lock protokolo/protokolo
+        run: |
+          wlc --url https://hosted.weblate.org/api/ --key ${{secrets.WEBLATE_KEY }} lock protokolo/protokolo
       - name: Push changes from Weblate to upstream repository
-        run: wlc --key ${{ secrets.WEBLATE_KEY }} push protokolo/protokolo
+        run: |
+          wlc --url https://hosted.weblate.org/api/ --key ${{secrets.WEBLATE_KEY }} push protokolo/protokolo
       - name: Pull Weblate translations
         run: git pull origin main
       - name: Create .pot file
@@ -48,5 +50,5 @@ jobs:
           git add po/protokolo.pot po/*.po
           git commit -m "Update protokolo.pot"
           git push origin main
-          wlc --key ${{ secrets.WEBLATE_KEY }} pull protokolo/protokolo
-          wlc --key ${{ secrets.WEBLATE_KEY }} unlock protokolo/protokolo
+          wlc --url https://hosted.weblate.org/api/ --key ${{ secrets.WEBLATE_KEY }} pull protokolo/protokolo
+          wlc --url https://hosted.weblate.org/api/ --key ${{ secrets.WEBLATE_KEY }} unlock protokolo/protokolo

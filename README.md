@@ -74,9 +74,10 @@ in [changelogdir](https://pypi.org/project/changelogdir/).
 
 ## Install
 
-Protokolo is a regular Python package. You can install it using
-`pipx install protokolo`. Make sure that `~/.local/share/bin` is in your `$PATH`
-with `pipx ensurepath`.
+Protokolo is a regular Python package
+[hosted on PyPI](https://pypi.python.org/pypi/protokolo). You can install it
+using `pipx install protokolo`. Make sure that `~/.local/share/bin` is in your
+`$PATH` with `pipx ensurepath`.
 
 ## Usage
 

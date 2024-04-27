@@ -22,6 +22,13 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 2.1.3 - 2024-04-28
+
+### Fixed
+
+- Don't show change log in overview page in Sphinx. This bug was introduced in
+  v2.1.0.
+
 ## 2.1.2 - 2024-04-28
 
 ### Fixed

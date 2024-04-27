@@ -195,6 +195,7 @@ Fragments in the same section are sorted alphabetically by their file name. If
 you want to make sure that a fragment appears first or last, you can prefix the
 file name with something like `000_` or `zzz_` respectively.
 
+```{tip}
 Because of how the compilation works, you typically want to follow a few rules:
 
 - Do not start the fragment with a newline.
@@ -205,6 +206,7 @@ Because of how the compilation works, you typically want to follow a few rules:
 - If the fragment represents a paragraph:
   - Adjust its file name to make it appear exactly where you want it to appear.
   - End the fragment with two newlines.
+```
 
 ## Compilation
 

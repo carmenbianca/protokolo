@@ -2,6 +2,13 @@
 #
 # SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
 
+import os.path
+from pathlib import Path
+from shutil import copyfile
+
+DOCS_DIR = Path(os.path.dirname(__file__))
+ROOT_DIR = (DOCS_DIR / "..").resolve()
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -31,7 +38,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # -- Extensions configuration ------------------------------------------------
 
-apidoc_module_dir = "../src/protokolo"
+apidoc_module_dir = str(ROOT_DIR / "src/protokolo")
 # apidoc_output_dir = "api"
 # apidoc_excluded_paths = []
 apidoc_separate_modules = True
@@ -67,3 +74,15 @@ man_pages = [
         1,
     ),
 ]
+
+
+def copy_markdown(_):
+    """Copy the markdown files from the root of the project into the docs/
+    directory.
+    """
+    copyfile(ROOT_DIR / "CHANGELOG.md", DOCS_DIR / "readme.md")
+    copyfile(ROOT_DIR / "CHANGELOG.md", DOCS_DIR / "history.md")
+
+
+def setup(app):
+    app.connect("builder-inited", copy_markdown)

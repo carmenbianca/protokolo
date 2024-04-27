@@ -196,3 +196,5 @@ pyrightconfig.json
 
 docs/_build/
 docs/api/
+docs/readme.md
+docs/history.md

@@ -1,0 +1,1 @@
+- Documentation built from sdist now includes the change log and readme.

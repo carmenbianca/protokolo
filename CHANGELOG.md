@@ -22,6 +22,12 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 2.1.2 - 2024-04-28
+
+### Fixed
+
+- Fix error in change log.
+
 ## 2.1.1 - 2024-04-28
 
 ### Added

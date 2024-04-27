@@ -41,7 +41,7 @@ jobs:
         id: diff
         run:
           echo "changed=$(git diff -U0 | grep '^[+|-][^+|-]' | grep -Ev
-          '^[+-]"POT-Creation-Date' | wc -l)" >> $GITHUB_OUTPUT
+          '^[+-]("POT-Creation-Date|#:)' | wc -l)" >> $GITHUB_OUTPUT
       - name: Commit and push updated protokolo.pot
         if: ${{ steps.diff.outputs.changed != '0' }}
         run: |

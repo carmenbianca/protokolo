@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-14 20:35+0000\n"
-"PO-Revision-Date: 2024-04-13 14:45+0000\n"
+"PO-Revision-Date: 2024-04-27 22:10+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
 "protokolo/nl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.5.1\n"
 
 #. TRANSLATORS: level refers to the depth of a heading.
 #: src/protokolo/_formatter.py:53
@@ -168,6 +168,12 @@ msgid ""
 "(sub)sections, and a root .protokolo.toml file with defaults for subsequent "
 "Protokolo commands. Assuming defaults, the end result looks like this:"
 msgstr ""
+"Maak je project klaar voor gebruik van Protokolo. Het maakt een "
+"changelogbestaand, een changelogmap met subsecties volgens de Keep a "
+"Changelog-aanbevelingen, .protokolo.toml-bestanden met metadata voor deze "
+"(sub)secties, en een root .protokolo.toml-bestand met standaardwaardes voor "
+"subsequente Protokolo-commando's aan. Uitgaande van standaardinstellingen "
+"ziet het eindresultaat er als volgt uit:"
 
 #: src/protokolo/cli.py:301
 msgid ""
@@ -442,19 +448,19 @@ msgstr "Fout: De waarde die je invoerde was ongeldig."
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:176
 #, python-brace-format
 msgid "Error: {e.message}"
-msgstr ""
+msgstr "Foutmelding: {e.message}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:187
 msgid "Error: The two entered values do not match."
-msgstr ""
+msgstr "Foutmelding: De twee ingevoerde waardes zijn niet gelijk."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:243
 msgid "Error: invalid input"
-msgstr ""
+msgstr "Foutmelding: ongeldige invoer"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:773
 msgid "Press any key to continue..."
-msgstr ""
+msgstr "Druk op een willekeurige toets om verder te gaan..."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:266
 #, python-brace-format
@@ -462,76 +468,78 @@ msgid ""
 "Choose from:\n"
 "\t{choices}"
 msgstr ""
+"Kies uit:\n"
+"\t{choices}"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:298
 msgid "{value!r} is not {choice}."
 msgid_plural "{value!r} is not one of {choices}."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{value!r} is niet {choice}."
+msgstr[1] "{value!r} is niet een van {choices}."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:392
 msgid "{value!r} does not match the format {format}."
 msgid_plural "{value!r} does not match the formats {formats}."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{value!r} komt niet overeen met het formaat {format}."
+msgstr[1] "{value!r} komt niet overeen met de formaten {formats}."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:414
 msgid "{value!r} is not a valid {number_type}."
-msgstr ""
+msgstr "{value!r} is geen geldige {number_type}."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:470
 #, python-brace-format
 msgid "{value} is not in the range {range}."
-msgstr ""
+msgstr "{value} is niet in het bereik {range}."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:611
 msgid "{value!r} is not a valid boolean."
-msgstr ""
+msgstr "{value!r} is geen geldige boolean."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:635
 msgid "{value!r} is not a valid UUID."
-msgstr ""
+msgstr "{value!r} is geen geldige UUID."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:822
 msgid "file"
-msgstr ""
+msgstr "bestand"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:824
 msgid "directory"
-msgstr ""
+msgstr "map"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:826
 msgid "path"
-msgstr ""
+msgstr "pad"
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:877
 msgid "{name} {filename!r} does not exist."
-msgstr ""
+msgstr "{name} {filename!r} bestaat niet."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:886
 msgid "{name} {filename!r} is a file."
-msgstr ""
+msgstr "{name} {filename!r} is een bestand."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:894
 #, python-brace-format
 msgid "{name} '{filename}' is a directory."
-msgstr ""
+msgstr "{name} '{filename}' is een map."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:903
 msgid "{name} {filename!r} is not readable."
-msgstr ""
+msgstr "{name} {filename!r} is niet leesbaar."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:912
 msgid "{name} {filename!r} is not writable."
-msgstr ""
+msgstr "{name} {filename!r} is niet schrijfbaar."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:921
 msgid "{name} {filename!r} is not executable."
-msgstr ""
+msgstr "{name} {filename!r} is niet uitvoerbaar."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:988
 #, python-brace-format
 msgid "{len_type} values are required, but {len_value} was given."
 msgid_plural "{len_type} values are required, but {len_value} were given."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{len_type} waardes zijn benodigd, maar {len_value} was gegeven."
+msgstr[1] "{len_type} waardes zijn benodigd, maar {len_value} waren gegeven."

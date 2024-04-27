@@ -22,6 +22,20 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 2.1.1 - 2024-04-28
+
+### Added
+
+- Implemented internationalisation via Weblate and Forgejo Actions.
+
+### Fixed
+
+- Documentation built from sdist now includes the change log and readme.
+
+## 2.1.0 - 2024-04-28 [YANKED]
+
+This release accidentally contained an older sdist.
+
 ## 2.0.1 - 2024-04-10
 
 ### Fixed

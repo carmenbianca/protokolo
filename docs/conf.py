@@ -80,7 +80,7 @@ def copy_markdown(_):
     """Copy the markdown files from the root of the project into the docs/
     directory.
     """
-    copyfile(ROOT_DIR / "CHANGELOG.md", DOCS_DIR / "readme.md")
+    copyfile(ROOT_DIR / "README.md", DOCS_DIR / "readme.md")
     copyfile(ROOT_DIR / "CHANGELOG.md", DOCS_DIR / "history.md")
 
 

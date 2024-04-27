@@ -22,7 +22,7 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
-## 2.1.1 - 2024-04-28 [YANKED]
+## 2.1.1 - 2024-04-28
 
 ### Added
 

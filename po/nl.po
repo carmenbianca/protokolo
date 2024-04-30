@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-30 17:29+0000\n"
-"PO-Revision-Date: 2024-04-27 22:10+0000\n"
+"PO-Revision-Date: 2024-04-30 17:37+0000\n"
 "Last-Translator: Carmen Bianca Bakker <carmen@carmenbianca.eu>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/protokolo/"
 "protokolo/nl/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.1\n"
+"X-Generator: Weblate 5.5.3-dev\n"
 
 #. TRANSLATORS: level refers to the depth of a heading.
 #: src/protokolo/_formatter.py:53
@@ -139,7 +139,6 @@ msgid "There is no 'protokolo-section-tag' in {path}."
 msgstr "Er is geen 'protokolo-section-tag' in {path}."
 
 #: src/protokolo/cli.py:242
-#, fuzzy
 msgid ""
 "Set up your project to be ready to use Protokolo. It creates a change log "
 "file, a change log directory with subsections that match the Keep a "
@@ -148,10 +147,8 @@ msgid ""
 msgstr ""
 "Maak je project klaar voor gebruik van Protokolo. Het maakt een "
 "changelogbestaand, een changelogmap met subsecties volgens de Keep a "
-"Changelog-aanbevelingen, .protokolo.toml-bestanden met metadata voor deze "
-"(sub)secties, en een root .protokolo.toml-bestand met standaardwaardes voor "
-"subsequente Protokolo-commando's aan. Uitgaande van standaardinstellingen "
-"ziet het eindresultaat er als volgt uit:"
+"Changelog-aanbevelingen, en een root .protokolo.toml-bestand met "
+"standaardwaardes voor subsequente Protokolo-commando's aan."
 
 #: src/protokolo/cli.py:249
 msgid ""

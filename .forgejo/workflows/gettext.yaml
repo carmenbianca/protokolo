@@ -17,14 +17,12 @@ jobs:
     container: nikolaik/python-nodejs:python3.11-nodejs21
     steps:
       - uses: actions/checkout@v3
-      - name: Install gettext
+      - name: Install gettext and wlc
         run: |
           apt-get update
-          apt-get install -y gettext
+          apt-get install -y gettext wlc
       - name: Install protokolo
         run: poetry install --no-interaction --only main
-      - name: Install wlc
-        run: pip install wlc
       - name: Lock Weblate
         run: |
           wlc --url https://hosted.weblate.org/api/ --key ${{secrets.WEBLATE_KEY }} lock protokolo/protokolo

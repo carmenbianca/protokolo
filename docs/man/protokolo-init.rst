@@ -9,7 +9,7 @@ protokolo-init
 Synopsis
 --------
 
-**protokolo init** [*--help*] [*options*]
+**protokolo init** [*options*]
 
 Description
 -----------

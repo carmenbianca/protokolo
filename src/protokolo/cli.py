@@ -2,12 +2,15 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-"""Main entry of program."""
+"""Main entry of program.
+
+The autodoc documentation of this module is broken, but there is nothing in this
+module that you can't learn from typing ``protokolo --help``.
+"""
 
 import gettext
 import os
 import tomllib
-from inspect import cleandoc
 from io import TextIOWrapper
 from pathlib import Path
 
@@ -69,7 +72,15 @@ _VERSION_TEXT = (
     + _("Written by Carmen Bianca BAKKER.")
 )
 
-_MAIN_HELP = _("Protokolo is a change log generator.")
+_MAIN_HELP = (
+    _("Protokolo is a change log generator.")
+    + "\n\n"
+    + _(
+        " Protokolo allows you to maintain your change log fragments in"
+        " separate files, and then finally aggregate them into a new section in"
+        " CHANGELOG just before release."
+    )
+)
 
 
 @click.group(name="protokolo", help=_MAIN_HELP)
@@ -106,48 +117,10 @@ def main(ctx: click.Context) -> None:
             }
 
 
-_COMPILE_HELP = (
-    _(
-        "Aggregate all change log fragments into a change log file. The"
-        " fragments are gathered from a change log directory, and subsequently"
-        " deleted."
-    )
-    + "\n\n"
-    + _(
-        "A change log directory should contain a '.protokolo.toml' file that"
-        " defines some attributes of the section. This is an example file:"
-    )
-    + "\n\n"
-    + cleandoc(
-        """
-        \b
-        [protokolo.section]
-        title = "${version} - ${date}"
-        level = 2
-        """
-    )
-    + "\n\n"
-    + _("When the section is compiled, it looks a little like this:")
-    + "\n\n"
-    + "## 1.0.0 - 2023-11-08"
-    + "\n\n"
-    + _(
-        "The heading is followed by the contents of files in the section's"
-        " directory. If a section is empty (no change log fragments), it is not"
-        " compiled."
-    )
-    + "\n\n"
-    + cleandoc(
-        """
-        \b
-        <!-- protokolo-section-tag -->
-        """
-    )
-    + "\n\n"
-    + _(
-        "For more documentation and options, read the documentation at"
-        " <https://protokolo.readthedocs.io>."
-    )
+_COMPILE_HELP = _(
+    "Aggregate all change log fragments into a change log file. The"
+    " fragments are gathered from a change log directory, and subsequently"
+    " deleted."
 )
 
 
@@ -268,33 +241,8 @@ _INIT_HELP = (
     _(
         "Set up your project to be ready to use Protokolo. It creates a change"
         " log file, a change log directory with subsections that match the Keep"
-        " a Changelog recommendations, .protokolo.toml files with metadata for"
-        " those (sub)sections, and a root .protokolo.toml file with defaults"
-        " for subsequent Protokolo commands. Assuming defaults, the end result"
-        " looks like this:"
-    )
-    + "\n\n"
-    + cleandoc(
-        """
-        \b
-        .
-        ├── changelog.d
-        │   ├── added
-        │   │   └── .protokolo.toml
-        │   ├── changed
-        │   │   └── .protokolo.toml
-        │   ├── deprecated
-        │   │   └── .protokolo.toml
-        │   ├── fixed
-        │   │   └── .protokolo.toml
-        │   ├── removed
-        │   │   └── .protokolo.toml
-        │   ├── security
-        │   │   └── .protokolo.toml
-        │   └── .protokolo.toml
-        ├── CHANGELOG.md
-        └── .protokolo.toml
-        """
+        " a Changelog recommendations, and a root .protokolo.toml file with"
+        " defaults for subsequent Protokolo commands."
     )
     + "\n\n"
     + _(

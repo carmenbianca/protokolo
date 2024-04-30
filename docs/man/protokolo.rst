@@ -9,7 +9,7 @@ protokolo
 Synopsis
 --------
 
-**protokolo** [*--help*] [*--version*] <command> [*options*] [*<args>*]
+**protokolo** [*options*] <command>
 
 Description
 -----------

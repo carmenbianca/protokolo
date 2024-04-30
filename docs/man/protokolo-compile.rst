@@ -9,15 +9,38 @@ protokolo-compile
 Synopsis
 --------
 
-**protokolo compile** [*--help*] [*options*]
+**protokolo compile** [*options*]
 
 Description
 -----------
 
 :program:`protokolo compile` aggregates the contents of a change log directory
-into a new section in a change log file. The new section is inserted after the
-first line in the change log containing the text ``protokolo-section-tag``.
-Afterwards, the fragment files in the change log directory are deleted.
+into a new section in a change log file. Afterwards, the fragment files in the
+change log directory are deleted.
+
+A change log directory should contain a '.protokolo.toml' file that defines some
+attributes of the section. This is an example file::
+
+    [protokolo.section]
+    title = "${version} - ${date}"
+    level = 2
+
+When the section is compiled, its heading may look like this::
+
+    ## 1.0.0 - 2023-11-08
+
+The heading is followed by the contents of files in the section's directory, and
+subsections in subdirectories. If a section is empty (no change log fragments),
+it is not compiled.
+
+The change log file should contain the following comment, which is the location
+in the file after which the compiled section will be pasted::
+
+    <!-- protokolo-section-tag -->
+
+For more documentation and options, read the documentation at
+<https://protokolo.readthedocs.io>.
+
 
 Options with defaults
 ---------------------

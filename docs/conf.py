@@ -18,7 +18,7 @@ ROOT_DIR = (DOCS_DIR / "..").resolve()
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Protokolo"
-copyright = "2023, Carmen Bianca BAKKER"
+copyright = "2023 Carmen Bianca BAKKER"
 author = "Carmen Bianca BAKKER"
 
 # -- General configuration ---------------------------------------------------

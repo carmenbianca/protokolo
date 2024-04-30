@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-14 20:35+0000\n"
+"POT-Creation-Date: 2024-04-30 17:29+0000\n"
 "PO-Revision-Date: 2024-04-23 13:07+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -34,13 +34,13 @@ msgstr ""
 msgid "Heading level {level} is too deep."
 msgstr ""
 
-#: src/protokolo/cli.py:48
+#: src/protokolo/cli.py:51
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:465
 #, python-format
 msgid "%(prog)s, version %(version)s"
 msgstr ""
 
-#: src/protokolo/cli.py:51
+#: src/protokolo/cli.py:54
 msgid ""
 "This program is free software: you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -48,7 +48,7 @@ msgid ""
 "any later version."
 msgstr ""
 
-#: src/protokolo/cli.py:57
+#: src/protokolo/cli.py:60
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -56,150 +56,134 @@ msgid ""
 "more details."
 msgstr ""
 
-#: src/protokolo/cli.py:64
+#: src/protokolo/cli.py:67
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program. If not, see <https://www.gnu.org/licenses/>."
 msgstr ""
 
-#: src/protokolo/cli.py:69
+#: src/protokolo/cli.py:72
 msgid "Written by Carmen Bianca BAKKER."
 msgstr "Skrevet av Carmen Bianca BAKKER."
 
-#: src/protokolo/cli.py:72
+#: src/protokolo/cli.py:76
 msgid "Protokolo is a change log generator."
 msgstr ""
 
-#: src/protokolo/cli.py:111
+#: src/protokolo/cli.py:79
+msgid ""
+" Protokolo allows you to maintain your change log fragments in separate "
+"files, and then finally aggregate them into a new section in CHANGELOG just "
+"before release."
+msgstr ""
+
+#: src/protokolo/cli.py:121
 msgid ""
 "Aggregate all change log fragments into a change log file. The fragments are "
 "gathered from a change log directory, and subsequently deleted."
 msgstr ""
 
-#: src/protokolo/cli.py:117
-msgid ""
-"A change log directory should contain a '.protokolo.toml' file that defines "
-"some attributes of the section. This is an example file:"
-msgstr ""
-
-#: src/protokolo/cli.py:130
-msgid "When the section is compiled, it looks a little like this:"
-msgstr ""
-
-#: src/protokolo/cli.py:135
-msgid ""
-"The heading is followed by the contents of files in the section's directory. "
-"If a section is empty (no change log fragments), it is not compiled."
-msgstr ""
-
-#: src/protokolo/cli.py:148
-msgid ""
-"For more documentation and options, read the documentation at <https://"
-"protokolo.readthedocs.io>."
-msgstr ""
-
-#: src/protokolo/cli.py:158 src/protokolo/cli.py:166
+#: src/protokolo/cli.py:131 src/protokolo/cli.py:139
 msgid "determined by config"
 msgstr ""
 
-#: src/protokolo/cli.py:161
+#: src/protokolo/cli.py:134
 msgid "File into which to compile."
 msgstr ""
 
-#: src/protokolo/cli.py:175
+#: src/protokolo/cli.py:148
 msgid "Change log directory to compile."
 msgstr ""
 
 #. TRANSLATORS: do not translate markdown.
-#: src/protokolo/cli.py:182 src/protokolo/cli.py:336
+#: src/protokolo/cli.py:155 src/protokolo/cli.py:284
 msgid "determined by config, or markdown"
 msgstr ""
 
 #. type: ignore
-#: src/protokolo/cli.py:184 src/protokolo/cli.py:338
+#: src/protokolo/cli.py:157 src/protokolo/cli.py:286
 msgid "Markup language."
 msgstr ""
 
 #. TRANSLATORS: string-format is a verb.
-#: src/protokolo/cli.py:194
+#: src/protokolo/cli.py:167
 msgid "Use key-value pairs to string-format section headings."
 msgstr ""
 
 #. TRANSLATORS: do not translate STDOUT.
-#: src/protokolo/cli.py:201
+#: src/protokolo/cli.py:174
 msgid "Do not write to file system; print result to STDOUT."
 msgstr ""
 
-#: src/protokolo/cli.py:234
+#: src/protokolo/cli.py:207
 msgid "There are no change log fragments to compile."
 msgstr ""
 
 #. TRANSLATORS: do not translate protokolo-section-tag.
-#: src/protokolo/cli.py:248
+#: src/protokolo/cli.py:221
 #, python-brace-format
 msgid "There is no 'protokolo-section-tag' in {path}."
 msgstr ""
 
-#: src/protokolo/cli.py:269
+#: src/protokolo/cli.py:242
 msgid ""
 "Set up your project to be ready to use Protokolo. It creates a change log "
 "file, a change log directory with subsections that match the Keep a "
-"Changelog recommendations, .protokolo.toml files with metadata for those "
-"(sub)sections, and a root .protokolo.toml file with defaults for subsequent "
-"Protokolo commands. Assuming defaults, the end result looks like this:"
+"Changelog recommendations, and a root .protokolo.toml file with defaults for "
+"subsequent Protokolo commands."
 msgstr ""
 
-#: src/protokolo/cli.py:301
+#: src/protokolo/cli.py:249
 msgid ""
 "Files that already exist are never overwritten, except the root .protokolo."
 "toml file, which is always (re-)generated."
 msgstr ""
 
 #. TRANSLATORS: do not translate CHANGELOG.md.
-#: src/protokolo/cli.py:313
+#: src/protokolo/cli.py:261
 msgid "determined by config, or CHANGELOG.md"
 msgstr ""
 
-#: src/protokolo/cli.py:315
+#: src/protokolo/cli.py:263
 msgid "Change log file to create."
 msgstr ""
 
 #. TRANSLATORS: do not translate changelog.d.
-#: src/protokolo/cli.py:322
+#: src/protokolo/cli.py:270
 msgid "determined by config, or changelog.d"
 msgstr ""
 
-#: src/protokolo/cli.py:329
+#: src/protokolo/cli.py:277
 msgid "Change log directory to create."
 msgstr ""
 
-#: src/protokolo/compile.py:128 src/protokolo/config.py:311
+#: src/protokolo/compile.py:132 src/protokolo/config.py:317
 #, python-brace-format
 msgid "Invalid TOML in {file_name}: {error}"
 msgstr ""
 
-#: src/protokolo/compile.py:136
+#: src/protokolo/compile.py:140
 #, python-brace-format
 msgid "Wrong value in {file_name}: {error}"
 msgstr ""
 
-#: src/protokolo/compile.py:216
+#: src/protokolo/compile.py:220
 #, python-brace-format
 msgid "Failed to format section heading of {source}: {error}"
 msgstr ""
 
 #. TRANSLATORS: do not translate TOML, str, or IO[bytes]
-#: src/protokolo/config.py:50
+#: src/protokolo/config.py:52
 msgid "TOML must be a str or IO[bytes]"
 msgstr ""
 
 #. TRANSLATORS: do not translate level.
-#: src/protokolo/config.py:218
+#: src/protokolo/config.py:224
 #, python-brace-format
 msgid "level must be a positive integer, got {level}"
 msgstr ""
 
-#: src/protokolo/config.py:226
+#: src/protokolo/config.py:232
 #, python-brace-format
 msgid "order must be None or a positive integer, got {order}"
 msgstr ""

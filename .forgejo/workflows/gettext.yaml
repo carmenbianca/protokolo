@@ -48,5 +48,7 @@ jobs:
           git add po/protokolo.pot po/*.po
           git commit -m "Update protokolo.pot"
           git push origin main
+      - name: Unlock Weblate
+        run: |
           wlc --url https://hosted.weblate.org/api/ --key ${{ secrets.WEBLATE_KEY }} pull protokolo/protokolo
           wlc --url https://hosted.weblate.org/api/ --key ${{ secrets.WEBLATE_KEY }} unlock protokolo/protokolo

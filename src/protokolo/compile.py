@@ -10,7 +10,7 @@ from io import StringIO
 from itertools import chain
 from operator import attrgetter
 from os import strerror
-from pathlib import Path
+from pathlib import Path, PurePath
 from typing import Iterator, Self, cast
 
 import attrs as attrs_
@@ -36,7 +36,9 @@ class Fragment:
     """A fragment, analogous to a file."""
 
     text: str
-    source: Path | None = attrs_.field(default=None, converter=optional(Path))
+    source: PurePath | None = attrs_.field(
+        default=None, converter=optional(PurePath)
+    )
 
     def compile(self) -> str:
         """Compile the fragment. For the time being, this just means adding a
@@ -53,7 +55,9 @@ class Section:
 
     attrs: SectionAttributes = attrs_.field(factory=SectionAttributes)
     markup: SupportedMarkup = "markdown"
-    source: Path | None = attrs_.field(default=None, converter=optional(Path))
+    source: PurePath | None = attrs_.field(
+        default=None, converter=optional(PurePath)
+    )
 
     fragments: set[Fragment] = attrs_.field(factory=set, init=False)
     subsections: set[Self] = attrs_.field(factory=set, init=False)
@@ -255,7 +259,8 @@ class Section:
             if fragment.source is not None
         }
         source_sorted = sorted(
-            with_source, key=lambda fragment: cast(Path, fragment.source).name
+            with_source,
+            key=lambda fragment: cast(PurePath, fragment.source).name,
         )
         alphabetical_sorted = sorted(
             self.fragments - with_source, key=attrgetter("text")

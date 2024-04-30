@@ -354,6 +354,6 @@ def _delete_fragments(section: Section) -> None:
     """Delete :class:`.compile.Fragment`s' source files recursively."""
     for fragment in section.fragments:
         if fragment.source:
-            fragment.source.unlink(missing_ok=True)
+            Path(fragment.source).unlink(missing_ok=True)
     for subsection in section.subsections:
         _delete_fragments(subsection)

@@ -22,6 +22,18 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 2.1.4 - 2024-04-30
+
+### Fixed
+
+- Changed the docs dependency for `sphinxcontrib-apidoc` from `^0.3.0` to
+  `>=0.3.0`.
+- Order of items in API documentation is now identical to how they are ordered
+  in the source code.
+- `protokolo compile --help` missed a paragraph. Instead of adding the
+  paragraph, a lot of `--help` text has been moved into the accompanying
+  manpages.
+
 ## 2.1.3 - 2024-04-28
 
 ### Fixed

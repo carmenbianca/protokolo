@@ -76,7 +76,7 @@ _MAIN_HELP = (
     _("Protokolo is a change log generator.")
     + "\n\n"
     + _(
-        " Protokolo allows you to maintain your change log fragments in"
+        "Protokolo allows you to maintain your change log fragments in"
         " separate files, and then finally aggregate them into a new section in"
         " CHANGELOG just before release."
     )

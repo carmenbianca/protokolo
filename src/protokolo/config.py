@@ -27,7 +27,9 @@ def parse_toml(
     toml: str | IO[bytes],
     section: Sequence[str] | None = None,
 ) -> dict[str, Any]:
-    """
+    """Parse a string representing a TOML file, and return a dictionary
+    representing the defined section.
+
     Args:
         toml: A TOML string or binary file object.
         sections: A list of nested sections, for example
@@ -58,7 +60,10 @@ def parse_toml(
 
 @attrs.define
 class TOMLConfig:
-    """A utility class to hold data parsed from a TOML file."""
+    """A utility class to hold data parsed from a TOML file.
+
+    Immediately after object instantiation, :meth:`validate` is called.
+    """
 
     _values: dict[str, TOMLValue] = attrs.field(factory=dict)
     source: str | None = attrs.field(converter=str, default=None)
@@ -111,7 +116,8 @@ class TOMLConfig:
 
         Raises:
             DictTypeError: value isn't an expected/supported type.
-            DictTypeListError: if a list contains elements other than a dict.
+            DictTypeListError: if a list contains elements that aren't
+                supported.
         """
         self._validate(cast(dict[str, Any], self._values))
 

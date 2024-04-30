@@ -42,6 +42,9 @@ apidoc_module_dir = str(ROOT_DIR / "src/protokolo")
 # apidoc_output_dir = "api"
 # apidoc_excluded_paths = []
 apidoc_separate_modules = True
+apidoc_toc_file = False
+
+autodoc_member_order = "bysource"
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 

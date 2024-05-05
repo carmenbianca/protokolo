@@ -171,7 +171,7 @@ time.
 The code and issue tracker is hosted at
 <https://codeberg.org/carmenbianca/protokolo>. You are welcome to open any
 issues. For pull requests, bug fixes are always welcome, but new features should
-probably be discussed in any issue first.
+probably be discussed in an issue first.
 
 Translations are done at
 <https://hosted.weblate.org/projects/protokolo/protokolo/> using Weblate. If

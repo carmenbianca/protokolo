@@ -39,7 +39,7 @@ in the file after which the compiled section will be pasted::
     <!-- protokolo-section-tag -->
 
 For more documentation and options, read the documentation at
-<https://protokolo.readthedocs.io>.
+`<https://protokolo.readthedocs.io>`_.
 
 
 Options with defaults

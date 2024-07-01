@@ -41,9 +41,10 @@ include = [
 protokolo = 'protokolo.cli:main'
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 click = ">=8.0"
 attrs = ">=22.1.0"
+tomlkit = { version = ">=0.8", python = "<3.11" }
 
 [tool.poetry.group.test.dependencies]
 pytest = ">=6.0.0"

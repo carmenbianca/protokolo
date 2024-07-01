@@ -4,7 +4,16 @@
 
 """The global configuration of Protokolo."""
 
-import tomllib
+try:
+    from tomllib import TOMLDecodeError
+    from tomllib import load as toml_load
+    from tomllib import loads as toml_loads
+except ImportError:
+    from tomlkit import loads as toml_loads  # type: ignore[no-redef]
+    from tomlkit import load as toml_load  # type: ignore[no-redef]
+    from tomlkit import ParseError as TOMLDecodeError  # type: ignore[no-redef]
+
+
 from collections.abc import Sequence
 from copy import deepcopy
 from pathlib import Path
@@ -38,14 +47,14 @@ def parse_toml(
 
     Raises:
         TypeError: *toml* is not a valid type.
-        tomllib.TOMLDecodeError: not valid TOML.
+        TOMLDecodeError: not valid TOML.
     """
     if isinstance(toml, str):
-        values = tomllib.loads(toml)
+        values = toml_loads(toml)
     else:
         try:
-            values = tomllib.load(toml)
-        except tomllib.TOMLDecodeError:
+            values = toml_load(toml)
+        except TOMLDecodeError:
             raise
         except Exception as error:
             # TRANSLATORS: do not translate TOML, str, or IO[bytes]
@@ -303,7 +312,7 @@ class GlobalConfig(TOMLConfig):
 
         Raises:
             OSError: if the file could not be opened.
-            tomllib.TOMLDecodeError: if the file could not be decoded.
+            TOMLDecodeError: if the file could not be decoded.
             DictTypeError: value isn't an expected/supported type.
             DictTypeListError: if a list contains elements other than a dict.
         """
@@ -312,8 +321,8 @@ class GlobalConfig(TOMLConfig):
         with path.open("rb") as fp:
             try:
                 values = parse_toml(fp, section=section)
-            except tomllib.TOMLDecodeError as error:
-                raise tomllib.TOMLDecodeError(
+            except TOMLDecodeError as error:
+                raise TOMLDecodeError(
                     _("Invalid TOML in {file_name}: {error}").format(
                         file_name=repr(fp.name), error=error
                     )

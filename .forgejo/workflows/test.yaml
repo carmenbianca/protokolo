@@ -38,7 +38,7 @@ jobs:
       - name: Run mypy
         run: poetry run mypy
 
-  black-prettier-isort:
+  black-prettier-isort-reuse:
     runs-on: docker
     container: nikolaik/python-nodejs:python3.11-nodejs21
     steps:
@@ -53,13 +53,5 @@ jobs:
         run: npx prettier --check .
       - name: Run isort
         run: poetry run isort --check src/ tests/
-
-  reuse:
-    runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs21
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: pip install reuse==3.0.1
       - name: Run reuse
         run: reuse lint

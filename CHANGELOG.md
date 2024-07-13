@@ -26,7 +26,7 @@ for the `protokolo` Python library.
 
 ### Changed
 
-- Fragments are now sorted by file name stem instead of file name. (#45)
+- Fragments are now sorted by file name stem instead of file name.
 
 ## 2.1.4 - 2024-04-30
 

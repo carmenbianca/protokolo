@@ -54,4 +54,4 @@ jobs:
       - name: Run isort
         run: poetry run isort --check src/ tests/
       - name: Run reuse
-        run: reuse lint
+        run: poetry run reuse lint

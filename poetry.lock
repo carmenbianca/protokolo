@@ -1069,6 +1069,26 @@ tomli = ">=1.1.0"
 test = ["coverage", "pytest", "pytest-cov", "tox"]
 
 [[package]]
+name = "pylsp-rope"
+version = "0.1.16"
+description = "Extended refactoring capabilities for Python LSP Server using Rope."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pylsp-rope-0.1.16.tar.gz", hash = "sha256:d680b688c60a40257a8842ec808a6e0de1596a47a5300f22aecfdc69555020a7"},
+    {file = "pylsp_rope-0.1.16-py3-none-any.whl", hash = "sha256:a3d6aff3dd8da8c1ceaab92abfb03b146a710de7742a8a7b80e2d14965c0a285"},
+]
+
+[package.dependencies]
+python-lsp-server = "*"
+rope = ">=0.21.0"
+
+[package.extras]
+dev = ["build", "pytest", "twine"]
+test = ["flake8", "pytest", "pytest-cov"]
+
+[[package]]
 name = "pytest"
 version = "8.2.2"
 description = "pytest: simple powerful testing with Python"
@@ -1209,6 +1229,28 @@ websockets = ["websockets (>=10.3)"]
 yapf = ["whatthepatch (>=1.0.2,<2.0.0)", "yapf (>=0.33.0)"]
 
 [[package]]
+name = "pytoolconfig"
+version = "1.3.1"
+description = "Python tool configuration"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytoolconfig-1.3.1-py3-none-any.whl", hash = "sha256:5d8cea8ae1996938ec3eaf44567bbc5ef1bc900742190c439a44a704d6e1b62b"},
+    {file = "pytoolconfig-1.3.1.tar.gz", hash = "sha256:51e6bd1a6f108238ae6aab6a65e5eed5e75d456be1c2bf29b04e5c1e7d7adbae"},
+]
+
+[package.dependencies]
+packaging = ">=23.2"
+platformdirs = {version = ">=3.11.0", optional = true, markers = "extra == \"global\""}
+
+[package.extras]
+doc = ["sphinx (>=7.1.2)", "tabulate (>=0.9.0)"]
+gendocs = ["pytoolconfig[doc]", "sphinx (>=7.1.2)", "sphinx-autodoc-typehints (>=1.25.2)", "sphinx-rtd-theme (>=2.0.0)"]
+global = ["platformdirs (>=3.11.0)"]
+validation = ["pydantic (>=2.5.3)"]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.1"
 description = "YAML parser and emitter for Python"
@@ -1310,6 +1352,26 @@ Jinja2 = ">=3.0.0"
 license-expression = ">=1.0"
 python-debian = ">=0.1.34,<0.1.45 || >0.1.45,<0.1.46 || >0.1.46,<0.1.47 || >0.1.47"
 tomlkit = ">=0.8"
+
+[[package]]
+name = "rope"
+version = "1.13.0"
+description = "a python refactoring library..."
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "rope-1.13.0-py3-none-any.whl", hash = "sha256:b435a0c0971244fdcd8741676a9fae697ae614c20cc36003678a7782f25c0d6c"},
+    {file = "rope-1.13.0.tar.gz", hash = "sha256:51437d2decc8806cd5e9dd1fd9c1306a6d9075ecaf78d191af85fc1dfface880"},
+]
+
+[package.dependencies]
+pytoolconfig = {version = ">=1.2.2", extras = ["global"]}
+
+[package.extras]
+dev = ["build (>=0.7.0)", "pre-commit (>=2.20.0)", "pytest (>=7.0.1)", "pytest-cov (>=4.1.0)", "pytest-timeout (>=2.1.0)"]
+doc = ["pytoolconfig[doc]", "sphinx (>=4.5.0)", "sphinx-autodoc-typehints (>=1.18.1)", "sphinx-rtd-theme (>=1.0.0)"]
+release = ["pip-tools (>=6.12.1)", "toml (>=0.10.2)", "twine (>=4.0.2)"]
 
 [[package]]
 name = "six"
@@ -1694,4 +1756,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4b446ef931ce0197cbb5b1bb5d1962223a689dedd835b7468eb5a4908c7e3d72"
+content-hash = "23255b1c7831ff6dea044bc138860f1c9b7bdf926bfc2fc80a8e40441c912bcf"

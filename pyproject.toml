@@ -76,6 +76,7 @@ python-lsp-server = "*"
 pylsp-mypy = "*"
 pyls-isort = "*"
 python-lsp-black = "*"
+pylsp-rope = "*"
 
 [tool.poetry.build]
 generate-setup-file = false

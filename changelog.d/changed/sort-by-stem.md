@@ -1,0 +1,1 @@
+- Fragments are now sorted by file name stem instead of file name. (#45)

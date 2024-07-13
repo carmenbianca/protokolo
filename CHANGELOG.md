@@ -22,6 +22,12 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 3.0.0 - 2024-07-13
+
+### Changed
+
+- Fragments are now sorted by file name stem instead of file name. (#45)
+
 ## 2.1.4 - 2024-04-30
 
 ### Fixed

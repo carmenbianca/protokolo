@@ -55,3 +55,16 @@ jobs:
         run: poetry run isort --check src/ tests/
       - name: Run reuse
         run: poetry run reuse lint
+
+  sphinx:
+    runs-on: docker
+    container: nikolaik/python-nodejs:python3.11-nodejs21
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          poetry install --no-interaction --only main,docs
+      - name: Run sphinx
+        run: |
+          poetry run make -C docs html
+          poetry run make -C docs man

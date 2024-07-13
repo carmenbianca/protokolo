@@ -198,3 +198,7 @@ docs/_build/
 docs/api/
 docs/readme.md
 docs/history.md
+
+node_modules/
+package-lock.json
+package.json

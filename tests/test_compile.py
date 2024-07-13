@@ -275,6 +275,22 @@ class TestSection:
         )
         assert section.compile() == expected
 
+    def test_compile_fragments_sorted_by_source_stem(self):
+        """foo-bar.md is sorted after foo.md."""
+        section = Section(attrs=SectionAttributes(title="Section"))
+        for item in ["foo-bar.md", "foo.md"]:
+            section.fragments.add(Fragment(item, source=item))
+
+        expected = cleandoc_nl(
+            """
+            # Section
+
+            foo.md
+            foo-bar.md
+            """
+        )
+        assert section.compile() == expected
+
     def test_compile_fragments_sorted_by_text(self):
         """Compiled fragments are sorted alphabetically by their text if they
         have no source.

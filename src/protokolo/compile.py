@@ -260,7 +260,7 @@ class Section:
         }
         source_sorted = sorted(
             with_source,
-            key=lambda fragment: cast(PurePath, fragment.source).name,
+            key=lambda fragment: cast(PurePath, fragment.source).stem,
         )
         alphabetical_sorted = sorted(
             self.fragments - with_source, key=attrgetter("text")

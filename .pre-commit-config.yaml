@@ -33,7 +33,7 @@ repos:
       - id: prettier
         name: prettier
   - repo: https://github.com/fsfe/reuse-tool
-    rev: v3.0.1
+    rev: v4.0.3
     hooks:
       - id: reuse
   - repo: local

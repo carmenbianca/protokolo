@@ -48,16 +48,16 @@ attrs = ">=22.1.0"
 [tool.poetry.group.test.dependencies]
 pytest = ">=6.0.0"
 pytest-cov = ">=2.10.0"
-freezegun = "^1.0"
+freezegun = ">=1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = ">=20"
-isort = "^5.0.0"
-pre-commit = "^2.9.0"
+isort = ">=5.0.0"
+pre-commit = ">=2.9.0"
 bumpver = ">=2023.1129"
-pylint = "^3.0"
-mypy = "^1.0"
-reuse = "^3.0"
+pylint = ">=3.0"
+mypy = ">=1.0"
+reuse = ">=3.0"
 
 [tool.poetry.group.docs]
 optional = true
@@ -65,7 +65,7 @@ optional = true
 [tool.poetry.group.docs.dependencies]
 Sphinx = ">=7.0.0"
 sphinxcontrib-apidoc = ">=0.3.0"
-myst-parser = "^2.0.0"
+myst-parser = ">=2.0.0"
 furo = ">=2023.3.27"
 
 [tool.poetry.group.lsp]

@@ -191,9 +191,10 @@ In fragment files, you can write any valid (or invalid) markup. If the fragment
 does not end with a newline character, one is implicitly added during
 compilation.
 
-Fragments in the same section are sorted alphabetically by their file name. If
-you want to make sure that a fragment appears first or last, you can prefix the
-file name with something like `000_` or `zzz_` respectively.
+Fragments in the same section are sorted alphabetically by their file name stem
+(i.e. the final file extension is removed). If you want to make sure that a
+fragment appears first or last, you can prefix the file name with something like
+`000_` or `zzz_` respectively.
 
 ```{tip}
 Because of how the compilation works, you typically want to follow a few rules:

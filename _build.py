@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 #
-# SPDX-FileCopyrightText: 2017 Free Software Foundation Europe e.V. <https://fsfe.org>
 # SPDX-FileCopyrightText: 2022 Carmen Bianca Bakker <carmenbianca@fsfe.org>
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2+
 
 """Script called by poetry. The API used by poetry is unstable, but let's hope
 this stays functional.

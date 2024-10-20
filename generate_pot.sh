@@ -2,7 +2,7 @@
 #
 # SPDX-FileCopyrightText: 2024 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2+
 
 # Set VIRTUAL_ENV if one does not exist.
 if [ -z "${VIRTUAL_ENV}" ]; then

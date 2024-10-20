@@ -1,7 +1,7 @@
 ..
   SPDX-FileCopyrightText: 2024 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 
-  SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
+  SPDX-License-Identifier: CC-BY-SA-4.0 OR EUPL-1.2+
 
 protokolo-init
 ==============

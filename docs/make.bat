@@ -1,6 +1,6 @@
 REM SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 REM
-REM SPDX-License-Identifier: GPL-3.0-or-later
+REM SPDX-License-Identifier: EUPL-1.2+
 
 @ECHO OFF
 

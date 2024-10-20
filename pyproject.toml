@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2+
 
 [tool.poetry]
 name = "protokolo"
@@ -12,7 +12,7 @@ authors = [
 maintainers = [
     "Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
 ]
-license = "GPL-3.0-or-later"
+license = "EUPL-1.2+"
 readme = "README.md"
 homepage = "https://codeberg.org/carmenbianca/protokolo"
 repository = "https://codeberg.org/carmenbianca/protokolo"

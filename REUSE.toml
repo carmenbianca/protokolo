@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2+
 
 version = 1
 
@@ -8,10 +8,10 @@ version = 1
 path = "changelog.d/**.md"
 precedence = "override"
 SPDX-FileCopyrightText = "Protokolo contributors"
-SPDX-License-Identifier = "CC-BY-SA-4.0 OR GPL-3.0-or-later"
+SPDX-License-Identifier = "CC-BY-SA-4.0 OR EUPL-1.2+"
 
 [[annotations]]
 path = ["po/protokolo.pot", "po/**.po"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "Protokolo contributors"
-SPDX-License-Identifier = "GPL-3.0-or-later"
+SPDX-License-Identifier = "EUPL-1.2+"

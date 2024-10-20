@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2+
 
 """Fixtures and stuff."""
 
@@ -15,6 +15,7 @@ from protokolo._util import cleandoc_nl
 # pylint: disable=unused-argument
 
 os.environ["LC_ALL"] = "C"
+os.environ["LANGUAGE"] = ""
 
 
 @pytest.fixture()

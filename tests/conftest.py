@@ -15,6 +15,7 @@ from protokolo._util import cleandoc_nl
 # pylint: disable=unused-argument
 
 os.environ["LC_ALL"] = "C"
+os.environ["LANGUAGE"] = ""
 
 
 @pytest.fixture()

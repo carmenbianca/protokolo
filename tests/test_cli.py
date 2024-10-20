@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2+
 
 """Test the formatting code."""
 
@@ -46,8 +46,12 @@ class TestMain:
         assert result.output.startswith(
             f"protokolo, version {protokolo.__version__}\n"
         )
-        assert "This program is free software:" in result.output
-        assert "GNU General Public License" in result.output
+        assert "This program is free software" in result.output.replace(
+            "\n", " "
+        )
+        assert "European Union Public Licence" in result.output.replace(
+            "\n", " "
+        )
         assert result.output.endswith("Written by Carmen Bianca BAKKER.\n")
 
 

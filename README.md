@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 
-SPDX-License-Identifier: CC-BY-SA-4.0 OR GPL-3.0-or-later
+SPDX-License-Identifier: CC-BY-SA-4.0 OR EUPL-1.2+
 -->
 
 # Protokolo
@@ -179,11 +179,11 @@ there are issues with translation, feel free to open an issue at Codeberg.
 
 ## Licensing
 
-All code is licensed under GPL-3.0-or-later.
+All code is licensed under EUPL-1.2+.
 
-All documentation is licensed under CC-BY-SA-4.0 OR GPL-3.0-or-later.
+All documentation is licensed under CC-BY-SA-4.0 OR EUPL-1.2+.
 
-Some configuration files are licensed under CC0-1.0 OR GPL-3.0-or-later.
+Some configuration files are licensed under CC0-1.0 OR EUPL-1.2+.
 
 The repository is [REUSE](https://reuse.software)-compliant. Check the
 individual files for their exact licensing.

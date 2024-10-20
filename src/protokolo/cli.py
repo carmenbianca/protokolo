@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2+
 
 """Main entry of program.
 
@@ -51,22 +51,8 @@ _VERSION_TEXT = (
     _("%(prog)s, version %(version)s")
     + "\n\n"
     + _(
-        "This program is free software: you can redistribute it and/or modify"
-        " it under the terms of the GNU General Public License as published by"
-        " the Free Software Foundation, either version 3 of the License, or"
-        " (at your option) any later version."
-    )
-    + _(
-        "This program is distributed in the hope that it will be useful,"
-        " but WITHOUT ANY WARRANTY; without even the implied warranty of"
-        " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the"
-        " GNU General Public License for more details."
-    )
-    + "\n\n"
-    + _(
-        "You should have received a copy of the GNU General Public License"
-        " along with this program. If not, see"
-        " <https://www.gnu.org/licenses/>."
+        "This program is free software licensed under the European Union Public"
+        " Licence, version 1.2 or later."
     )
     + "\n\n"
     + _("Written by Carmen Bianca BAKKER.")

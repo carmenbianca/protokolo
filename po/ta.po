@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-21 08:35+0000\n"
-"PO-Revision-Date: 2025-01-29 02:02+0000\n"
+"PO-Revision-Date: 2025-06-16 06:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/protokolo/"
 "protokolo/ta/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #. TRANSLATORS: level refers to the depth of a heading.
 #: src/protokolo/_formatter.py:53
@@ -113,9 +113,9 @@ msgstr "தொகுக்க எந்த மாற்ற பதிவு த�
 
 #. TRANSLATORS: do not translate protokolo-section-tag.
 #: src/protokolo/cli.py:207
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There is no 'protokolo-section-tag' in {path}."
-msgstr "{பாதையில் 'புரோட்டோகோலோ-பிரிவு-டேக்' இல்லை."
+msgstr "{path}இல் 'புரோட்டோகோலோ-பிரிவு-டேக்' இல்லை."
 
 #: src/protokolo/cli.py:228
 msgid ""
@@ -444,9 +444,9 @@ msgid "{value!r} is not a valid {number_type}."
 msgstr "{மதிப்பு! r} என்பது செல்லுபடியாகும் {number_type}."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:470
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{value} is not in the range {range}."
-msgstr "{மதிப்பு {வரம்பில் இல்லை {வரம்பில் இல்லை."
+msgstr "{value} வரம்பில் {range} இல்லை."
 
 #: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:611
 msgid "{value!r} is not a valid boolean."

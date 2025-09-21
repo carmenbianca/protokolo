@@ -125,7 +125,6 @@ class TOMLConfig:
         for name, value in values.items():
             # Use typed annotations to expect a very specific type. If not,
             # allow any valid TOML type.
-            # pylint: disable=no-member
             expected_type = self.__annotations__.get(f"_{name}", TOMLValueType)
             self._validate_item(value, name, expected_type=expected_type)
             if isinstance(value, dict):
@@ -282,7 +281,7 @@ class GlobalConfig(TOMLConfig):
         default=None, repr=False, eq=False, order=False
     )
 
-    _FILE_SECTION = {
+    _FILE_SECTION = {  # pylint: disable=invalid-name
         ".protokolo.toml": ["protokolo"],
         "pyproject.toml": ["tool", "protokolo"],
     }

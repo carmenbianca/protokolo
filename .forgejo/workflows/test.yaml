@@ -15,8 +15,8 @@ jobs:
         # Test both oldest and latest Python.
         container:
           [
-            "nikolaik/python-nodejs:python3.11-nodejs21",
-            "nikolaik/python-nodejs:python3.12-nodejs21",
+            "nikolaik/python-nodejs:python3.11-nodejs24",
+            "nikolaik/python-nodejs:python3.13-nodejs24",
           ]
     container: ${{ matrix.container }}
     steps:
@@ -28,7 +28,7 @@ jobs:
 
   pylint-mypy:
     runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs21
+    container: nikolaik/python-nodejs:python3.11-nodejs24
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
 
   black-prettier-isort-reuse:
     runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs21
+    container: nikolaik/python-nodejs:python3.11-nodejs24
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -58,7 +58,7 @@ jobs:
 
   sphinx:
     runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs21
+    container: nikolaik/python-nodejs:python3.11-nodejs24
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies

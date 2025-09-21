@@ -37,7 +37,8 @@ class TestMain:
         without_help = runner.invoke(main, [])
         with_help = runner.invoke(main, ["--help"])
         assert without_help.output == with_help.output
-        assert without_help.exit_code == with_help.exit_code == 0
+        assert without_help.exit_code == 2
+        assert with_help.exit_code == 0
         assert with_help.output.startswith("Usage: protokolo")
 
     def test_version(self, runner):
@@ -447,7 +448,7 @@ class TestCompile:
         assert result.exit_code != 0
         assert (
             "No such file or directory: 'changelog.d/.protokolo.toml'"
-            in result.stdout
+            in result.output
         )
 
     def test_files_in_ignored_subdirs_not_deleted(self, runner):

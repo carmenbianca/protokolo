@@ -4,11 +4,11 @@
 
 repos:
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.4.2
+    rev: 25.9.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.1
     hooks:
       - id: isort
         name: isort (python)
@@ -20,7 +20,7 @@ repos:
         name: isort (pyi)
         types: [pyi]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.1
+    rev: v1.18.2
     hooks:
       - id: mypy
         # This is a bit annoying. There are probably more dependencies that need
@@ -33,7 +33,7 @@ repos:
       - id: prettier
         name: prettier
   - repo: https://github.com/fsfe/reuse-tool
-    rev: v4.0.3
+    rev: v5.1.1
     hooks:
       - id: reuse
   - repo: local

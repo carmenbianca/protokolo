@@ -121,8 +121,8 @@ addopts = "--doctest-modules"
 
 [tool.mypy]
 files = [
-    "src/protokolo/**.py",
-    "tests/**.py",
+    "src/protokolo/**/*.py",
+    "tests/**/*.py",
 ]
 check_untyped_defs = true
 

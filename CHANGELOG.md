@@ -22,6 +22,17 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 3.0.2 - 2025-09-21
+
+### Changed
+
+- Relicensed from `GPL-3.0-or-later` to `EUPL-1.2+`.
+
+### Fixed
+
+- Removed version upper bound of Python requirement. That is, Protokolo no
+  longer requires `>=3.11,<4`, and instead only requires `>=3.11`.
+
 ## 3.0.0 - 2024-07-13
 
 ### Changed

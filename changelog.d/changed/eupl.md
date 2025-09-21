@@ -1,1 +1,0 @@
-- Relicensed from `GPL-3.0-or-later` to `EUPL-1.2+`.

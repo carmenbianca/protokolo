@@ -20,8 +20,9 @@ Table of contents
    :maxdepth: 2
 
    Overview<readme>
-   reference
-   man/index
+   man/protokolo
+   man/protokolo-compile
+   man/protokolo-init
 
 API reference
 -------------

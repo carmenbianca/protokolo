@@ -1,1 +1,0 @@
-- Moved all documentation (except README) into the program's manpages.

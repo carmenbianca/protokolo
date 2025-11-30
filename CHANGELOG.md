@@ -22,6 +22,12 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 3.1.0 - 2025-11-30
+
+### Changed
+
+- Moved all documentation (except README) into the program's manpages.
+
 ## 3.0.2 - 2025-09-21
 
 ### Changed

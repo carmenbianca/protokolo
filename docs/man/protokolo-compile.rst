@@ -18,8 +18,11 @@ Description
 into a new section in a change log file. Afterwards, the fragment files in the
 change log directory are deleted.
 
-A change log directory should contain a '.protokolo.toml' file that defines some
-attributes of the section. This is an example file::
+The fragments are sorted alphabetically by file name stem, and section sorting
+is described in :manpage:`protokolo(1)`.
+
+A change log directory should contain a ``.protokolo.toml`` file that defines
+some attributes of the section. This is an example file::
 
     [protokolo.section]
     title = "${version} - ${date}"
@@ -33,14 +36,43 @@ The heading is followed by the contents of files in the section's directory, and
 subsections in subdirectories. If a section is empty (no change log fragments),
 it is not compiled.
 
-The change log file should contain the following comment, which is the location
-in the file after which the compiled section will be pasted::
+The section is inserted into the change log after the line containing the first
+instance of ``protokolo-section-tag``. You typically want to comment that out.
+The insertion always inserts two newlines at the start, effectively placing your
+section two lines below ``protokolo-section-tag``. An example change log file is
+as follows::
+
+    # Change log
+
+    Some text describing your change log.
 
     <!-- protokolo-section-tag -->
 
-For more documentation and options, read the documentation at
-`<https://protokolo.readthedocs.io>`_.
+    ## 0.1.0 - 2023-10-25
 
+    The latest release.
+
+The compilation of the change log directory makes sure that after each section,
+there are at least two newlines before the next section heading or fragment.
+Before each subsection there are also at least two newlines after the preceding
+section heading or fragment. These newlines can overlap, and are indicated below
+using ``←``. Newlines that belong to fragments are indicated using ``↵``.
+
+::
+
+    # Top section←
+    ←
+    ## Subsection 1←
+    ←
+    - A fragment.↵
+    - Another fragment.↵
+    ←
+    ## Subsection 2←
+    ←
+    - Last fragment.↵
+
+Fragments are inserted as-is without any modification, except a newline is
+appended at the end of a fragment if one was not present in the file.
 
 Options with defaults
 ---------------------

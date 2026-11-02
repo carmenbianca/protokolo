@@ -133,3 +133,8 @@ check_untyped_defs = true
 module = "protokolo.*"
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
+
+# annotationlib doesn't exist <3.14.
+[[tool.mypy.overrides]]
+module = "annotationlib"
+ignore_missing_imports = true

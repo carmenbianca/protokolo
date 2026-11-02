@@ -2,7 +2,9 @@
 #
 # SPDX-License-Identifier: EUPL-1.2+
 
-"""Helper functions for supporting multiple versions of Python simultaneously."""
+"""Helper functions for supporting multiple versions of Python
+simultaneously.
+"""
 
 import sys
 from typing import Any

@@ -37,8 +37,7 @@ class TestSection:
         section.fragments.add(Fragment("- hello"))
         section.subsections.add(subsection)
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             - hello
@@ -46,8 +45,7 @@ class TestSection:
             ## Subsection
 
             - world
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_multiple_fragments(self):
@@ -67,8 +65,7 @@ class TestSection:
         section.fragments.add(Fragment("- D", source="d"))
         section.fragments.add(Fragment("\n- E", source="e"))
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             - A
@@ -78,8 +75,7 @@ class TestSection:
             - D
 
             - E
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_empty(self):
@@ -113,15 +109,13 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             ## Subsection Foo
 
             Foo
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_order_specified(self):
@@ -138,8 +132,7 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             ## Subsection Foo
@@ -149,8 +142,7 @@ class TestSection:
             ## Subsection Bar
 
             Bar
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_order_alphabetic(self):
@@ -167,8 +159,7 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             ## Subsection Bar
@@ -178,8 +169,7 @@ class TestSection:
             ## Subsection Foo
 
             Foo
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_order_mixed(self):
@@ -206,8 +196,7 @@ class TestSection:
         section.subsections.update(
             {subsection_1, subsection_2, subsection_3, subsection_4}
         )
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             ## Subsection Foo
@@ -225,8 +214,7 @@ class TestSection:
             ## Subsection Quz
 
             Quz
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_order_same_order(self):
@@ -243,8 +231,7 @@ class TestSection:
         section.subsections.add(subsection_1)
         section.subsections.add(subsection_2)
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             ## Subsection Bar
@@ -254,8 +241,7 @@ class TestSection:
             ## Subsection Foo
 
             Foo
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_fragments_sorted_by_source(self):
@@ -281,14 +267,12 @@ class TestSection:
         for item in ["foo-bar.md", "foo.md"]:
             section.fragments.add(Fragment(item, source=item))
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             foo.md
             foo-bar.md
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_compile_fragments_sorted_by_text(self):
@@ -311,14 +295,12 @@ class TestSection:
         section.fragments.add(Fragment("- Foo", source="foo.md"))
         section.fragments.add(Fragment("- Bar"))
 
-        expected = cleandoc_nl(
-            """
+        expected = cleandoc_nl("""
             # Section
 
             - Foo
             - Bar
-            """
-        )
+            """)
         assert section.compile() == expected
 
     def test_is_empty_simple(self):
@@ -359,11 +341,7 @@ class TestSection:
         )
         section = Section.from_directory(project_dir / "changelog.d")
         assert section.attrs.level == 2
-        assert (
-            # Strange pylint false positive here.
-            section.attrs.title  # pylint: disable=no-member
-            == "${version} - ${date}"
-        )
+        assert section.attrs.title == "${version} - ${date}"
         assert len(section.fragments) == 1
         announcement = next(iter(section.fragments))
         assert announcement.text == "Hello, world!"
@@ -410,14 +388,10 @@ class TestSection:
         """If there is a type inconsistency is found in the toml file, raise a
         DictTypeError.
         """
-        (project_dir / "changelog.d/.protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+        (project_dir / "changelog.d/.protokolo.toml").write_text(cleandoc_nl("""
                 [protokolo.section]
                 level = "foo"
-                """
-            )
-        )
+                """))
         with pytest.raises(DictTypeError) as exc_info:
             Section.from_directory(project_dir / "changelog.d")
         error = exc_info.value
@@ -427,14 +401,10 @@ class TestSection:
         """If a value in .protokolo.toml must be positive but isn't, raise
         AttributeNotPositiveError.
         """
-        (project_dir / "changelog.d/.protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+        (project_dir / "changelog.d/.protokolo.toml").write_text(cleandoc_nl("""
                 [protokolo.section]
                 level = 0
-                """
-            )
-        )
+                """))
         with pytest.raises(AttributeNotPositiveError) as exc_info:
             Section.from_directory(project_dir / "changelog.d")
         error = exc_info.value

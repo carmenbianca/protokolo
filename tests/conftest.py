@@ -23,9 +23,7 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
     """Create a temporary project directory."""
     directory = Path(str(tmpdir_factory.mktemp("project_dir")))
 
-    (directory / "CHANGELOG.md").write_text(
-        cleandoc_nl(
-            """
+    (directory / "CHANGELOG.md").write_text(cleandoc_nl("""
             # Change log
 
             Lorem ipsum.
@@ -35,12 +33,8 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
             ## 0.1.0 - 2020-01-01
 
             First release.
-            """
-        )
-    )
-    (directory / "CHANGELOG.rst").write_text(
-        cleandoc_nl(
-            """
+            """))
+    (directory / "CHANGELOG.rst").write_text(cleandoc_nl("""
             Change log
             ==========
 
@@ -53,31 +47,21 @@ def project_dir(tmpdir_factory, monkeypatch) -> Path:
             ------------------
 
             First release.
-            """
-        )
-    )
+            """))
 
     changelog_d = directory / "changelog.d"
     changelog_d.mkdir()
-    (changelog_d / ".protokolo.toml").write_text(
-        cleandoc_nl(
-            """
+    (changelog_d / ".protokolo.toml").write_text(cleandoc_nl("""
             [protokolo.section]
             title = "${version} - ${date}"
             level = 2
-            """
-        )
-    )
+            """))
     feature_section = changelog_d / "feature"
     feature_section.mkdir()
-    (feature_section / ".protokolo.toml").write_text(
-        cleandoc_nl(
-            """
+    (feature_section / ".protokolo.toml").write_text(cleandoc_nl("""
             [protokolo.section]
             title = "Features"
-            """
-        )
-    )
+            """))
 
     monkeypatch.chdir(directory)
     return directory

@@ -12,6 +12,7 @@ from typing import Any
 PY_3_14_PLUS = sys.version_info[:2] >= (3, 14)
 
 if PY_3_14_PLUS:
+    # pylint: disable=import-error
     import annotationlib
 
     def _get_annotations(cls: type) -> dict[str, Any]:

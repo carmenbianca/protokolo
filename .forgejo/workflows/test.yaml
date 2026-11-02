@@ -9,7 +9,7 @@ on:
 
 jobs:
   pytest:
-    runs-on: docker
+    runs-on: codeberg-small
     strategy:
       matrix:
         # Test both oldest and latest Python.
@@ -27,7 +27,7 @@ jobs:
         run: poetry run pytest --cov=protokolo
 
   pylint-mypy:
-    runs-on: docker
+    runs-on: codeberg-tiny
     container: nikolaik/python-nodejs:python3.11-nodejs24
     steps:
       - uses: actions/checkout@v3
@@ -39,7 +39,7 @@ jobs:
         run: poetry run mypy
 
   black-prettier-isort-reuse:
-    runs-on: docker
+    runs-on: codeberg-tiny
     container: nikolaik/python-nodejs:python3.11-nodejs24
     steps:
       - uses: actions/checkout@v3
@@ -57,7 +57,7 @@ jobs:
         run: poetry run reuse lint
 
   sphinx:
-    runs-on: docker
+    runs-on: codeberg-tiny
     container: nikolaik/python-nodejs:python3.11-nodejs24
     steps:
       - uses: actions/checkout@v3

@@ -10,21 +10,26 @@ on:
       - main
     paths:
       - "src/protokolo/**.py"
+      - ".forgejo/workflows/gettext.yaml"
+
+concurrency:
+  cancel-in-progress: false
 
 jobs:
   create-pot:
-    runs-on: docker
+    runs-on: codeberg-tiny
     container: nikolaik/python-nodejs:python3.11-nodejs21
     steps:
       - uses: actions/checkout@v3
-      - name: Install gettext and wlc
+      - name: Install poetry, gettext, and wlc
         run: |
           apt-get update
-          apt-get install -y gettext wlc
+          apt-get install -y python3-poetry gettext wlc
       - name: Install protokolo
         run: poetry install --no-interaction --only main
       - name: Lock Weblate
         run: |
+          wlc --url https://hosted.weblate.org/api/ --key ${{secrets.WEBLATE_KEY }} commit protokolo/protokolo
           wlc --url https://hosted.weblate.org/api/ --key ${{secrets.WEBLATE_KEY }} lock protokolo/protokolo
       - name: Push changes from Weblate to upstream repository
         run: |
@@ -48,7 +53,10 @@ jobs:
           git add po/protokolo.pot po/*.po
           git commit -m "Update protokolo.pot"
           git push origin main
-      - name: Unlock Weblate
+      - name: Push changes from repository to Weblate
         run: |
           wlc --url https://hosted.weblate.org/api/ --key ${{ secrets.WEBLATE_KEY }} pull protokolo/protokolo
+      - name: Unlock Weblate
+        if: always()
+        run: |
           wlc --url https://hosted.weblate.org/api/ --key ${{ secrets.WEBLATE_KEY }} unlock protokolo/protokolo

@@ -113,12 +113,10 @@ class ReStructuredTextFormatter(MarkupFormatter):
     def _format_section(cls, title: str, attrs: SectionAttributes) -> str:
         sign = cls._levels[attrs.level]
         length = len(title)
-        return cleandoc(
-            f"""
+        return cleandoc(f"""
             {title}
             {sign * length}
-            """
-        )
+            """)
 
 
 MARKUP_FORMATTER_MAPPING = {

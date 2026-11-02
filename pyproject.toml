@@ -43,7 +43,10 @@ protokolo = 'protokolo.cli:main'
 [tool.poetry.dependencies]
 python = ">=3.11"
 click = ">=8.0"
-attrs = ">=22.1.0"
+attrs = [
+    { version = ">=22.1.0", python = "<3.14" },
+    { version = ">=25.4.0", python = "^3.14" },
+]
 
 [tool.poetry.group.test.dependencies]
 pytest = ">=6.0.0"
@@ -130,3 +133,8 @@ check_untyped_defs = true
 module = "protokolo.*"
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
+
+# annotationlib doesn't exist <3.14.
+[[tool.mypy.overrides]]
+module = "annotationlib"
+ignore_missing_imports = true

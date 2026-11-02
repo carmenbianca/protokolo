@@ -31,15 +31,13 @@ class TestParseToml:
 
     def test_parse_toml_simple(self):
         """Provide all values in a toml string."""
-        toml = cleandoc_nl(
-            """
+        toml = cleandoc_nl("""
             [protokolo.section]
             title = "Title"
             level = 2
             order = 3
             foo = "bar"
-            """
-        )
+            """)
         values = parse_toml(toml, section=["protokolo", "section"])
         assert values["title"] == "Title"
         assert values["level"] == 2
@@ -50,32 +48,26 @@ class TestParseToml:
 
     def test_parse_toml_no_values(self):
         """If there are no values, return an empty dictionary."""
-        toml = cleandoc_nl(
-            """
+        toml = cleandoc_nl("""
             [protokolo.section]
-            """
-        )
+            """)
         values = parse_toml(toml, section=["protokolo", "section"])
         assert not values
 
     def test_parse_toml_no_table(self):
         """If there is no [protokolo.section] table, return an empty dict."""
-        toml = cleandoc_nl(
-            """
+        toml = cleandoc_nl("""
             title = "Title"
-            """
-        )
+            """)
         assert parse_toml(toml, section=["protokolo"]) == {}
         assert parse_toml(toml, section=None) == {"title": "Title"}
 
     def test_parse_toml_decode_error(self):
         """Raise TOMLDecodeError when TOML can't be parsed."""
-        yaml = cleandoc_nl(
-            """
+        yaml = cleandoc_nl("""
             hello:
               - world
-            """
-        )
+            """)
         with pytest.raises(tomllib.TOMLDecodeError):
             parse_toml(yaml)
         with BytesIO(yaml.encode("utf-8")) as fp:
@@ -199,8 +191,6 @@ class TestSectionAttributes:
         """Provide all values."""
         values = {"title": "Title", "level": 2, "order": 3, "foo": "bar"}
         attrs = SectionAttributes.from_dict(values)
-        # https://github.com/pylint-dev/pylint/issues/9203
-        # pylint: disable=no-member
         assert attrs.title == "Title"
         assert attrs.level == 2
         assert attrs.order == 3
@@ -212,8 +202,6 @@ class TestSectionAttributes:
         """
         from_dict = SectionAttributes.from_dict({})
         empty = SectionAttributes()
-        # https://github.com/pylint-dev/pylint/issues/9203
-        # pylint: disable=no-member
         assert (
             from_dict.title == empty.title == "TODO: No section title defined"
         )
@@ -296,16 +284,12 @@ class TestGlobalConfig:
 
     def test_from_file_protokolo_toml(self, project_dir):
         """Load from .protokolo.toml."""
-        (project_dir / ".protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+        (project_dir / ".protokolo.toml").write_text(cleandoc_nl("""
                 [protokolo]
                 changelog = "CHANGELOG"
                 markup = "markdown"
                 directory = "changelog.d"
-                """
-            )
-        )
+                """))
         config = GlobalConfig.from_file(project_dir / ".protokolo.toml")
         assert config.changelog == "CHANGELOG"
         assert config.markup == "markdown"
@@ -313,16 +297,12 @@ class TestGlobalConfig:
 
     def test_from_file_pyproject_toml(self, project_dir):
         """Load from pyproject.toml."""
-        (project_dir / "pyproject.toml").write_text(
-            cleandoc_nl(
-                """
+        (project_dir / "pyproject.toml").write_text(cleandoc_nl("""
                 [tool.protokolo]
                 changelog = "CHANGELOG"
                 markup = "markdown"
                 directory = "changelog.d"
-                """
-            )
-        )
+                """))
         config = GlobalConfig.from_file(project_dir / "pyproject.toml")
         assert config.changelog == "CHANGELOG"
         assert config.markup == "markdown"

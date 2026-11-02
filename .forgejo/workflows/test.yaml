@@ -9,14 +9,14 @@ on:
 
 jobs:
   pytest:
-    runs-on: docker
+    runs-on: codeberg-tiny
     strategy:
       matrix:
         # Test both oldest and latest Python.
         container:
           [
-            "nikolaik/python-nodejs:python3.11-nodejs24",
-            "nikolaik/python-nodejs:python3.13-nodejs24",
+            "nikolaik/python-nodejs:python3.11-nodejs26",
+            "nikolaik/python-nodejs:python3.15-nodejs26",
           ]
     container: ${{ matrix.container }}
     steps:
@@ -27,8 +27,8 @@ jobs:
         run: poetry run pytest --cov=protokolo
 
   pylint-mypy:
-    runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs24
+    runs-on: codeberg-tiny
+    container: nikolaik/python-nodejs:python3.11-nodejs26
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -39,8 +39,8 @@ jobs:
         run: poetry run mypy
 
   black-prettier-isort-reuse:
-    runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs24
+    runs-on: codeberg-tiny
+    container: nikolaik/python-nodejs:python3.11-nodejs26
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -57,8 +57,8 @@ jobs:
         run: poetry run reuse lint
 
   sphinx:
-    runs-on: docker
-    container: nikolaik/python-nodejs:python3.11-nodejs24
+    runs-on: codeberg-tiny
+    container: nikolaik/python-nodejs:python3.11-nodejs26
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies

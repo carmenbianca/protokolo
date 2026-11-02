@@ -41,8 +41,8 @@ class DictTypeError(TypeError, ProtokoloError):
         text = self._key_text()
         if amount >= 2:
             attrs = [
-                attrgetter("__name__"),  # str
                 attrgetter("__args__"),  # str | None
+                attrgetter("__name__"),  # str
                 attrgetter("__class__.__name__"),  # "hello"
             ]
             for attr in attrs:

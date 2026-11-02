@@ -86,9 +86,7 @@ class TestCompile:
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.md").read_text()
 
-        assert (
-            cleandoc_nl(
-                """
+        assert cleandoc_nl("""
                 Lorem ipsum.
 
                 <!-- protokolo-section-tag -->
@@ -98,10 +96,7 @@ class TestCompile:
                 Foo
 
                 ## 0.1.0 - 2020-01-01
-                """
-            )
-            in changelog
-        )
+                """) in changelog
         assert changelog.endswith("\n")
         assert not Path("changelog.d/foo.md").exists()
 
@@ -127,9 +122,7 @@ class TestCompile:
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.md").read_text()
 
-        assert (
-            cleandoc_nl(
-                """
+        assert cleandoc_nl("""
                 Lorem ipsum.
 
                 <!-- protokolo-section-tag -->
@@ -139,10 +132,7 @@ class TestCompile:
                 Foo
 
                 ## 0.1.0 - 2020-01-01
-                """
-            )
-            in changelog
-        )
+                """) in changelog
         assert not Path("changelog.d/foo.md").exists()
 
     def test_global_config_parse_error(self, runner):
@@ -165,14 +155,10 @@ class TestCompile:
 
     def test_global_config_wrong_type(self, runner):
         """An element has the wrong type."""
-        Path(".protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+        Path(".protokolo.toml").write_text(cleandoc_nl("""
                 [protokolo]
                 changelog = 1
-                """
-            )
-        )
+                """))
         result = runner.invoke(
             main,
             [
@@ -235,14 +221,10 @@ class TestCompile:
 
     def test_section_config_wrong_type(self, runner):
         """An element has the wrong type."""
-        Path("changelog.d/.protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+        Path("changelog.d/.protokolo.toml").write_text(cleandoc_nl("""
                 [protokolo.section]
                 title = 1
-                """
-            )
-        )
+                """))
         result = runner.invoke(
             main,
             [
@@ -263,14 +245,10 @@ class TestCompile:
 
     def test_section_config_not_positive(self, runner):
         """An element has should be positive."""
-        Path("changelog.d/.protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+        Path("changelog.d/.protokolo.toml").write_text(cleandoc_nl("""
                 [protokolo.section]
                 level = -1
-                """
-            )
-        )
+                """))
         result = runner.invoke(
             main,
             [
@@ -314,14 +292,10 @@ class TestCompile:
 
     def test_heading_format_error(self, runner):
         """Could not format a heading."""
-        Path("changelog.d/.protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+        Path("changelog.d/.protokolo.toml").write_text(cleandoc_nl("""
                 [protokolo.section]
                 level = 10
-                """
-            )
-        )
+                """))
         Path("changelog.d/foo.rst").write_text("Foo")
         result = runner.invoke(
             main,
@@ -406,9 +380,7 @@ class TestCompile:
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.md").read_text()
 
-        assert (
-            cleandoc_nl(
-                """
+        assert cleandoc_nl("""
                 Lorem ipsum.
 
                 <!-- protokolo-section-tag -->
@@ -420,10 +392,7 @@ class TestCompile:
                 Foo
 
                 ## 0.1.0 - 2020-01-01
-                """
-            )
-            in changelog
-        )
+                """) in changelog
         assert not Path("changelog.d/feature/foo.md").exists()
         assert Path("changelog.d/feature/bar.txt").exists()
 
@@ -494,9 +463,7 @@ class TestCompile:
         assert result.exit_code == 0
         changelog = Path("CHANGELOG.rst").read_text()
 
-        assert (
-            cleandoc_nl(
-                """
+        assert cleandoc_nl("""
                 Lorem ipsum.
 
                 ..
@@ -514,10 +481,7 @@ class TestCompile:
 
                 0.1.0 - 2020-01-01
                 ------------------
-                """
-            )
-            in changelog
-        )
+                """) in changelog
         assert not Path("changelog.d/feature/bar.rst").exists()
         assert not Path("changelog.d/foo.rst").exists()
 
@@ -543,8 +507,7 @@ class TestCompile:
         assert Path("changelog.d/foo.md").exists()
         assert Path("changelog.d/foo.md").read_text() == "Foo"
 
-        assert result.stdout == cleandoc_nl(
-            """
+        assert result.stdout == cleandoc_nl("""
             # Change log
 
             Lorem ipsum.
@@ -558,8 +521,7 @@ class TestCompile:
             ## 0.1.0 - 2020-01-01
 
             First release.
-            """
-        )
+            """)
 
 
 class TestInit:

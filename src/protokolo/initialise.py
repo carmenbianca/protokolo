@@ -62,13 +62,11 @@ def create_keep_a_changelog(directory: StrPath) -> None:
     directory.mkdir(parents=True, exist_ok=True)
     if not (directory / ".protokolo.toml").exists():
         (directory / ".protokolo.toml").write_text(
-            cleandoc_nl(
-                """
+            cleandoc_nl("""
                 [protokolo.section]
                 title = "${version} - ${date}"
                 level = 2
-                """
-            ),
+                """),
             encoding="utf-8",
         )
     subdirs = [
@@ -84,13 +82,11 @@ def create_keep_a_changelog(directory: StrPath) -> None:
         protokolo_toml = directory / str(subdir["dirname"]) / ".protokolo.toml"
         if not protokolo_toml.exists():
             protokolo_toml.write_text(
-                cleandoc_nl(
-                    """
+                cleandoc_nl("""
                     [protokolo.section]
                     title = "{title}"
                     order = {order}
-                    """
-                ).format(title=subdir["title"], order=subdir["order"]),
+                    """).format(title=subdir["title"], order=subdir["order"]),
                 encoding="utf-8",
             )
 
@@ -103,13 +99,13 @@ def create_root_toml(
         markup = "markdown"
 
     Path(".protokolo.toml").write_text(
-        cleandoc_nl(
-            """
+        cleandoc_nl("""
             [protokolo]
             changelog = "{changelog}"
             markup = "{markup}"
             directory = "{directory}"
-            """
-        ).format(changelog=changelog, markup=markup, directory=directory),
+            """).format(
+            changelog=changelog, markup=markup, directory=directory
+        ),
         encoding="utf-8",
     )

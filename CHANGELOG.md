@@ -22,6 +22,13 @@ for the `protokolo` Python library.
 
 <!-- protokolo-section-tag -->
 
+## 3.1.1 - 2026-11-02
+
+### Fixed
+
+- Added Python 3.14 support. This also includes Python 3.15 support, although
+  nothing needed to be done to facilitate this.
+
 ## 3.1.0 - 2025-11-30
 
 ### Changed

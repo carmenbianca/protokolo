@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-21 12:58+0000\n"
+"POT-Creation-Date: 2026-11-02 22:56+0000\n"
 "PO-Revision-Date: 2025-06-16 06:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/protokolo/"
@@ -35,7 +35,7 @@ msgid "Heading level {level} is too deep."
 msgstr "தலைப்பு நிலை {level} மிகவும் ஆழமானது."
 
 #: src/protokolo/cli.py:51
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:465
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:482
 #, python-format
 msgid "%(prog)s, version %(version)s"
 msgstr "%(prog)s, பதிப்பு %(version)s"
@@ -125,13 +125,13 @@ msgid ""
 msgstr ""
 "புரோட்டோகோலோவைப் பயன்படுத்த தயாராக இருக்க உங்கள் திட்டத்தை அமைக்கவும். இது ஒரு மாற்ற "
 "பதிவு கோப்பு, சேஞ்ச்லாக் பரிந்துரைகளுடன் பொருந்தக்கூடிய துணைப்பிரிவுகளுடன் மாற்ற பதிவு "
-"அடைவு மற்றும் அடுத்தடுத்த புரோட்டோகோலோ கட்டளைகளுக்கான இயல்புநிலைகளுடன் .protokolo."
-"toml கோப்பு ஆகியவற்றை உருவாக்குகிறது."
+"அடைவு மற்றும் அடுத்தடுத்த புரோட்டோகோலோ கட்டளைகளுக்கான "
+"இயல்புநிலைகளுடன் .protokolo.toml கோப்பு ஆகியவற்றை உருவாக்குகிறது."
 
 #: src/protokolo/cli.py:235
 msgid ""
-"Files that already exist are never overwritten, except the root .protokolo."
-"toml file, which is always (re-)generated."
+"Files that already exist are never overwritten, except the "
+"root .protokolo.toml file, which is always (re-)generated."
 msgstr ""
 "ஏற்கனவே இருக்கும் கோப்புகள் ஒருபோதும் மேலெழுதப்படவில்லை, ரூட் தவிர .protokolo.toml "
 "கோப்பு, இது எப்போதும் (மறு) உருவாக்கப்படுகிறது."
@@ -154,7 +154,7 @@ msgstr "CONFIG, அல்லது Changelog.D ஆல் தீர்மான�
 msgid "Change log directory to create."
 msgstr "உருவாக்க பதிவு கோப்பகத்தை மாற்றவும்."
 
-#: src/protokolo/compile.py:132 src/protokolo/config.py:316
+#: src/protokolo/compile.py:132 src/protokolo/config.py:319
 #, python-brace-format
 msgid "Invalid TOML in {file_name}: {error}"
 msgstr "{file_name}: {error} இல் தவறான டாம்ல்"
@@ -170,17 +170,17 @@ msgid "Failed to format section heading of {source}: {error}"
 msgstr "{source}: {error} இன் பிரிவு தலைப்பை வடிவமைக்கத் தவறிவிட்டது"
 
 #. TRANSLATORS: do not translate TOML, str, or IO[bytes]
-#: src/protokolo/config.py:52
+#: src/protokolo/config.py:53
 msgid "TOML must be a str or IO[bytes]"
 msgstr "டாம்ல் ஒரு str அல்லது io [பைட்டுகள்] ஆக இருக்க வேண்டும்"
 
 #. TRANSLATORS: do not translate level.
-#: src/protokolo/config.py:223
+#: src/protokolo/config.py:226
 #, python-brace-format
 msgid "level must be a positive integer, got {level}"
 msgstr "நிலை ஒரு நேர்மறையான முழு எண்ணாக இருக்க வேண்டும், கிடைத்தது {level}"
 
-#: src/protokolo/config.py:231
+#: src/protokolo/config.py:234
 #, python-brace-format
 msgid "order must be None or a positive integer, got {order}"
 msgstr ""
@@ -221,204 +221,260 @@ msgstr "'{key}' சரியான வகை இல்லை."
 msgid "List '{key}' contains an element with the wrong type."
 msgstr "'{key}' இல் தவறான வகையுடன் ஒரு உறுப்பு உள்ளது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:608
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:186
+msgid "d"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:736
 #, python-brace-format
 msgid "{editor}: Editing failed"
 msgstr "{editor}: திருத்துதல் தோல்வியடைந்தது"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:612
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_termui_impl.py:740
 #, python-brace-format
 msgid "{editor}: Editing failed: {e}"
 msgstr "{editor}: திருத்துதல் தோல்வியுற்றது: {e}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1104
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1141
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_winconsole.py:156
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/_winconsole.py:173
 #, python-brace-format
-msgid "{text} {deprecated_message}"
+msgid "Windows error: {error}"
 msgstr ""
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1160
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:104
+#, fuzzy
+msgid "deprecated"
+msgstr "(நீக்கப்பட்டது) {text}"
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1304
 msgid "Options"
 msgstr "விருப்பங்கள்"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1222
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1316
+#, fuzzy
+msgid "Positional arguments"
+msgstr "காணாமல் போன உரையாடல்"
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1391
 #, python-brace-format
 msgid "Got unexpected extra argument ({args})"
 msgid_plural "Got unexpected extra arguments ({args})"
 msgstr[0] "எதிர்பாராத கூடுதல் உரையாடல் கிடைத்தது ({args})"
 msgstr[1] "எதிர்பாராத கூடுதல் வாதங்கள் கிடைத்தன ({args})"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1241
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1407
 #, fuzzy
 msgid "DeprecationWarning: The command {name!r} is deprecated.{extra_message}"
 msgstr "டிபிரெக்சன் வார்னிங்: கட்டளை {பெயர்! ஆர்} நீக்கப்பட்டது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1425
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1594
 msgid "Aborted!"
 msgstr "கருக்கலைப்பு!"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1799
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1981
 msgid "Commands"
 msgstr "கட்டளைகள்"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1830
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2012
 msgid "Missing command."
 msgstr "கட்டளை இல்லை."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:1908
-msgid "No such command {name!r}."
-msgstr "அத்தகைய கட்டளை இல்லை {பெயர்! R}."
-
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2332
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2547
 msgid "Value must be an iterable."
 msgstr "மதிப்பு ஒரு கடுமையாக இருக்க வேண்டும்."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2355
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2570
 #, python-brace-format
 msgid "Takes {nargs} values but 1 was given."
 msgid_plural "Takes {nargs} values but {len} were given."
 msgstr[0] "{nargs} மதிப்புகளை எடுத்துக்கொள்கிறது, ஆனால் 1 வழங்கப்பட்டது."
 msgstr[1] "{nargs} மதிப்புகளை எடுக்கிறது, ஆனால் {len} வழங்கப்பட்டது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2505
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2767
 #, fuzzy
 msgid ""
 "DeprecationWarning: The {param_type} {name!r} is deprecated.{extra_message}"
 msgstr "டிபிரெக்சன் வார்னிங்: கட்டளை {பெயர்! ஆர்} நீக்கப்பட்டது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2956
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3246
+#, python-brace-format
+msgid "Name '{name}' defined twice"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3262
+msgid "Boolean option {decl!r} cannot use the same flag for true/false."
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3281
+msgid "Could not determine name for option with declarations {decls!r}"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3288
+#, python-brace-format
+msgid ""
+"No options defined but a name was passed ({name}). Did you mean to declare "
+"an argument instead? Did you mean to pass '--{name}'?"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3368
 #, python-brace-format
 msgid "env var: {var}"
 msgstr "Env இருந்தது: {var}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:2959
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3371
 #, python-brace-format
 msgid "default: {default}"
 msgstr "இயல்புநிலை: {default}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3023
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3435
 msgid "(dynamic)"
 msgstr "(மாறும்)"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:522
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/core.py:3754
+#, python-brace-format
+msgid ""
+"Arguments take exactly one parameter declaration, got {length}: {decls}."
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:399
+msgid "Do you want to continue?"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:400
+msgid "Confirm the action without prompting."
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:556
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:598
 msgid "Show the version and exit."
 msgstr "பதிப்பைக் காட்டி வெளியேறவும்."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:548
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/decorators.py:624
 msgid "Show this message and exit."
 msgstr "இந்த செய்தியைக் காட்டி வெளியேறவும்."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:50
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:89
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:29
+#, fuzzy, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Did you mean one of: {possibilities}?)"
+msgstr[0] "நீங்கள் {possibility} என்று சொன்னீர்களா?"
+msgstr[1] "(சாத்தியமான விருப்பங்கள்: {possibilities})"
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:62
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:108
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:275
 #, python-brace-format
 msgid "Error: {message}"
 msgstr "பிழை: {message}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:81
+#. Pick the longest name (like ``--help`` over ``-h``) for
+#. readability in error messages.
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:99
 #, python-brace-format
 msgid "Try '{command} {option}' for help."
 msgstr "உதவிக்கு '{command} {option}' முயற்சிக்கவும்."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:130
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:152
 #, python-brace-format
 msgid "Invalid value: {message}"
 msgstr "தவறான மதிப்பு: {message}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:132
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:154
 #, python-brace-format
 msgid "Invalid value for {param_hint}: {message}"
 msgstr "{param_hint}: {message}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:190
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:214
 msgid "Missing argument"
 msgstr "காணாமல் போன உரையாடல்"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:192
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:216
 msgid "Missing option"
 msgstr "விருப்பம் இல்லை"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:194
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:218
 msgid "Missing parameter"
 msgstr "இல்லை அளவுரு"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:196
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:220
 #, python-brace-format
 msgid "Missing {param_type}"
 msgstr "காணவில்லை {param_type}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:203
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:227
 #, python-brace-format
 msgid "Missing parameter: {param_name}"
 msgstr "காணாமல் போன அளவுரு: {param_name}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:223
-#, python-brace-format
-msgid "No such option: {name}"
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:249
+#, fuzzy
+msgid "No such option {name!r}."
 msgstr "அத்தகைய விருப்பம் இல்லை: {name}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:235
-#, python-brace-format
-msgid "Did you mean {possibility}?"
-msgid_plural "(Possible options: {possibilities})"
-msgstr[0] "நீங்கள் {possibility} என்று சொன்னீர்களா?"
-msgstr[1] "(சாத்தியமான விருப்பங்கள்: {possibilities})"
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:285
+msgid "No such command {name!r}."
+msgstr "அத்தகைய கட்டளை இல்லை {பெயர்! R}."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:282
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:350
 msgid "unknown error"
 msgstr "தெரியாத பிழை"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:289
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/exceptions.py:357
 msgid "Could not open file {filename!r}: {message}"
 msgstr "கோப்பைத் திறக்க முடியவில்லை {கோப்பு பெயர்! R}: {message}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:199
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/formatting.py:167
+msgid "Usage:"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:145
+#, python-brace-format
+msgid "Invalid start character for option ({option})"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:203
 msgid "Argument {name!r} takes {nargs} values."
 msgstr "உரையாடல் {பெயர்! R} {nargs} மதிப்புகளை எடுக்கிறது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:381
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:382
 msgid "Option {name!r} does not take a value."
 msgstr "விருப்பம் {பெயர்! R} ஒரு மதிப்பை எடுக்காது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:444
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/parser.py:445
 msgid "Option {name!r} requires an argument."
 msgid_plural "Option {name!r} requires {nargs} arguments."
 msgstr[0] "விருப்பம் {பெயர்! R} ஒரு உரையாடல் தேவை."
 msgstr[1] "விருப்பம் {பெயர்! R} {nargs} வாதங்கள் தேவை."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/shell_completion.py:332
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/shell_completion.py:417
 msgid "Shell completion is not supported for Bash versions older than 4.4."
 msgstr "4.4 ஐ விட பழைய பாச் பதிப்புகளுக்கு செல் நிறைவு ஆதரிக்கப்படவில்லை."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/shell_completion.py:339
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/shell_completion.py:424
 msgid "Couldn't detect Bash version, shell completion is not supported."
 msgstr "பாச் பதிப்பைக் கண்டறிய முடியவில்லை, செல் நிறைவு ஆதரிக்கப்படவில்லை."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:162
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:256
 msgid "Repeat for confirmation"
 msgstr "உறுதிப்படுத்த மீண்டும் செய்யவும்"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:178
-msgid "Error: The value you entered was invalid."
-msgstr "பிழை: நீங்கள் உள்ளிட்ட மதிப்பு தவறானது."
-
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:180
-#, python-brace-format
-msgid "Error: {e.message}"
-msgstr "பிழை: {e.message}"
-
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:191
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:286
 msgid "Error: The two entered values do not match."
 msgstr "பிழை: உள்ளிட்ட இரண்டு மதிப்புகள் பொருந்தவில்லை."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:247
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:340
 msgid "Error: invalid input"
 msgstr "பிழை: தவறான உள்ளீடு"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:866
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:638
+msgid "Unknown color {colour!r}"
+msgstr ""
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/termui.py:1003
 msgid "Press any key to continue..."
 msgstr "தொடர எந்த விசையையும் அழுத்தவும் ..."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:332
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:439
 #, python-brace-format
 msgid ""
 "Choose from:\n"
@@ -427,83 +483,99 @@ msgstr ""
 "இதிலிருந்து தேர்வுசெய்க:\n"
 " {choices}"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:369
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:476
 msgid "{value!r} is not {choice}."
 msgid_plural "{value!r} is not one of {choices}."
 msgstr[0] "{மதிப்பு! r} என்பது {தேர்வு அல்ல."
 msgstr[1] "{மதிப்பு! r} {தேர்வுகளில் ஒன்றல்ல."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:460
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:482
+#, fuzzy, python-brace-format
+msgid "Choice({choices})"
+msgstr ""
+"இதிலிருந்து தேர்வுசெய்க:\n"
+" {choices}"
+
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:570
 msgid "{value!r} does not match the format {format}."
 msgid_plural "{value!r} does not match the formats {formats}."
 msgstr[0] "{மதிப்பு! r} வடிவத்துடன் {வடிவமைப்பு with உடன் பொருந்தவில்லை."
 msgstr[1] "{மதிப்பு! r} வடிவங்களுடன் பொருந்தவில்லை {formats}."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:482
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:594
 msgid "{value!r} is not a valid {number_type}."
 msgstr "{மதிப்பு! r} என்பது செல்லுபடியாகும் {number_type}."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:538
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:679
 #, python-brace-format
 msgid "{value} is not in the range {range}."
 msgstr "{value} வரம்பில் {range} இல்லை."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:719
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:866
 #, fuzzy
 msgid "{value!r} is not a valid boolean. Recognized values: {states}"
 msgstr "{மதிப்பு! ஆர்} என்பது சரியான பூலியன் அல்ல."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:747
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:892
 msgid "{value!r} is not a valid UUID."
 msgstr "{மதிப்பு! r} என்பது சரியான UUID அல்ல."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:937
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1116
 msgid "file"
 msgstr "கோப்பு"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:939
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1118
 msgid "directory"
 msgstr "அடைவு"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:941
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1120
 msgid "path"
 msgstr "பாதை"
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:988
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1167
 msgid "{name} {filename!r} does not exist."
 msgstr "{name} {கோப்பு பெயர்! r} இல்லை."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:997
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1176
 msgid "{name} {filename!r} is a file."
 msgstr "{name} {கோப்பு பெயர்! r} என்பது ஒரு கோப்பு."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1005
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1184
 #, fuzzy
 msgid "{name} {filename!r} is a directory."
 msgstr "{name} '{filename}' என்பது ஒரு அடைவு."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1014
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1193
 msgid "{name} {filename!r} is not readable."
 msgstr "{name} {கோப்பு பெயர்! r} படிக்க முடியாது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1023
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1202
 msgid "{name} {filename!r} is not writable."
 msgstr "{name} {கோப்பு பெயர்! r} எழுதக்கூடியது அல்ல."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1032
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1211
 msgid "{name} {filename!r} is not executable."
 msgstr "{name} {கோப்பு பெயர்! r} இயங்க முடியாது."
 
-#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1099
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/types.py:1283
 #, python-brace-format
 msgid "{len_type} values are required, but {len_value} was given."
 msgid_plural "{len_type} values are required, but {len_value} were given."
 msgstr[0] "{len_type} மதிப்புகள் தேவை, ஆனால் {len_value} கொடுக்கப்பட்டது."
 msgstr[1] "{len_type} மதிப்புகள் தேவை, ஆனால் {len_value} வழங்கப்பட்டன."
 
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/utils.py:362
+#: /root/.cache/pypoetry/virtualenvs/protokolo-4sN_CQJu-py3.11/lib/python3.11/site-packages/click/utils.py:389
 #, python-brace-format
-#~ msgid "(Deprecated) {text}"
-#~ msgstr "(நீக்கப்பட்டது) {text}"
+msgid "Unknown standard stream '{name}'"
+msgstr ""
+
+#~ msgid "Error: The value you entered was invalid."
+#~ msgstr "பிழை: நீங்கள் உள்ளிட்ட மதிப்பு தவறானது."
+
+#, python-brace-format
+#~ msgid "Error: {e.message}"
+#~ msgstr "பிழை: {e.message}"
 
 #~ msgid "required"
 #~ msgstr "தேவை"

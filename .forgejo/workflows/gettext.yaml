@@ -18,7 +18,7 @@ concurrency:
 jobs:
   create-pot:
     runs-on: codeberg-tiny
-    container: nikolaik/python-nodejs:python3.11-nodejs21
+    container: nikolaik/python-nodejs:python3.11-nodejs26
     steps:
       - uses: actions/checkout@v3
       - name: Install poetry, gettext, and wlc

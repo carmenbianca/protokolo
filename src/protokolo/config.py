@@ -13,6 +13,7 @@ from typing import IO, Any, Self, cast
 
 import attrs
 
+from ._compat import _get_annotations
 from ._util import nested_itemgetter, type_in_expected_type
 from .exceptions import (
     AttributeNotPositiveError,
@@ -125,7 +126,9 @@ class TOMLConfig:
         for name, value in values.items():
             # Use typed annotations to expect a very specific type. If not,
             # allow any valid TOML type.
-            expected_type = self.__annotations__.get(f"_{name}", TOMLValueType)
+            expected_type = _get_annotations(self.__class__).get(
+                f"_{name}", TOMLValueType
+            )
             self._validate_item(value, name, expected_type=expected_type)
             if isinstance(value, dict):
                 self._validate(value)
